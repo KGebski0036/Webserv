@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 15:21:41 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 12:29:38 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 12:56:50 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 #define ERROR "\033[48;5;160m[ ERROR ]\033[0m \033[38;5;196m"
 #define P_DEBUG "\033[48;5;202m              [ DEBUGGING ]            \033[0m"
-#define INFO "\033[48;5;39m[ INFORMATION ]\033[0m \033[38;5;123m"
+#define INFO "\033[48;5;39m[INFORMATION]\033[0m \033[38;5;123m"
 #define T_DEBUG "\033[38;5;202m"
 #define BLUE "\033[38;5;123m"
 #define DARKBLUE "\033[38;5;33m"
