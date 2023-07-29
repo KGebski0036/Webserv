@@ -1,35 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Config.hpp                                         :+:      :+:    :+:   */
+/*   ServerInstanceConfig.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 16:32:05 by cjackows         ###   ########.fr       */
+/*   Created: 2023/07/29 17:08:40 by cjackows          #+#    #+#             */
+/*   Updated: 2023/07/29 17:09:21 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
-#include "Colors.hpp"
-#include "MyException.hpp"
 
-class Config : public MyException {
-  public:
-	static Config* readConfig(std::string pathToFile);
+struct ServerInstanceConfig {
 	
-	Config();
-	~Config();
-	Config(const Config&);
-	Config&	operator=(Config const &);
-
-  private:
-	std::vector<std::string> _fileVector;
-  
-	void readFile(std::string pathToFile);
 };
+
