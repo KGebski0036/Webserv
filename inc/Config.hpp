@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:08:32 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:45:13 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 
 class Config : public MyException {
   public:
-	static Config* readConfig(std::string &pathToFile);
+	static Config* readConfig(std::string pathToFile);
 	
-
 	Config();
 	~Config();
 	Config(const Config&);
 	Config&	operator=(Config const &);
 
   private:
-	void readFile(std::string pathToFile);
 	std::vector<std::string> _fileVector;
+  
+	void readFile(std::string pathToFile);
 };

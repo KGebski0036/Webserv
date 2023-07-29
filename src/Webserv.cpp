@@ -1,14 +1,5 @@
 #include "../inc/Webserv.hpp"
 
-Webserv* Webserv::_instance = 0;
-
-Webserv* Webserv::getInstance()
-{
-	if (!_instance)
-		_instance = new Webserv();
-	return _instance;
-}
-
 
 void Webserv::config(std::string pathToFile)
 {
@@ -17,7 +8,7 @@ void Webserv::config(std::string pathToFile)
 
 int	 Webserv::setup()
 {
-
+return 0;
 }
 
 void Webserv::run()
@@ -38,8 +29,7 @@ void Webserv::clean()
 Webserv::Webserv()  {}
 Webserv::~Webserv() 
 {
-	if (_instance)
-		delete _instance;
+	delete _config;
 }
 Webserv::Webserv(const Webserv& src) { (void)src; }
 Webserv& Webserv::operator=(Webserv const& src) { (void)src; return *this; }

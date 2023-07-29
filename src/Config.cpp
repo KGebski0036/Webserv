@@ -6,16 +6,19 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:10:13 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:59:25 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Config.hpp"
 
-Config* Config::readConfig(std::string &pathToFile)
+Config* Config::readConfig(std::string pathToFile)
 {
 	Config *result = new Config();
-	result->readFile(pathToFile);
+	try {
+		result->readFile(pathToFile);	
+	}
+	catch (const MyException &e) { std::cerr << e.what();}
 	//TODO Parsing
 	return result;
 }
@@ -23,14 +26,17 @@ Config* Config::readConfig(std::string &pathToFile)
 void Config::readFile(std::string pathToFile)
 {
 	std::ifstream file;
+	std::string buffer;
 	file.open(pathToFile.c_str());
 	if (!file.is_open())
 		throw MyException("Could not open a config file", __func__, __FILE__, __LINE__);
 
-	for (size_t i = 0; getline(file, _fileVector[i]) > 0; i++)
+//TODO ' ' and '\t' should be a separator :D
+	while (getline(file, buffer))
 	{
-		if (_fileVector[i].empty())
-			i--;
+		_fileVector.push_back(buffer);
+		if (buffer.empty())
+			_fileVector.pop_back();
 	}
 	if (_fileVector.empty())
 		throw MyException("File is empty...", __func__, __FILE__, __LINE__);
@@ -47,15 +53,19 @@ Config::Config()
 
 Config::~Config()
 {
-
 }
 
-Config::Config(const Config&)
+Config::Config(const Config&) : MyException()
 {
 
 }
 
-Config&	Config::operator=(Config const &)
+Config&	Config::operator=(Config const & other)
 {
-
+	if (this != &other)
+	{
+		_fileVector = other._fileVector;
+	}
+	
+	return *this;
 }

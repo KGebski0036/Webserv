@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:07:02 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:45:03 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 
 class Webserv {
   public:
-	static Webserv* getInstance();
+	Webserv();
+	~Webserv();
 
 	void config(std::string pathToFile);
 	int	 setup();
@@ -27,9 +28,6 @@ class Webserv {
 
   private:
   	Config*	_config;
-  	static Webserv* _instance;
-	Webserv();
-	~Webserv();
 	Webserv(const Webserv&);
 	Webserv& operator=(Webserv const &);
 	

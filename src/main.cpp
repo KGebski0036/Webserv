@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:05:53 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:45:42 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int ac, char *av[])
 {
-	(void)av;
 	if (ac == 1)
 	{
 		std::cout << INFO << "Default configuration used." << E;
@@ -26,10 +25,15 @@ int	main(int ac, char *av[])
 		return 1;
 	}
 	
-	Webserv* server = Webserv::getInstance();
-	server->config(av[1]);
-	
+	Webserv server;
+	try
+	{
+		if (ac == 1)
+			server.config("default.conf");
+		else
+			server.config(av[1]);
+
+	} catch (const MyException &e) { std::cerr << e.what();}
 	//handle configuration
-	(void)server;
 	return 0;
 }
