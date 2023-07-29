@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Webserv.hpp                                        :+:      :+:    :+:   */
+/*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:07:02 by cjackows         ###   ########.fr       */
+/*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
+/*   Updated: 2023/07/29 15:08:32 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 #include "Colors.hpp"
 #include "MyException.hpp"
-#include "Config.hpp"
 
-class Webserv {
+class Config : public MyException {
   public:
-	static Webserv* getInstance();
+	static Config* readConfig(std::string &pathToFile);
+	
 
-	void config(std::string pathToFile);
-	int	 setup();
-	void run();
-	void clean();
+	Config();
+	~Config();
+	Config(const Config&);
+	Config&	operator=(Config const &);
 
   private:
-  	Config*	_config;
-  	static Webserv* _instance;
-	Webserv();
-	~Webserv();
-	Webserv(const Webserv&);
-	Webserv& operator=(Webserv const &);
-	
+	void readFile(std::string pathToFile);
+	std::vector<std::string> _fileVector;
 };

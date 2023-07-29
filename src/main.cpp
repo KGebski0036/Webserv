@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 13:00:25 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/29 15:05:53 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	main(int ac, char *av[])
 	}
 	
 	Webserv* server = Webserv::getInstance();
+	server->config(av[1]);
+	
 	//handle configuration
 	(void)server;
 	return 0;

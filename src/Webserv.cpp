@@ -10,6 +10,27 @@ Webserv* Webserv::getInstance()
 }
 
 
+void Webserv::config(std::string pathToFile)
+{
+	_config = Config::readConfig(pathToFile);
+}
+
+int	 Webserv::setup()
+{
+
+}
+
+void Webserv::run()
+{
+
+}
+
+void Webserv::clean()
+{
+
+}
+
+
 
 
 
