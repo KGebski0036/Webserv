@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:31:19 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 19:22:19 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/31 19:56:08 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ class ServerInstance : public MyException {
 	void run();
 	void clean();
 	int createSocket();
+	std::string getResponse(std::string buffer);
+	void sendHttpResponse(int clientSockfd, const std::string& response); //! TO BE DELETED
 
   private:
 	int _socketFd;

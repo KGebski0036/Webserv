@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 19:45:48 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:30:51 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,63 @@ void ServerInstance::run()
 				char buffer[8000];
 				int r = read(clientFds[i].fd, buffer, sizeof(buffer));
 				buffer[r] = '\0';
-				if (r > 0)
-					std::cout << buffer << E;
-					// TODO PArsing the request
+					
+				std::string response = getResponse(buffer);
+				sendHttpResponse(clientFds[i].fd, response);
 				// std::cout << SYS_MSG << "Connection from client " << E;
 			}
 		}
 	}
 
+}
+
+void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& response) {
+    std::string httpResponse = "HTTP/1.1 200 OK\r\n";
+    httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
+    httpResponse += "Content-Type: text/html\r\n";
+    httpResponse += "\r\n"; // Empty line separates headers from the response body
+    httpResponse += response;
+
+    // Send the response to the client
+    if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
+        perror("send");
+    }
+}
+
+std::string ServerInstance::getResponse(std::string buffer)
+{
+	std::stringstream ss;
+
+	ss << buffer;
+	
+	std::string protocolType;
+	std::string requestedFile;
+
+	ss >> protocolType;
+	ss >> requestedFile;
+	
+	std::cout << SYS_MSG << MAGENTA << "Server: " << BLUE << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
+	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << DARKBLUE << requestedFile << E << '\n';
+
+	if (requestedFile == "/")
+	{
+		std::string tmp;
+		std::ifstream file;
+		
+		file.open((_instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile).c_str());
+		getline(file, tmp, '\0');
+		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile << " file" << E;
+		return tmp;
+	}
+	else
+	{
+		std::ifstream file;
+		std::string tmp;
+		file.open((_instanceConfig.rootDirectory + "/favicon.ico").c_str());
+		getline(file, tmp, '\0');
+		return tmp;
+	}
+	return "<h1>yop</h1>";
 }
 
 void ServerInstance::clean()

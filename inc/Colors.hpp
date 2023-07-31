@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 15:21:41 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 12:56:50 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:04:59 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 #define DARKBLUE "\033[38;5;33m"
 #define BLUE_B "\033[48;5;39m"
 #define GREEN "\033[1;32m"
+#define MAGENTA "\033[38;5;127m"
 #define BOLD "\033[1m"
 #define ITALIC "\033[3m"
 #define UNDERLINE "\033[4m"
