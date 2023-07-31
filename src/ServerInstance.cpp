@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 20:30:51 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/31 20:37:47 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,25 +110,21 @@ std::string ServerInstance::getResponse(std::string buffer)
 	std::cout << SYS_MSG << MAGENTA << "Server: " << BLUE << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
 	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << DARKBLUE << requestedFile << E << '\n';
 
+	std::string tmp;
+	std::ifstream file;
+	
 	if (requestedFile == "/")
 	{
-		std::string tmp;
-		std::ifstream file;
-		
 		file.open((_instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile).c_str());
-		getline(file, tmp, '\0');
 		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile << " file" << E;
-		return tmp;
 	}
 	else
 	{
-		std::ifstream file;
-		std::string tmp;
-		file.open((_instanceConfig.rootDirectory + "/favicon.ico").c_str());
-		getline(file, tmp, '\0');
-		return tmp;
+		file.open((_instanceConfig.rootDirectory + requestedFile).c_str());
+		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + requestedFile << " file" << E;
 	}
-	return "<h1>yop</h1>";
+	getline(file, tmp, '\0');
+	return tmp;
 }
 
 void ServerInstance::clean()
