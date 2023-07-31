@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 15:50:41 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/07/31 17:12:24 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,20 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 					bracketsCounter--;
 				}
 			}
+			if (_fileVector[j] == "location")
+			{
+				while (_fileVector[++j] != "}") {}
+				
+				ServerInstanceConfig::LocationConfig location;
+				
+				location.root = "/";
+				location.index = "index.html";
+				location.path = "/";
+				location.allowedMethods.push_back("GET");
+				
+				config.locations.push_back(location);
+				j++;
+			}
 		}
 		if (bracketsCounter == 0)
 		{
@@ -152,13 +166,30 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 	os << std::setw(20) << BLUE << "ip: " << dt.listenAddress << " at port: " << dt.port << E;
 	os << std::setw(20) << BLUE << "file index is: " << dt.indexFile << E;
 	os << std::setw(20) << BLUE << "root directory is: " << dt.rootDirectory << E << '\n';
-	os << std::setw(20) << BLUE << "allowed methods are: " << E;
+	os << std::setw(20) << BLUE << "allowed methods are: " << E << std::setw(20);
 	
 	for (size_t i = 0; i < dt.allowedMethods.size(); i++)
 	{
-		os << std::setw(20) << GREEN << dt.allowedMethods[i] << E;
+		os << GREEN << dt.allowedMethods[i] << " ";
+	}
+	os << "\n\n";
+	os << std::setw(20) << BLUE << "locations are: " << E;
+	
+	for (size_t i = 0; i < dt.locations.size(); i++)
+	{
+		os << std::setw(20) << DARKBLUE << i << ". location" << E;
+		os << std::setw(25) << BLUE << "path: " << dt.locations[i].path << E;
+		os << std::setw(25) << BLUE << "root: " << dt.locations[i].root << E;
+		os << std::setw(25) << BLUE << "index: " << dt.locations[i].index << E;
+		
+		os << std::setw(25) << BLUE << "methods: " << E << std::setw(25);
+	
+		for (size_t j = 0; j < dt.locations[i].allowedMethods.size(); j++)
+		{
+			os << GREEN << dt.locations[i].allowedMethods[j] << " ";
+		}
+		os << "\n";
 	}
 	os << "\n";
-	
 	return os;
 }
