@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 17:12:24 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/07/31 18:42:18 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void Config::setupServersConfiguration()
 			
 		ServerInstanceConfig config = readSingleServer(i);
 		
-		std::cout << config;
+		// std::cout << config;
 		
 		_serversConfigs.push_back(config);
 	}
@@ -140,6 +140,8 @@ bool Config::isHttpMethod(std::string str)
 {
 	return  (str == "GET" || str == "POST" || str == "PUT");
 }
+
+std::vector<ServerInstanceConfig> Config::getServersConfigs() const { return _serversConfigs; }
 
 Config::Config() {}
 

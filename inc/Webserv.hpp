@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/29 15:45:03 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/07/31 18:54:32 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "Colors.hpp"
 #include "MyException.hpp"
 #include "Config.hpp"
+
+#include "ServerInstance.hpp"
 
 class Webserv {
   public:
@@ -28,6 +30,7 @@ class Webserv {
 
   private:
   	Config*	_config;
+	std::vector<ServerInstance *> _servers;
 	Webserv(const Webserv&);
 	Webserv& operator=(Webserv const &);
 	

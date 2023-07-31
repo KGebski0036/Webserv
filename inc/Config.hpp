@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 15:44:27 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/07/31 17:37:38 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ class Config : public MyException {
 	~Config();
 	Config(const Config&);
 	Config&	operator=(Config const &);
+
+	std::vector<ServerInstanceConfig> getServersConfigs() const;
 
   private:
 	std::vector<std::string> _fileVector;
