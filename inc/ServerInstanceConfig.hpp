@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 15:33:52 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/01 16:30:17 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ struct ServerInstanceConfig
 		std::string path;
 		std::vector<std::string> allowedMethods;
 		std::string root;
+		std::string cgi_pass;
 		std::string index;
 		size_t clientBodyBufferSize;
 		struct LocationConfig* nestedLocation;

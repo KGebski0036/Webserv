@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 16:03:50 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/01 16:54:16 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,18 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 				config.rootDirectory = _fileVector[++j];
 			else if (_fileVector[j] == "index")
 				config.indexFile = _fileVector[++j];
+			else if (_fileVector[j] == "client_body_buffer_size")
+				config.clientBodyBufferSize = atoi(_fileVector[++j].c_str());
+			else if (_fileVector[j] == "autoindex")
+				config.autoindex = _fileVector[++j] == "on";
 			else if (_fileVector[j] == "listen")
 				readListenArg(config, _fileVector[++j]);
 			else if (_fileVector[j] == "allow_methods")
 				readAllowedMethodsArg(config.allowedMethods, j);
 			else if (_fileVector[j] == "location")
 				readLocationArg(config.locations, j);
-			else if (_fileVector[j] == "client_body_buffer_size")
-				config.clientBodyBufferSize = atoi(_fileVector[++j].c_str());
+			else if (_fileVector[j] == "error_page")
+				readErrorPageArg(config.errorPages, j);
 		}
 		
 		if (bracketsCounter == 0)
@@ -128,6 +132,13 @@ Config&	Config::operator=(Config const & other)
 	return *this;
 }
 
+void Config::readErrorPageArg(std::map<int, std::string>& map, size_t& j)
+{
+	j++;
+	map[atoi(_fileVector[j].c_str())] = _fileVector[j + 1];
+	j++;
+}
+
 void Config::readListenArg(ServerInstanceConfig& config, std::string str)
 {
 	int separatorPosition =  str.find(':'); 
@@ -158,17 +169,19 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 			bracketsCounter++;
 		else if (_fileVector[j] == "}")
 			bracketsCounter--;
-		else if (_fileVector[j] == "allow_methods")
-		{
-			readAllowedMethodsArg(location.allowedMethods, ++j);
-			j--;
-		}
 		else if (_fileVector[j] == "root")
 			location.root = _fileVector[++j];
 		else if (_fileVector[j] == "index")
 			location.index = _fileVector[++j];
 		else if (_fileVector[j] == "client_body_buffer_size")
 			location.clientBodyBufferSize = atoi(_fileVector[++j].c_str());
+		else if (_fileVector[j] == "cgi_pass")
+			location.cgi_pass = _fileVector[++j];
+		else if (_fileVector[j] == "allow_methods")
+		{
+			readAllowedMethodsArg(location.allowedMethods, ++j);
+			j--;
+		}
 	}
 	j++;
 	locations.push_back(location);
@@ -180,7 +193,8 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 	static int i = 0;
 
 	i++;
-	os << DARKBLUE << i << ". " << GREEN << "Server name : " << dt.serverName << E;
+	os << DARKBLUE << i << ". " << GREEN << "Server name : " << dt.serverName;
+	os << std::setw(20) << BLUE << "autoindex : " << (dt.autoindex ? "on" : "off") << E;
 	os << std::setw(20) << BLUE << "ip:    " << MAGENTA << dt.listenAddress << ":" << dt.port << E;
 	os << std::setw(20) << BLUE << "index: " << DARKBLUE << dt.indexFile;
 	os << std::setw(20) << BLUE << "root: " << DARKBLUE << dt.rootDirectory << E << '\n';
@@ -191,6 +205,13 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 		os << GREEN << dt.allowedMethods[i] << " ";
 	}
 	os << "\n\n";
+	os << std::setw(20) << BLUE << "ErrorPages: " << E;
+	
+	for (std::map<int, std::string>::const_iterator it = dt.errorPages.begin(); it != dt.errorPages.end(); it++)
+	{
+		std::cout << std::setw(25) << RED << it->first << " - " << DARKBLUE << it->second << E;
+	}
+	
 	os << std::setw(20) << BLUE << "locations are: " << E;
 	
 	for (size_t i = 0; i < dt.locations.size(); i++)
@@ -198,6 +219,7 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 		os << std::setw(20) << DARKBLUE << i << ". location" << E;
 		os << std::setw(25) << BLUE << "path: " << DARKBLUE << dt.locations[i].path;
 		os << std::setw(10) << BLUE << " root: " << DARKBLUE << dt.locations[i].root;
+		os << std::setw(10) << BLUE << " cgi pass: " << DARKBLUE << dt.locations[i].cgi_pass;
 		os << std::setw(10) << BLUE << " index: " << DARKBLUE << dt.locations[i].index << E;
 		
 		os << std::setw(25) << BLUE << "methods: " << std::setw(10);
