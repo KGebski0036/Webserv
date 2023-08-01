@@ -6,26 +6,19 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:04:29 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:07:29 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../inc/ServerInstance.hpp"
-
-
-// void ServerInstance::config()
-// {
-// 	_config = Config::readConfig(pathToFile);
-// 	for (size_t i = 0; i < _config->getServersConfigs().size(); i++)
-// 		std::cout << SYS_MSG << "Server config[" << i + 1 << "]" << E << _config->getServersConfigs()[i] << E;
-// }
 
 int	 ServerInstance::setup()
 {
 	try
 	{
 		_socketFd = createSocket();
-		std::cout << "Socket created: fd" << _socketFd << E;
+		std::cout << SYS_MSG << BLUE << "Server start at: " << GREEN << "http://" << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
 	} catch (const MyException &e) { std::cerr << e.what();}
 	return 0;
 }
@@ -34,7 +27,7 @@ void ServerInstance::run()
 {
 	std::vector<struct pollfd> clientFds(MAX_CLIENTS + 1);
 	clientFds[0].fd = _socketFd;
-	clientFds[0].events = POLLIN; // Monitor for incoming connections
+	clientFds[0].events = POLLIN;
 	int numSockets = 1;
 
 	if (listen(_socketFd, SOMAXCONN) == -1)
@@ -67,14 +60,12 @@ void ServerInstance::run()
 
 		for (int i = 1; i < numSockets; ++i) {
 			if (clientFds[i].revents & POLLIN) {
-				// handleClientData(clientFds[i].fd);
 				char buffer[8000];
 				int r = read(clientFds[i].fd, buffer, sizeof(buffer));
 				buffer[r] = '\0';
 					
 				std::string response = getResponse(buffer);
 				sendHttpResponse(clientFds[i].fd, response);
-				// std::cout << SYS_MSG << "Connection from client " << E;
 			}
 		}
 	}
@@ -107,7 +98,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 	ss >> requestedFile;
 	
 	std::cout << SYS_MSG << MAGENTA << "Server: " << BLUE << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
-	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << BLUE << DIM << requestedFile << E << '\n';
+	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << DARKBLUE << requestedFile << E;
 
 	std::string tmp;
 	std::ifstream file;
@@ -122,6 +113,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 		file.open((_instanceConfig.rootDirectory + requestedFile).c_str());
 		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + requestedFile << " file" << E;
 	}
+	std::cout << '\n';
 	getline(file, tmp, '\0');
 	return tmp;
 }
@@ -148,7 +140,6 @@ int ServerInstance::createSocket() {
 
 	return sockfd;
 }
-
 
 ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {
 	try {

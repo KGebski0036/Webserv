@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 17:37:38 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:46:38 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ class Config : public MyException {
 	void setupServersConfiguration();
 	bool isHttpMethod(std::string str);
 	ServerInstanceConfig readSingleServer(size_t& i);
+	void readListenArg(ServerInstanceConfig& config, std::string str);
+	void readAllowedMethodsArg(std::vector<std::string>& vec, size_t& j);
+	void readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& locations, size_t& j);
+	void readErrorPageArg(std::map<int, std::string>& map, size_t& j);
 };
 
 std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt);
