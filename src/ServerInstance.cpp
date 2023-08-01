@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:07:29 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:10:41 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void ServerInstance::run()
 }
 
 void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& response) {
-    std::string httpResponse = "HTTP/1.1 200 OK\r\n";
+    std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(_response_code)  + "\r\n";
     httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
     httpResponse += "Content-Type: text/html\r\n";
     httpResponse += "\r\n"; // Empty line separates headers from the response body
@@ -88,7 +88,6 @@ void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& respo
 std::string ServerInstance::getResponse(std::string buffer)
 {
 	std::stringstream ss;
-
 	ss << buffer;
 	
 	std::string protocolType;
@@ -113,8 +112,25 @@ std::string ServerInstance::getResponse(std::string buffer)
 		file.open((_instanceConfig.rootDirectory + requestedFile).c_str());
 		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + requestedFile << " file" << E;
 	}
-	std::cout << '\n';
-	getline(file, tmp, '\0');
+
+	if (file.is_open())
+	{
+		getline(file, tmp, '\0');
+		file.close();
+		_response_code = 200;
+	}
+	else
+	{
+		_response_code = 404;
+		file.open(_instanceConfig.rootDirectory + "/default_error_pages/404.html");
+		if (file.is_open())
+		{
+			getline(file, tmp, '\0');
+			file.close();
+		}
+		else
+			tmp = ErrorPages::generateErrorPage(_response_code);
+	}
 	return tmp;
 }
 
@@ -140,6 +156,8 @@ int ServerInstance::createSocket() {
 
 	return sockfd;
 }
+
+int const & ServerInstance::getResponseCode() const { return _response_code; }
 
 ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {
 	try {
