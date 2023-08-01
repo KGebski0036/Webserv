@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:08:00 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:53:22 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void* Webserv::serverThreadFunction(void* arg) {
 	ServerInstance* serverInstance = static_cast<ServerInstance*>(arg);
 	try {
+		serverInstance->setup();
 	    serverInstance->run();
 	} catch (const MyException &e) { std::cerr << e.what();}
     return NULL;
@@ -65,9 +66,9 @@ Webserv::~Webserv()
 {
 	delete _config;
 	for (size_t i = 0; i < _servers.size(); i++)
-	{
 		delete _servers[i];
-	}
+	for (size_t i = 0; i < _serverThreads.size(); i++)
+		delete _serverThreads[i];
 }
 Webserv::Webserv(const Webserv& src) { (void)src; }
 Webserv& Webserv::operator=(Webserv const& src) { (void)src; return *this; }

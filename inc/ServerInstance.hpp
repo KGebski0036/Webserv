@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:31:19 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 15:38:28 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:48:45 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ class ServerInstance : public MyException {
 
   private:
 	int _socketFd;
-  	const ServerInstanceConfig& _instanceConfig;
+  	ServerInstanceConfig _instanceConfig;
 	int	_response_code;
 	
 	ServerInstance(const ServerInstance&);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstance.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:10:41 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:49:31 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,8 @@
 
 int	 ServerInstance::setup()
 {
-	try
-	{
-		_socketFd = createSocket();
-		std::cout << SYS_MSG << BLUE << "Server start at: " << GREEN << "http://" << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
-	} catch (const MyException &e) { std::cerr << e.what();}
+	_socketFd = createSocket();
+	std::cout << SYS_MSG << BLUE << "Server start at: " << GREEN << "http://" << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
 	return 0;
 }
 		
@@ -159,11 +156,7 @@ int ServerInstance::createSocket() {
 
 int const & ServerInstance::getResponseCode() const { return _response_code; }
 
-ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {
-	try {
-		setup();
-	} catch (const MyException &e) { std::cerr << e.what();}
-}
+ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {}
 
 ServerInstance::~ServerInstance() {}
 
