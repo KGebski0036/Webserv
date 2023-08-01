@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:17:56 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/08/01 15:46:33 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:18:53 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,35 @@ std::string ErrorPages::getHttpStatusMessage(int errorCode) {
     } else {
         return "Unknown";
     }
+}
+
+std::string ErrorPages::generateErrorPage(int errorCode) {
+    
+    std::string errorPage;
+
+    std::stringstream ss;
+    std::string errorStr;
+    ss << errorCode;
+    errorStr = ss.str();
+
+    errorPage = "<!DOCTYPE html>\n"
+    "<html>\n"
+    "<head>\n"
+    "    <title>Error " + errorStr + "</title>\n"
+    "    <style>\n"
+    "        body { font-family: Arial, sans-serif; background-color: #f6f6f6; }\n"
+    "        .container { text-align: center; padding: 100px; }\n"
+    "        .error-code { font-size: 80px; color: #444; }\n"
+    "        .error-message { font-size: 24px; color: #777; }\n"
+    "    </style>\n"
+    "</head>\n"
+    "<body>\n"
+    "    <div class=\"container\">\n"
+    "        <span class=\"error-code\">" + errorStr + "</span>\n"
+    "        <p class=\"error-message\">Sorry, an error occurred. Please try again later.</p>\n"
+    "    </div>\n"
+    "</body>\n"
+    "</html>\n";
+
+    return errorPage;
 }

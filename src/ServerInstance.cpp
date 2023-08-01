@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 15:40:18 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:11:30 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 			file.close();
 		}
 		else
-			tmp = "<html><body><h1>404 Not Found</h1></body></html>";
+			tmp = ErrorPages::generateErrorPage(_response_code);
 	}
 	return tmp;
 }
