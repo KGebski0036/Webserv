@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 20:37:47 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:04:29 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@
 
 int	 ServerInstance::setup()
 {
-	
 	try
 	{
 		_socketFd = createSocket();
-		std::cout << "socket fd" << _socketFd << E;
+		std::cout << "Socket created: fd" << _socketFd << E;
 	} catch (const MyException &e) { std::cerr << e.what();}
 	return 0;
 }
@@ -108,7 +107,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 	ss >> requestedFile;
 	
 	std::cout << SYS_MSG << MAGENTA << "Server: " << BLUE << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
-	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << DARKBLUE << requestedFile << E << '\n';
+	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << BLUE << DIM << requestedFile << E << '\n';
 
 	std::string tmp;
 	std::ifstream file;
@@ -129,7 +128,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 
 void ServerInstance::clean()
 {
-
+	std::cout << SYS_MSG << "TEST" << E;
 }
 
 int ServerInstance::createSocket() {
@@ -154,7 +153,6 @@ int ServerInstance::createSocket() {
 ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {
 	try {
 		setup();
-		run();
 	} catch (const MyException &e) { std::cerr << e.what();}
 }
 

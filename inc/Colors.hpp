@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 15:21:41 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 15:08:33 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:36:45 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 #define RED "\033[38;5;162m"
 #define GREEN "\033[1;32m"
 #define BLUE "\033[38;5;81m"
+#define DARKBLUE "\033[38;5;81m"
+
 #define PINK "\033[38;5;213m"
 #define PURPLE "\033[38;5;135m"
 #define ORANGE "\033[38;5;202m"
