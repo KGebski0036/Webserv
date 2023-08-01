@@ -4,8 +4,6 @@
 void Webserv::config(std::string pathToFile)
 {
 	_config = Config::readConfig(pathToFile);
-	// for (size_t i = 0; i < _config->getServersConfigs().size(); i++)
-	// 	std::cout << SYS_MSG << "Server config[" << i + 1 << "]" << E << _config->getServersConfigs()[i] << E;
 	for (size_t i = 0; i < _config->getServersConfigs().size(); i++)
 	{
 		ServerInstance* server = new ServerInstance(_config->getServersConfigs()[i]);
@@ -28,11 +26,6 @@ void Webserv::clean()
 {
 
 }
-
-
-
-
-
 
 Webserv::Webserv()  {}
 Webserv::~Webserv() 
