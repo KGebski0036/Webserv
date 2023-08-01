@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstance.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 20:37:47 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:40:18 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void ServerInstance::run()
 }
 
 void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& response) {
-    std::string httpResponse = "HTTP/1.1 200 OK\r\n";
+    std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(_response_code)  + "\r\n";
     httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
     httpResponse += "Content-Type: text/html\r\n";
     httpResponse += "\r\n"; // Empty line separates headers from the response body
@@ -98,7 +98,6 @@ void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& respo
 std::string ServerInstance::getResponse(std::string buffer)
 {
 	std::stringstream ss;
-
 	ss << buffer;
 	
 	std::string protocolType;
@@ -123,7 +122,24 @@ std::string ServerInstance::getResponse(std::string buffer)
 		file.open((_instanceConfig.rootDirectory + requestedFile).c_str());
 		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + requestedFile << " file" << E;
 	}
-	getline(file, tmp, '\0');
+	if (file.is_open())
+	{
+		getline(file, tmp, '\0');
+		file.close();
+		_response_code = 200;
+	}
+	else
+	{
+		_response_code = 404;
+		file.open(_instanceConfig.rootDirectory + "/default_error_pages/404.html");
+		if (file.is_open())
+		{
+			getline(file, tmp, '\0');
+			file.close();
+		}
+		else
+			tmp = "<html><body><h1>404 Not Found</h1></body></html>";
+	}
 	return tmp;
 }
 
@@ -150,6 +166,7 @@ int ServerInstance::createSocket() {
 	return sockfd;
 }
 
+int const & ServerInstance::getResponseCode() const { return _response_code; }
 
 ServerInstance::ServerInstance(const ServerInstanceConfig& instanceConfig) : _instanceConfig(instanceConfig) {
 	try {

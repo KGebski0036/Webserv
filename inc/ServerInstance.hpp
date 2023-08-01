@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstance.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:31:19 by cjackows          #+#    #+#             */
-/*   Updated: 2023/07/31 19:56:08 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 15:38:28 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 #include <netinet/in.h>
 #include <poll.h>
 #include <fcntl.h>
+class ServerInstance;
+#include "ErrorPages.hpp"
 
 class ServerInstance : public MyException {
   public:
@@ -42,10 +44,13 @@ class ServerInstance : public MyException {
 	int createSocket();
 	std::string getResponse(std::string buffer);
 	void sendHttpResponse(int clientSockfd, const std::string& response); //! TO BE DELETED
+	int const & getResponseCode() const;
 
   private:
 	int _socketFd;
   	const ServerInstanceConfig& _instanceConfig;
+	int	_response_code;
+	
 	ServerInstance(const ServerInstance&);
-	ServerInstance& operator=(ServerInstance const &);	
+	ServerInstance& operator=(ServerInstance const &);
 };
