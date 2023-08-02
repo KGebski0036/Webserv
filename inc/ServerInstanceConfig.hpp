@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 16:30:17 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/01 17:25:38 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ struct ServerInstanceConfig
 	}
 
 	struct LocationConfig {
+		
+		~LocationConfig()
+		{
+			if (nestedLocation)
+				delete nestedLocation;
+		}
+
 		std::string path;
 		std::vector<std::string> allowedMethods;
 		std::string root;
