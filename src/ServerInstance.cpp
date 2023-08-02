@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 10:48:15 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 11:37:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ void ServerInstance::run()
 void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& response) {
     std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(_response_code)  + "\r\n";
     httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
-    httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(_requestedFile) + "\r\n";
+	if (_response_code == 200)
+    	httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(_requestedFile) + "\r\n";
+	else
+		httpResponse += "Content-Type: text/html\r\n";
     httpResponse += "\r\n"; // Empty line separates headers from the response body
     httpResponse += response;
 
