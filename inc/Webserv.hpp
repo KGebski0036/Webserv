@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 16:59:36 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:52:40 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,18 @@
 
 class Webserv {
   public:
-	Webserv();
+	Webserv(Config&);
 	~Webserv();
 
 	void config(std::string pathToFile);
 	int	 setup();
 	void run();
 	void clean();
-	static void* serverThreadFunction(void* arg);
   private:
   	Config*	_config;
 	std::vector<ServerInstance *> _servers;
 	std::vector<pthread_t *> _serverThreads;
+	Webserv();
 	Webserv(const Webserv&);
 	Webserv& operator=(Webserv const &);
-	
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstance.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:31:19 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 10:04:53 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 14:16:24 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 #include <netinet/in.h>
 #include <poll.h>
 #include <fcntl.h>
-class ServerInstance;
 #include "ErrorPages.hpp"
 #include "MIMEtypes.hpp"
 
@@ -38,7 +37,6 @@ class ServerInstance : public MyException {
 	ServerInstance(const ServerInstanceConfig& instanceConfig);
 	~ServerInstance();
 
-	// void config(std::string pathToFile);
 	int	 setup();
 	void run();
 	void clean();

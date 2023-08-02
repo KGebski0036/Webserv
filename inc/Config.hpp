@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 13:53:11 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/02 20:03:39 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,17 @@
 
 #include "Colors.hpp"
 #include "MyException.hpp"
+#include "Logger.hpp"
 #include "ServerInstanceConfig.hpp"
 
 class Config : public MyException {
   public:
-	static Config* readConfig(std::string pathToFile);
-	
+	// static Config* readConfig(std::string pathToFile);
+
+	bool validateInput();
+	void readFile(std::string pathToFile);
+
+	Config(int ac, char* av[], Logger& logger);
 	Config();
 	~Config();
 	Config(const Config&);
@@ -34,10 +39,12 @@ class Config : public MyException {
 	std::vector<ServerInstanceConfig> getServersConfigs() const;
 
   private:
+  	int _ac;
+	char **_av;
+	Logger* _logger;
 	std::vector<std::string> _fileVector;
 	std::vector<ServerInstanceConfig> _serversConfigs;
   
-	void readFile(std::string pathToFile);
 	void setupServersConfiguration();
 	bool isHttpMethod(std::string str);
 	ServerInstanceConfig readSingleServer(size_t& i);

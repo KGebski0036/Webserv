@@ -3,50 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 13:59:31 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/02 20:03:59 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Config.hpp"
+#include "../inc/Config.hpp"
 
-Config* Config::readConfig(std::string pathToFile)
-{
-	Config *result = new Config();
+Config::Config(int ac, char* av[], Logger& logger) : _ac(ac), _av(av), _logger(&logger) {}
+
+bool Config::validateInput() {
 	try {
-		result->readFile(pathToFile);
-		result->setupServersConfiguration();
+		if (_ac == 1) {
+			_logger->print(INFO, C_INFO, "Default webserv configuration used.", false);
+			readFile("default.conf");
+		}
+		else if (_ac > 2) {
+			_logger->print(INFO, C_ERROR, "Wrong parameters passed to the program.", true);
+			return false;
+		}
+		else
+			readFile(_av[1]);
 	}
-	catch (const MyException &e) { std::cerr << e.what();}
-	
-	return result;
+	catch (const MyException &e) { std::cerr << e.what(); return false;}
+	return true;
 }
 
-void Config::readFile(std::string pathToFile)
-{
+// Config* Config::readConfig(std::string pathToFile)
+// {
+// 	Config *result = new Config();
+// 	try {
+// 		// result->readFile(pathToFile);
+// 		result->setupServersConfiguration();
+// 	}
+// 	catch (const MyException &e) { std::cerr << e.what();}
+	
+// 	return result;
+// }
+
+void Config::readFile(std::string pathToFile) {
 	std::ifstream file;
 	std::string buffer;
 	std::string tmp;
 	std::stringstream ss;
 	
-	file.open(pathToFile.c_str());
+	file.open(_av[1]);
 	if (!file.is_open())
 		throw MyException("Could not open a config file", __func__, __FILE__, __LINE__);
 
 	getline(file, buffer, '\0');
 	ss << buffer;
 
-	while (ss >> tmp)
-	{
+	while (ss >> tmp) {
 		_fileVector.push_back(tmp);
 		if (tmp.empty())
 			_fileVector.pop_back();
 	}
 	if (_fileVector.empty())
 		throw MyException("File is empty...", __func__, __FILE__, __LINE__);
-		
 }
 
 void Config::setupServersConfiguration()

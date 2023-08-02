@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstance.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 11:37:13 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 19:02:06 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
