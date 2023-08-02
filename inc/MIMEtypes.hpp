@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 09:50:09 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/08/02 10:18:59 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 11:47:33 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,4 @@ private:
     ~MIMEtypes();
 };
 
+std::string base64_encode(const std::string &input);
