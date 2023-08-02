@@ -1,0 +1,38 @@
+body
+{
+	background-color: #404040;
+	color: rgb(5, 202, 5);
+	position:relative;
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	min-height: 100%;
+	font-family: Arial;
+}
+.menu:hover
+{
+	color: rgb(5, 202, 5);
+}
+
+.rotate{
+	animation-name: rotate;
+	animation-duration: 15s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes rotate{
+	from{ transform: rotate(-360deg); }
+	to{ transform: rotate(360deg); }
+}
+
+.forms
+{
+	width: 40%;
+	margin: auto;
+	padding: 10% 0;
+}
+
+.btn-block:hover{
+	background-color: rgb(5, 242, 5);
+}

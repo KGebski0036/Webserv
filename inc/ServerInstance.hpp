@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:31:19 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:48:45 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 10:04:53 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 #include <fcntl.h>
 class ServerInstance;
 #include "ErrorPages.hpp"
+#include "MIMEtypes.hpp"
 
 class ServerInstance : public MyException {
   public:
@@ -50,6 +51,8 @@ class ServerInstance : public MyException {
 	int _socketFd;
   	ServerInstanceConfig _instanceConfig;
 	int	_response_code;
+	std::string _protocolType;
+	std::string _requestedFile;
 	
 	ServerInstance(const ServerInstance&);
 	ServerInstance& operator=(ServerInstance const &);

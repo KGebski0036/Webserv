@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 17:33:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:49:31 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/02 10:48:15 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void ServerInstance::run()
 void ServerInstance::sendHttpResponse(int clientSockfd, const std::string& response) {
     std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(_response_code)  + "\r\n";
     httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
-    httpResponse += "Content-Type: text/html\r\n";
+    httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(_requestedFile) + "\r\n";
     httpResponse += "\r\n"; // Empty line separates headers from the response body
     httpResponse += response;
 
@@ -87,27 +87,26 @@ std::string ServerInstance::getResponse(std::string buffer)
 	std::stringstream ss;
 	ss << buffer;
 	
-	std::string protocolType;
-	std::string requestedFile;
+	
 
-	ss >> protocolType;
-	ss >> requestedFile;
+	ss >> _protocolType;
+	ss >> _requestedFile;
 	
 	std::cout << SYS_MSG << MAGENTA << "Server: " << BLUE << _instanceConfig.listenAddress << ":" << _instanceConfig.port << E;
-	std::cout << MAGENTA << "Method: " << GREEN << protocolType << " " << DARKBLUE << requestedFile << E;
+	std::cout << MAGENTA << "Method: " << GREEN << _protocolType << " " << DARKBLUE << _requestedFile << E;
 
 	std::string tmp;
 	std::ifstream file;
 	
-	if (requestedFile == "/")
+	if (_requestedFile == "/")
 	{
 		file.open((_instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile).c_str());
 		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + "/" + _instanceConfig.indexFile << " file" << E;
 	}
 	else
 	{
-		file.open((_instanceConfig.rootDirectory + requestedFile).c_str());
-		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + requestedFile << " file" << E;
+		file.open((_instanceConfig.rootDirectory + _requestedFile).c_str());
+		std::cout << GREEN << "We return the " << _instanceConfig.rootDirectory + _requestedFile << " file" << E;
 	}
 
 	if (file.is_open())
@@ -120,6 +119,7 @@ std::string ServerInstance::getResponse(std::string buffer)
 	{
 		_response_code = 404;
 		file.open(_instanceConfig.rootDirectory + "/default_error_pages/404.html");
+		std::cout << RED << "We couldn't return the " << _requestedFile << " file, displaying Error " << _response_code << E;
 		if (file.is_open())
 		{
 			getline(file, tmp, '\0');
@@ -133,12 +133,11 @@ std::string ServerInstance::getResponse(std::string buffer)
 
 void ServerInstance::clean()
 {
-	std::cout << SYS_MSG << "TEST" << E;
+	close(_socketFd);
 }
 
 int ServerInstance::createSocket() {
 	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
 	if (sockfd == -1)
 		throw MyException("Socket creation failed", __func__, __FILE__, __LINE__);
 

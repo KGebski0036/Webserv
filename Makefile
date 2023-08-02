@@ -31,8 +31,7 @@ endif
 
 NAME		=	webserv
 CC			=	c++
-CPP_FLAGS	=	-Wall -Wextra -Werror -std=c++98 --pedantic-errors -g
-#-fsanitize=address
+CPP_FLAGS	=	-Wall -Wextra -Werror -std=c++98 --pedantic-errors -g -fsanitize=address -pthread
 #-g
 
 HDRS_DIR	=	./inc/
