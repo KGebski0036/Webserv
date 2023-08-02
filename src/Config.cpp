@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:08:18 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/01 17:25:01 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,9 @@ std::vector<ServerInstanceConfig> Config::getServersConfigs() const { return _se
 
 Config::Config() {}
 
-Config::~Config() {}
+Config::~Config() 
+{
+}
 
 Config::Config(const Config&) : MyException() {}
 
@@ -181,6 +183,10 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 		{
 			readAllowedMethodsArg(location.allowedMethods, ++j);
 			j--;
+		}
+		else if (_fileVector[j] == "location")
+		{
+			location.nestedLocation = nestedLocation(j);
 		}
 	}
 	j++;
