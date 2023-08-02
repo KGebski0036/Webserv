@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/01 17:25:01 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/02 13:59:31 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 	
 	while (j < _fileVector.size() && bracketsCounter != 0)
 	{
+		std::cout << MAGENTA << _fileVector[j] << E;
 		j++;
 		if (_fileVector[j] == "{")
 			bracketsCounter++;
@@ -184,15 +185,55 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 			readAllowedMethodsArg(location.allowedMethods, ++j);
 			j--;
 		}
-		else if (_fileVector[j] == "location")
-		{
-			location.nestedLocation = nestedLocation(j);
-		}
+		// else if (_fileVector[j] == "location")
+		// {
+		// 	location.nestedLocation = nestedLocation(j);
+		// }
 	}
 	j++;
 	locations.push_back(location);
 }
 
+
+ServerInstanceConfig::LocationConfig* Config::nestedLocation(size_t& j)
+{
+	std::cout << MAGENTA << _fileVector[j] << E;
+	ServerInstanceConfig::LocationConfig* location = new ServerInstanceConfig::LocationConfig();
+	int bracketsCounter = 1;
+	
+	location->path = _fileVector[++j];
+	
+	// if (_fileVector[++j] != "{")
+	// 	throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__);
+	
+	while (j < _fileVector.size() && bracketsCounter != 0)
+	{
+		j++;
+		if (_fileVector[j] == "{")
+			bracketsCounter++;
+		else if (_fileVector[j] == "}")
+			bracketsCounter--;
+	// 	else if (_fileVector[j] == "root")
+	// 		location->root = _fileVector[++j];
+	// 	else if (_fileVector[j] == "index")
+	// 		location->index = _fileVector[++j];
+	// 	else if (_fileVector[j] == "client_body_buffer_size")
+	// 		location->clientBodyBufferSize = atoi(_fileVector[++j].c_str());
+	// 	else if (_fileVector[j] == "cgi_pass")
+	// 		location->cgi_pass = _fileVector[++j];
+	// 	else if (_fileVector[j] == "allow_methods")
+	// 	{
+	// 		readAllowedMethodsArg(location->allowedMethods, ++j);
+	// 		j--;
+	// 	}
+	// 	else if (_fileVector[j] == "location")
+	// 	{
+	// 		location->nestedLocation = nestedLocation(j);
+	// 	}
+	}
+	j++;
+	return location;
+}
 
 std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 {
