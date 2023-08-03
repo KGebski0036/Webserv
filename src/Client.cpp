@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:20:43 by cjackows         ###   ########.fr       */
+/*   Created: 2023/08/03 17:18:03 by cjackows          #+#    #+#             */
+/*   Updated: 2023/08/03 17:25:36 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/Webserv.hpp"
-#include "../inc/Logger.hpp"
+#include "../inc/Client.hpp"
 
-Logger logger(DEBUG);
+Client::Client(int sockFd) : _clientSocket(sockFd) {}
 
-int	main(int ac, char *av[])
+Client::Client() {}
+Client::~Client() {}
+Client::Client(const Client& src) { (void)src; }
+
+Client& Client::operator=(Client const& src)
 {
-	Config input(ac, av, logger);
-	if (!input.validateInput())
-		return 1;
-
-	Webserv server(input, logger);
-
-	try
-	{
-		server.setup();
-		server.run();
-	} catch (const MyException &e) { std::cerr << e.what(); return 1;}
-	return 0;
+	if (this != &src)
+		_clientSocket = src._clientSocket;
+	return *this; 
 }

@@ -1,32 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:20:43 by cjackows         ###   ########.fr       */
+/*   Created: 2023/08/03 16:49:26 by cjackows          #+#    #+#             */
+/*   Updated: 2023/08/03 17:32:07 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/Webserv.hpp"
-#include "../inc/Logger.hpp"
+#pragma once
 
-Logger logger(DEBUG);
+class Client {
+  public:
+	Client();
+	Client(int);
+	~Client();
+	Client& operator=(Client const &);
 
-int	main(int ac, char *av[])
-{
-	Config input(ac, av, logger);
-	if (!input.validateInput())
-		return 1;
-
-	Webserv server(input, logger);
-
-	try
-	{
-		server.setup();
-		server.run();
-	} catch (const MyException &e) { std::cerr << e.what(); return 1;}
-	return 0;
-}
+  private:
+	int _clientSocket;
+	Client(const Client&);
+};

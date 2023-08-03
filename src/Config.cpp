@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 13:01:05 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:17:44 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void Config::setupServersConfiguration()
 			
 		ServerInstanceConfig config = readSingleServer(i);
 		
-		std::cout << config;
 		_serversConfigs.push_back(config);
 	}
 }
@@ -142,7 +141,6 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 	
 	while (j < _fileVector.size() && bracketsCounter != 0)
 	{
-		std::cout << MAGENTA << _fileVector[j] << E;
 		j++;
 		if (_fileVector[j] == "{")
 			bracketsCounter++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstanceConfig.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 14:00:57 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/03 16:24:52 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#define MAX_CLIENTS 10
+#include <netinet/in.h>
 
 struct ServerInstanceConfig
 {
@@ -45,6 +45,9 @@ struct ServerInstanceConfig
 	};
 
 	int port;
+	int listen_fd;
+	struct sockaddr_in serverAddr;
+
 	std::string serverName;
 	std::string listenAddress;
 	std::string rootDirectory;

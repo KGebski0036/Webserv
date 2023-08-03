@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 17:42:58 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:19:31 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void Logger::print(LogLevel level, std::string str, bool error) {
 		buf[ret] = '\0';
 
 		printToFile(str, error, buf);
-		printIO(YELLOW, str, error, buf);
+		printIO(BLUE, str, error, buf);
 	}
 }
 

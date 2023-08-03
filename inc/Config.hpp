@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 12:45:09 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:09:06 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@
 #include "MyException.hpp"
 #include "Logger.hpp"
 #include "ServerInstanceConfig.hpp"
+
+#include <vector>
+#include <algorithm>
+#include <cstdio>
+#include <cstdlib>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <poll.h>
+#include <fcntl.h>
+
+#include "ErrorPages.hpp"
+#include "MIMEtypes.hpp"
 
 class Config : public MyException {
   public:
