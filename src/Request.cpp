@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 16:49:26 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:35:15 by cjackows         ###   ########.fr       */
+/*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
+/*   Updated: 2023/08/03 18:34:37 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#include "Request.hpp"
+#include "../inc/Request.hpp"
 
-class Client {
-  public:
-	Client();
-	Client(int);
-	~Client();
-	Client& operator=(Client const &);
-
-  private:
-	Request request;
-	int _clientSocket;
-	Client(const Client&);
-};
+Request::Request() {}
+Request::~Request() {}
+Request::Request(const Request& src) { (void)src; }
+Request& Request::operator=(Request const& src) { (void)src; return *this; }

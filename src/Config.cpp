@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:17:44 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:06:54 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,42 +236,42 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 
 	i++;
 	os << DARKBLUE << i << ". " << GREEN << "Server name : " << dt.serverName;
-	os << std::setw(20) << BLUE << "autoindex : " << (dt.autoindex ? "on" : "off") << E;
-	os << std::setw(20) << BLUE << "ip:    " << MAGENTA << dt.listenAddress << ":" << dt.port << E;
-	os << std::setw(20) << BLUE << "index: " << DARKBLUE << dt.indexFile;
-	os << std::setw(20) << BLUE << "root: " << DARKBLUE << dt.rootDirectory << E << '\n';
-	os << std::setw(20) << BLUE << "allowed methods are: " << std::setw(10);
+	os << std::setw(30) << BLUE << "autoindex : " << (dt.autoindex ? "on" : "off") << std::endl;
+	os << std::setw(30) << BLUE << "ip:    " << MAGENTA << dt.listenAddress << ":" << dt.port << std::endl;
+	os << std::setw(30) << BLUE << "index: " << DARKBLUE << dt.indexFile;
+	os << std::setw(30) << BLUE << "root: " << DARKBLUE << dt.rootDirectory << std::endl << '\n';
+	os << std::setw(30) << BLUE << "allowed methods are: " << std::setw(10);
 	
 	for (size_t i = 0; i < dt.allowedMethods.size(); i++)
 	{
 		os << GREEN << dt.allowedMethods[i] << " ";
 	}
 	os << "\n\n";
-	os << std::setw(20) << BLUE << "ErrorPages: " << E;
+	os << std::setw(30) << BLUE << "ErrorPages: " << std::endl;
 	
-	for (std::map<int, std::string>::const_iterator it = dt.errorPages.begin(); it != dt.errorPages.end(); it++)
-	{
-		std::cout << std::setw(25) << RED << it->first << " - " << DARKBLUE << it->second << E;
-	}
+	// for (std::map<int, std::string>::const_iterator it = dt.errorPages.begin(); it != dt.errorPages.end(); it++)
+	// {
+	// 	std::cout << std::setw(35) << RED << it->first << " - " << DARKBLUE << it->second << std::endl;
+	// }
 	
-	os << std::setw(20) << BLUE << "locations are: " << E;
+	os << std::setw(30) << BLUE << "locations are: " << std::endl;
 	
 	for (size_t i = 0; i < dt.locations.size(); i++)
 	{
-		os << std::setw(20) << DARKBLUE << i << ". location" << E;
-		os << std::setw(25) << BLUE << "path: " << DARKBLUE << dt.locations[i].path;
-		os << std::setw(10) << BLUE << " root: " << DARKBLUE << dt.locations[i].root;
-		os << std::setw(10) << BLUE << " cgi pass: " << DARKBLUE << dt.locations[i].cgi_pass;
-		os << std::setw(10) << BLUE << " index: " << DARKBLUE << dt.locations[i].index << E;
+		os << std::setw(30) << DARKBLUE << i << ". location" << std::endl;
+		os << std::setw(35) << BLUE << "path: " << DARKBLUE << dt.locations[i].path;
+		os << std::setw(20) << BLUE << " root: " << DARKBLUE << dt.locations[i].root;
+		os << std::setw(20) << BLUE << " cgi pass: " << DARKBLUE << dt.locations[i].cgi_pass;
+		os << std::setw(20) << BLUE << " index: " << DARKBLUE << dt.locations[i].index << std::endl;
 		
-		os << std::setw(25) << BLUE << "methods: " << std::setw(10);
+		os << std::setw(35) << BLUE << "methods: " << std::setw(10);
 	
 		for (size_t j = 0; j < dt.locations[i].allowedMethods.size(); j++)
 		{
 			os << GREEN << dt.locations[i].allowedMethods[j] << " ";
 		}
-		os << E;
+		os << std::endl;
 	}
-	os << E;
+	os << std::endl;
 	return os;
 }

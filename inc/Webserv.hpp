@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 17:31:45 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:27:45 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include "Client.hpp"
 #include "ServerInstanceConfig.hpp"
 
-
 #define MAX_CLIENTS 512
+#define MESSAGE_BUFFER 1024
 
 class Webserv {
   public:
@@ -44,6 +44,8 @@ class Webserv {
     fd_set _writeFdPool;
 
 	void acceptNewConnection(ServerInstanceConfig &);
+	void readRequest(int);
+	void closeConnection(int fd);
 
 	Webserv();
 	Webserv(const Webserv&);
