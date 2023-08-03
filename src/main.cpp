@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 20:05:22 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 12:59:37 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,10 @@ int	main(int ac, char *av[])
 
 	Webserv server(input);
 
-	// try
-	// {
-	// 	if (ac == 1)
-	// 		server.config("default.conf");
-	// 	else
-	// 		server.config(av[1]);
-	// 	server.setup();
-	// 	server.run();
-	// } catch (const MyException &e) { std::cerr << e.what();}
+	try
+	{
+		server.setup();
+		server.run();
+	} catch (const MyException &e) { std::cerr << e.what();}
 	return 0;
 }

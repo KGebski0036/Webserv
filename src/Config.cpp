@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 20:03:59 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:01:05 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,11 @@ bool Config::validateInput() {
 		}
 		else
 			readFile(_av[1]);
+	setupServersConfiguration();
 	}
 	catch (const MyException &e) { std::cerr << e.what(); return false;}
 	return true;
 }
-
-// Config* Config::readConfig(std::string pathToFile)
-// {
-// 	Config *result = new Config();
-// 	try {
-// 		// result->readFile(pathToFile);
-// 		result->setupServersConfiguration();
-// 	}
-// 	catch (const MyException &e) { std::cerr << e.what();}
-	
-// 	return result;
-// }
 
 void Config::readFile(std::string pathToFile) {
 	std::ifstream file;
@@ -49,11 +38,12 @@ void Config::readFile(std::string pathToFile) {
 	std::string tmp;
 	std::stringstream ss;
 	
-	file.open(_av[1]);
+	file.open(pathToFile.c_str());
 	if (!file.is_open())
 		throw MyException("Could not open a config file", __func__, __FILE__, __LINE__);
 
 	getline(file, buffer, '\0');
+	file.close();
 	ss << buffer;
 
 	while (ss >> tmp) {
@@ -75,7 +65,6 @@ void Config::setupServersConfiguration()
 		ServerInstanceConfig config = readSingleServer(i);
 		
 		std::cout << config;
-		
 		_serversConfigs.push_back(config);
 	}
 }
@@ -113,7 +102,6 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 			else if (_fileVector[j] == "error_page")
 				readErrorPageArg(config.errorPages, j);
 		}
-		
 		if (bracketsCounter == 0)
 		{
 			i = j;
@@ -122,39 +110,9 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 	}
 
 	if (bracketsCounter != 0)
-		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__);
+		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__); //!
 	
 	return config;
-}
-
-bool Config::isHttpMethod(std::string str)
-{
-	return  (str == "GET" || str == "POST" || str == "PUT");
-}
-
-std::vector<ServerInstanceConfig> Config::getServersConfigs() const { return _serversConfigs; }
-
-Config::Config() {}
-
-Config::~Config() 
-{
-}
-
-Config::Config(const Config&) : MyException() {}
-
-Config&	Config::operator=(Config const & other)
-{
-	if (this != &other)
-		_fileVector = other._fileVector;
-	
-	return *this;
-}
-
-void Config::readErrorPageArg(std::map<int, std::string>& map, size_t& j)
-{
-	j++;
-	map[atoi(_fileVector[j].c_str())] = _fileVector[j + 1];
-	j++;
 }
 
 void Config::readListenArg(ServerInstanceConfig& config, std::string str)
@@ -169,6 +127,8 @@ void Config::readAllowedMethodsArg(std::vector<std::string>& vec, size_t& j)
 	while (isHttpMethod(_fileVector[j]))
 		vec.push_back(_fileVector[j++]);
 }
+
+bool Config::isHttpMethod(std::string str) { return  (str == "GET" || str == "POST" || str == "PUT"); }
 
 void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& locations, size_t& j)
 {
@@ -210,11 +170,17 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 	locations.push_back(location);
 }
 
+void Config::readErrorPageArg(std::map<int, std::string>& map, size_t& j)
+{
+	j++;
+	map[atoi(_fileVector[j].c_str())] = _fileVector[j + 1];
+	j++;
+}
 
 ServerInstanceConfig::LocationConfig* Config::nestedLocation(size_t& j)
 {
 	std::cout << MAGENTA << _fileVector[j] << E;
-	ServerInstanceConfig::LocationConfig* location = new ServerInstanceConfig::LocationConfig();
+	ServerInstanceConfig::LocationConfig* location = new ServerInstanceConfig::LocationConfig(); //TODO This has to be freed
 	int bracketsCounter = 1;
 	
 	location->path = _fileVector[++j];
@@ -249,6 +215,21 @@ ServerInstanceConfig::LocationConfig* Config::nestedLocation(size_t& j)
 	}
 	j++;
 	return location;
+}
+
+std::vector<ServerInstanceConfig> Config::getServersConfigs() const { return _serversConfigs; }
+
+Config::Config() {}
+
+Config::~Config() {}
+
+Config::Config(const Config&) : MyException() {}
+
+Config&	Config::operator=(Config const & other)
+{
+	if (this != &other)
+		_fileVector = other._fileVector;
+	return *this;
 }
 
 std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
@@ -291,8 +272,8 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 		{
 			os << GREEN << dt.locations[i].allowedMethods[j] << " ";
 		}
-		os << "\n";
+		os << E;
 	}
-	os << "\n";
+	os << E;
 	return os;
 }

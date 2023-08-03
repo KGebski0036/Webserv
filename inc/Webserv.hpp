@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/02 19:52:40 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 13:08:35 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,23 @@
 #include "MyException.hpp"
 #include "Config.hpp"
 
-#include "ServerInstance.hpp"
+#include "ServerInstanceConfig.hpp"
 
 class Webserv {
   public:
 	Webserv(Config&);
 	~Webserv();
 
-	void config(std::string pathToFile);
 	int	 setup();
 	void run();
 	void clean();
   private:
-  	Config*	_config;
-	std::vector<ServerInstance *> _servers;
-	std::vector<pthread_t *> _serverThreads;
+
+	
+	std::vector<ServerInstanceConfig> _serversConfigs;
+
+	int createSockets(ServerInstanceConfig instanceConfig);
+
 	Webserv();
 	Webserv(const Webserv&);
 	Webserv& operator=(Webserv const &);
