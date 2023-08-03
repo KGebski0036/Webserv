@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:20:43 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:07:05 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ Logger logger(DEBUG);
 
 int	main(int ac, char *av[])
 {
-	Config input(ac, av, logger);
+	Config input(ac, av, &logger);
 	if (!input.validateInput())
 		return 1;
 
-	Webserv server(input, logger);
+	Webserv server(input, &logger);
 
 	try
 	{

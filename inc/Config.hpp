@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:09:06 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:55:00 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 
 class Config : public MyException {
   public:
-	Config(int ac, char* av[], Logger& logger);
+	Config(int ac, char* av[], Logger* logger);
 	~Config();
 
 	bool validateInput();

@@ -6,13 +6,13 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:06:54 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:55:34 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/Config.hpp"
 
-Config::Config(int ac, char* av[], Logger& logger) : _ac(ac), _av(av), _logger(&logger) {}
+Config::Config(int ac, char* av[], Logger* logger) : _ac(ac), _av(av), _logger(logger) {}
 
 bool Config::validateInput() {
 	try {

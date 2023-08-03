@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:36:30 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:56:03 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void Webserv::clean()
 
 }
 
-Webserv::Webserv(Config& input, Logger& logger) : _logger(&logger), _serversConfigs(input.getServersConfigs()) {
+Webserv::Webserv(Config& input, Logger* logger) : _logger(logger), _serversConfigs(input.getServersConfigs()) {
 	FD_ZERO(&_recvFdPool);
     FD_ZERO(&_writeFdPool);
 }

@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:27:45 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:55:20 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 class Webserv {
   public:
-	Webserv(Config&, Logger&);
+	Webserv(Config&, Logger*);
 	~Webserv();
 
 	void setup();

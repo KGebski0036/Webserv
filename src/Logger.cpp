@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:19:31 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/03 19:09:38 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void Logger::print(LogLevel level,std::string color, std::string str, bool error
 		tm = localtime (&rawtime);
 		int ret = strftime(buf, 32, "%T", tm);
 		buf[ret] = '\0';
-
 		printToFile(str, error, buf);
 		printIO(color, str, error, buf);
 	}
@@ -47,9 +46,9 @@ void Logger::print(LogLevel level,std::string color, std::string str, bool error
 void Logger::printToFile(std::string str, bool error, char* time)
 {
 	if (error)
-		_logFile << "[" << time << "] " << "[ERROR] " << str << E;
+		_logFile << "[" << time << "] " << "[ERROR] " << str << E << std::endl;
 	else
-		_logFile << "[" << time << "] " << str << E;
+		_logFile << "[" << time << "] " << str << E << std::endl;
 }
 
 void Logger::printIO(std::string color, std::string str, bool error, char* time)
@@ -73,5 +72,5 @@ Logger::~Logger() {
 }
 
 Logger::Logger() : _level(NONE) {}
-Logger::Logger(const Logger& src) : _level(NONE) { (void)src; }
+Logger::Logger(const Logger& src) : _level(NONE) { (void)src;}
 Logger& Logger::operator=(Logger const& src) { (void)src; return *this; }
