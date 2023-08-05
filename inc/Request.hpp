@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/04 18:19:17 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:17:58 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+
 
 enum HttpMethod{
 	DEFAULT,
@@ -27,7 +28,7 @@ class Request {
   public:
 	HttpMethod method;
 	std::string path;
-	std::map<std::string, std::string>  _requestParamiters;
+	std::map<std::string, std::string> requestParamiters;
 	std::string body;
 	
 	Request();

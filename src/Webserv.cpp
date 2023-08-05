@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 15:43:44 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:08:50 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,16 @@ void Webserv::readRequest(int fd)
 
 	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
 	_clientsMap[fd].request = Request(buffer);
-
+	_clientsMap[fd].server = (_serversMap.begin()->second); //TODO change to be correct server
+	FD_CLR(fd, &_recvFdPool);
+	FD_SET(fd, &_writeFdPool);
 }
 
 void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
+	
+	client.response.body = _responder->getResponse(client.request, client.server);
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
@@ -162,6 +166,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
 		perror("send");
 	}
+	FD_CLR(clientSockfd, &_writeFdPool);
 }
 
 void Webserv::closeConnection(int fd)

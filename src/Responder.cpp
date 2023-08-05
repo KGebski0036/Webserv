@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 14:43:15 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:22:32 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,20 @@ Responder& Responder::operator=(const Responder &origin) { (void)origin; return 
 
 std::string Responder::getResponse(Request& request, ServerInstanceConfig serverConf)
 {
-	(void)_logger;
 	std::string tmp;
 	std::ifstream file;
 	
+	std::cout << YELLOW << "|" << request.path << "|" << E;
+
 	if (request.path == "/")
 	{
-		file.open((serverConf.rootDirectory + serverConf.indexFile).c_str());
-		std::cout << MAGENTA << "We return the " << serverConf.rootDirectory + "/" + serverConf.indexFile << " file" << E;
+		file.open((serverConf.rootDirectory + "/" + serverConf.indexFile).c_str());
+		_logger->print(INFO, GREEN, "We return the " + serverConf.rootDirectory + "/" + serverConf.indexFile + " file", 0);
 	}
 	else
 	{
 		file.open((serverConf.rootDirectory + request.path).c_str());
-		std::cout << GREEN << "We return the " << serverConf.rootDirectory + request.path << " file" << E;
+		_logger->print(INFO, GREEN, "We return the " + serverConf.rootDirectory + request.path + " file", 0);
 	}
 
 	if (file.is_open())

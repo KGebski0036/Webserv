@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstanceConfig.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:24:52 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:15:23 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
