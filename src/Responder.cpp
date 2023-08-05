@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 16:22:32 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:36:41 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ std::string Responder::getResponse(Request& request, ServerInstanceConfig server
 
 	if (file.is_open())
 	{
-		getline(file, tmp, '\0');
+		std::stringstream ss;
+		ss << file.rdbuf();
+		tmp = ss.str();
 		file.close();
 	}
 	else

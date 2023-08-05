@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:08:50 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:37:05 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void Webserv::readRequest(int fd)
 	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
 	_clientsMap[fd].request = Request(buffer);
 	_clientsMap[fd].server = (_serversMap.begin()->second); //TODO change to be correct server
-	FD_CLR(fd, &_recvFdPool);
+
 	FD_SET(fd, &_writeFdPool);
 }
 
@@ -160,8 +160,9 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	else
 		httpResponse += "Content-Type: text/html\r\n";
 		
+		
 	httpResponse += "\r\n";
-    httpResponse += client.response.body;
+	httpResponse += client.response.body;
 
 	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
 		perror("send");
