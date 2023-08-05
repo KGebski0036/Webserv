@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 17:05:48 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/05 18:13:29 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
 	
-	client.response.body = _responder->getResponse(client.request, client.server);
+	client.response = _responder->getResponse(client.request, client.server);
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 17:07:31 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/05 18:09:02 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,35 +49,42 @@ Request::Request(std::string rawRequest)
 	
 	ss >> method >> tmp >> _protocol;
 	setMethod(method);
-	_path = tmp.substr(0, tmp.find('?'));
-	tmp = tmp.substr(tmp.find('?') + 1);
-
-	std::string key;
-	std::string value;
-	while (!tmp.empty())
+	if (tmp.find('?') != std::string::npos)
 	{
-		key = tmp.substr(0, tmp.find('='));
-		tmp = tmp.substr(tmp.find('=') + 1);
-		size_t ampersandPos = tmp.find('&');
-		size_t spacePos = tmp.find(' ');
-		if (ampersandPos < spacePos)
+		_path = tmp.substr(0, tmp.find('?'));
+		tmp = tmp.substr(tmp.find('?') + 1);
+		std::string key;
+		std::string value;
+		while (!tmp.empty())
 		{
-			value = tmp.substr(0, ampersandPos);
-			tmp = tmp.substr(ampersandPos + 1);
-		}
-		else
-		{
-			value = tmp.substr(0, spacePos);
-			tmp = tmp.substr(spacePos + 1);
-		}
-		_requestParameters[key] = value;
-		// std::cout << "Key: " << key << " Value: " << value << std::endl;
+			std::cout<<tmp;
+			key = tmp.substr(0, tmp.find('='));
+			tmp = tmp.substr(tmp.find('=') + 1);
+			size_t ampersandPos = tmp.find('&');
+			size_t spacePos = tmp.find(' ');
+			if (ampersandPos < spacePos)
+			{
+				value = tmp.substr(0, ampersandPos);
+				tmp = tmp.substr(ampersandPos + 1);
+			}
+			else
+			{
+				value = tmp.substr(0, spacePos);
+				tmp = tmp.substr(spacePos + 1);
+			}
+			_requestParameters[key] = value;
+			std::cout << "Key: " << key << " Value: " << value << std::endl;	
+	}
+	}
+	else
+	{
+		_path = tmp;
 	}
 	// while (std::getline(ss, tmp))
 	// {
 	// 	if (tmp.empty())
 	// 		break;
-	// 	// std::cout << tmp << std::endl;
+	// 	std::cout << tmp << std::endl;
 	// }
 }
 

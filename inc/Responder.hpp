@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 16:34:29 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 18:12:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "Logger.hpp"
 #include "ServerInstanceConfig.hpp"
 #include "ErrorPages.hpp"
+#include "Response.hpp"
 
 class Responder
 {
@@ -29,7 +30,7 @@ class Responder
 	Responder(const Responder &);
 	Responder& operator=(const Responder &);
 	
-	std::string getResponse(Request& request, ServerInstanceConfig serverConf);
+	Response getResponse(Request& request, ServerInstanceConfig serverConf);
 	
   private:
 	Logger* _logger;
