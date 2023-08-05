@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/04 18:56:36 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:43:44 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,21 @@ void Webserv::run()
 				else
 					readRequest(i);
 			}
+			else if (FD_ISSET(i, &writeSetCpy))
+			{
+				switch (_clientsMap[i].response.cgiState)
+				{
+					case 0:
+					case 2:
+						sendHttpResponse(i);
+						break;
+					case 1:
+						/* code */
+						break;
+					default:
+						break;
+				}
+			}
 		}
 	}
 }
@@ -125,25 +140,28 @@ void Webserv::readRequest(int fd)
 	}
 
 	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
-	Request request = Request(buffer);
-	std::cout << E;
-	_logger->print(INFO, BLUE, "New request picked up: \n Method: GET\n Path: " + request.path, 0);
-	sendHttpResponse(fd, _responder->getResponse(request, _serversMap[fd]));
+	_clientsMap[fd].request = Request(buffer);
+
 }
 
-void Webserv::sendHttpResponse(int clientSockfd, const std::string& response) {
-    std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(200)  + "\r\n";
-    httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
-	if (200 == 200)
-    	httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype("index.html") + "\r\n";
+void Webserv::sendHttpResponse(int clientSockfd)
+{
+	Client& client = _clientsMap[clientSockfd];
+	
+	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
+	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
+	
+	if (client.response.code == 200)
+		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.path) + "\r\n";
 	else
 		httpResponse += "Content-Type: text/html\r\n";
-    httpResponse += "\r\n";
-    httpResponse += response;
+		
+	httpResponse += "\r\n";
+    httpResponse += client.response.body;
 
-    if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
-        perror("send");
-    }
+	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
+		perror("send");
+	}
 }
 
 void Webserv::closeConnection(int fd)

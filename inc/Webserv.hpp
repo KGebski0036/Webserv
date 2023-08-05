@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/04 18:52:31 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:38:37 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class Webserv {
 
 	void acceptNewConnection(ServerInstanceConfig &);
 	void readRequest(int);
-	void sendHttpResponse(int clientSockfd, const std::string& response);
+	void sendHttpResponse(int clientSockfd);
 	void closeConnection(int fd);
 
 	Webserv();

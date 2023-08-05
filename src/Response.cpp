@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Client.hpp                                         :+:      :+:    :+:   */
+/*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 16:49:26 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 15:30:21 by kgebski          ###   ########.fr       */
+/*   Created: 2023/08/05 15:27:15 by kgebski           #+#    #+#             */
+/*   Updated: 2023/08/05 15:44:31 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-#include "Request.hpp"
 #include "Response.hpp"
 
-class Client {
-  public:
-	Client();
-	Client(int);
-	~Client();
-	Client& operator=(Client const &);
-	Request request;
-	Response response;
+Response::Response() { cgiState = 0; code = 200; }
+Response::~Response() {}
+Response::Response(const Response& rhs) { (void)rhs; }
+Response& Response::operator=(const Response& rhs) { (void)rhs; return *this; }
 
-  private:
-	int _clientSocket;
-	Client(const Client&);
-};
+size_t Response::length()
+{
+	return body.length();
+}
