@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:56:03 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:56:36 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void Webserv::setup()
 {
+	_biggestFd = 0;
 	_logger->print(INFO, "Servers are being initialized", 0);
 	for (size_t i = 0; i < _serversConfigs.size(); ++i)
 	{
@@ -57,18 +58,18 @@ void Webserv::run()
 	timer.tv_usec = 0;
 	while (42)
 	{
-    	fd_set recvSetCpy = _recvFdPool;
-    	fd_set writeSetCpy = _writeFdPool;
+		fd_set recvSetCpy = _recvFdPool;
+		fd_set writeSetCpy = _writeFdPool;
 
 		if ((select(_biggestFd + 1, &recvSetCpy, &writeSetCpy, NULL, &timer)) < 0 )
-		    throw MyException("Select failed", __func__, __FILE__, __LINE__);
+			throw MyException("Select failed", __func__, __FILE__, __LINE__);
 
 		for (int i = 0; i <= _biggestFd ; ++i)
 		{
 			if (FD_ISSET(i, &recvSetCpy))
 			{
 				if (_serversMap.count(i))
-            		acceptNewConnection(_serversMap.find(i)->second);
+					acceptNewConnection(_serversMap.find(i)->second);
 				else
 					readRequest(i);
 			}
@@ -124,6 +125,25 @@ void Webserv::readRequest(int fd)
 	}
 
 	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
+	Request request = Request(buffer);
+	std::cout << E;
+	_logger->print(INFO, BLUE, "New request picked up: \n Method: GET\n Path: " + request.path, 0);
+	sendHttpResponse(fd, _responder->getResponse(request, _serversMap[fd]));
+}
+
+void Webserv::sendHttpResponse(int clientSockfd, const std::string& response) {
+    std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(200)  + "\r\n";
+    httpResponse += "Content-Length: " + std::to_string(response.length()) + "\r\n";
+	if (200 == 200)
+    	httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype("index.html") + "\r\n";
+	else
+		httpResponse += "Content-Type: text/html\r\n";
+    httpResponse += "\r\n";
+    httpResponse += response;
+
+    if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
+        perror("send");
+    }
 }
 
 void Webserv::closeConnection(int fd)
@@ -142,10 +162,14 @@ void Webserv::clean()
 }
 
 Webserv::Webserv(Config& input, Logger* logger) : _logger(logger), _serversConfigs(input.getServersConfigs()) {
+	_responder = new Responder(_logger);
 	FD_ZERO(&_recvFdPool);
     FD_ZERO(&_writeFdPool);
 }
 
-Webserv::~Webserv() {}
+Webserv::~Webserv() {
+	delete _responder;
+}
+
 Webserv::Webserv(const Webserv& src) { (void)src; }
 Webserv& Webserv::operator=(Webserv const& src) { (void)src; return *this; }
