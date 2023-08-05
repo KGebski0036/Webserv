@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:37:05 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:48:51 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,12 @@ void Webserv::readRequest(int fd)
 	if (ret < 0)
 	{
 		closeConnection(fd);
-		throw MyException("Fcntl failed", __func__, __FILE__, __LINE__);
+		throw MyException("Fcntl failed, connection closed", __func__, __FILE__, __LINE__);
 	}
 	else if (ret == 0)
 	{
 		closeConnection(fd);
+		_logger->print(INFO, "Connection closed", 0);
 		return;
 	}
 
@@ -159,13 +160,12 @@ void Webserv::sendHttpResponse(int clientSockfd)
 		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.path) + "\r\n";
 	else
 		httpResponse += "Content-Type: text/html\r\n";
-		
-		
+
 	httpResponse += "\r\n";
 	httpResponse += client.response.body;
 
 	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
-		perror("send");
+		throw MyException("Send failed", __func__, __FILE__, __LINE__);
 	}
 	FD_CLR(clientSockfd, &_writeFdPool);
 }

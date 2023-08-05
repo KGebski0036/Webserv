@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 16:36:41 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 16:57:27 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,24 @@ std::string Responder::getResponse(Request& request, ServerInstanceConfig server
 {
 	std::string tmp;
 	std::ifstream file;
-	
-	std::cout << YELLOW << "|" << request.path << "|" << E;
 
 	if (request.path == "/")
-	{
 		file.open((serverConf.rootDirectory + "/" + serverConf.indexFile).c_str());
-		_logger->print(INFO, GREEN, "We return the " + serverConf.rootDirectory + "/" + serverConf.indexFile + " file", 0);
-	}
 	else
-	{
 		file.open((serverConf.rootDirectory + request.path).c_str());
-		_logger->print(INFO, GREEN, "We return the " + serverConf.rootDirectory + request.path + " file", 0);
-	}
 
 	if (file.is_open())
 	{
 		std::stringstream ss;
 		ss << file.rdbuf();
 		tmp = ss.str();
+		_logger->print(INFO, GREEN, "We returned the " + serverConf.rootDirectory + request.path + " file", 0);
 		file.close();
 	}
 	else
 	{
 		file.open(serverConf.rootDirectory + "/default_error_pages/404.html");
+		_logger->print(INFO, RED, "We returned the 404 page file", 0);
 		if (file.is_open())
 		{
 			getline(file, tmp, '\0');
