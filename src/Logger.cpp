@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:10:45 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:12:17 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void Logger::print(LogLevel level, std::string str, bool error) {
 	print(level, BLUE, str, error);
 }
 
-void Logger::print(LogLevel level,std::string color, std::string str, bool error) {
+void Logger::print(LogLevel level, std::string color, std::string str, bool error) {
 	if (level <= _level) {
 		time_t rawtime;
 		struct tm* tm;

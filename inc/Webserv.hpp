@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:55:20 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:52:31 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "Config.hpp"
 #include "Client.hpp"
 #include "ServerInstanceConfig.hpp"
+#include "Responder.hpp"
 
 #define MAX_CLIENTS 512
 #define MESSAGE_BUFFER 1024
@@ -35,6 +36,7 @@ class Webserv {
   private:
 
 	Logger* _logger;
+	Responder* _responder;
 	std::vector<ServerInstanceConfig> _serversConfigs;
 	std::map<int, ServerInstanceConfig> _serversMap;
     std::map<int, Client> _clientsMap;
@@ -45,6 +47,7 @@ class Webserv {
 
 	void acceptNewConnection(ServerInstanceConfig &);
 	void readRequest(int);
+	void sendHttpResponse(int clientSockfd, const std::string& response);
 	void closeConnection(int fd);
 
 	Webserv();

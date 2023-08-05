@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Request.hpp                                        :+:      :+:    :+:   */
+/*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/04 18:19:17 by kgebski          ###   ########.fr       */
+/*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
+/*   Updated: 2023/08/04 18:44:45 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-
+#pragma once 
 #include <string>
-#include <sstream>
-#include <map>
+#include <fstream>
 
-enum HttpMethod{
-	DEFAULT,
-	GET,
-	POST,
-	DELETE
-};
+#include "Request.hpp"
+#include "Logger.hpp"
+#include "ServerInstanceConfig.hpp"
+#include "ErrorPages.hpp"
 
-class Request {
+class Responder
+{
   public:
-	HttpMethod method;
-	std::string path;
-	std::map<std::string, std::string>  _requestParamiters;
-	std::string body;
+  	Responder();
+	Responder(Logger* logger);
+	~Responder();
+	Responder(const Responder &);
+	Responder& operator=(const Responder &);
 	
-	Request();
-	Request(std::string);
-	~Request();
-	Request(const Request&);
-	Request& operator=(Request const &);
+	std::string getResponse(Request& request, ServerInstanceConfig serverConf);
 	
   private:
-	void setMethod(std::string line);
+	Logger* _logger;
 };
-
