@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:12:17 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:41:10 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ std::string Logger::trimColors(const std::string& input) {
 
 	return result;
 }
-
 
 Logger::~Logger() {
 	if (_logFile.is_open())

@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:46:02 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:05:59 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/05 16:40:58 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,6 @@ class Logger {
   private:
 	const LogLevel _level;
 	std::ofstream _logFile;
-
-	void printIO(std::string color, std::string str, bool error, char* time);
-	void printToFile(std::string str, bool error, char* time);
 
 	Logger();
 	Logger(const Logger&);
