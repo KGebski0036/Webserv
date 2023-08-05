@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 15:43:44 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:55:11 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
 	
 	if (client.response.code == 200)
-		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.path) + "\r\n";
+		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.getPath()) + "\r\n";
 	else
 		httpResponse += "Content-Type: text/html\r\n";
 		

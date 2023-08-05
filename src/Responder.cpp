@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 14:43:15 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/05 15:54:49 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ std::string Responder::getResponse(Request& request, ServerInstanceConfig server
 	std::string tmp;
 	std::ifstream file;
 	
-	if (request.path == "/")
+	if (request.getPath() == "/")
 	{
 		file.open((serverConf.rootDirectory + serverConf.indexFile).c_str());
 		std::cout << MAGENTA << "We return the " << serverConf.rootDirectory + "/" + serverConf.indexFile << " file" << E;
 	}
 	else
 	{
-		file.open((serverConf.rootDirectory + request.path).c_str());
-		std::cout << GREEN << "We return the " << serverConf.rootDirectory + request.path << " file" << E;
+		file.open((serverConf.rootDirectory + request.getPath()).c_str());
+		std::cout << GREEN << "We return the " << serverConf.rootDirectory + request.getPath() << " file" << E;
 	}
 
 	if (file.is_open())
