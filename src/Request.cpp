@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:55:36 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/05 17:07:31 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,25 @@
 
 Request::Request() {}
 Request::~Request() {}
-Request::Request(const Request& src) { (void)src; }
-Request& Request::operator=(Request const& src) { (void)src; return *this; }
+Request::Request(const Request& src)
+{
+	_method = src._method;
+	_path = src._path;
+	_requestParameters = src._requestParameters;
+	_body = src._body;
+
+}
+Request& Request::operator=(const Request& src)
+{
+	if(&src != this)
+	{
+		_method = src._method;
+		_path = src._path;
+		_requestParameters = src._requestParameters;
+		_body = src._body;
+	}
+	return *this; 
+}
 
 HttpMethod Request::getMethod() const { return _method; }
 std::string Request::getPath() const { return _path; }
