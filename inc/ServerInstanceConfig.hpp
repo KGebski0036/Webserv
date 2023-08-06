@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstanceConfig.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:27:49 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 17:32:33 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ struct ServerInstanceConfig
 	}
 
 	struct LocationConfig {
-		std::string path;
+		std::string path; //? location path
 		std::vector<std::string> allowedMethods;
-		std::string root;
-		std::string cgi_pass;
+		std::string root; //? CGI Folder? ~/cgi-bin
+		std::string cgi_pass; //!
 		std::string index;
 		size_t clientBodyBufferSize;
 		struct LocationConfig* nestedLocation;

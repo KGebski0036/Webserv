@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:48:08 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 17:38:46 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,17 @@ void Webserv::run()
 				switch (_clientsMap[i].response.cgiState)
 				{
 					case 0:
-					case 2:
+						/* doesnt need CGI processing */
+						//? Based on location
 						sendHttpResponse(i);
-						break;
 					case 1:
-						/* code */
+						/* needs CGI processing and is currently processing it */
+						
+						_clientsMap[i].response.cgiState = 2;
+						break;
+					case 2:
+						/* CGI has been processed */
+						sendHttpResponse(i);
 						break;
 					default:
 						break;
@@ -151,7 +157,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
 	
-	client.response = _responder->getResponse(client.request, client.server);
+	client.response = _responder->getResponse(client.request, client.server); //todo move to readRequest()
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
