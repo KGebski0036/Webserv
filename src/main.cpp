@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:02:21 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:06:29 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ Logger logger(DEBUG);
 	* The CGI should be run in the correct directory for relative path file access.
 	* Your server should work with one CGI (php-CGI, Python, and so forth).
 */
+
 void signalHandler(int signal);
 
 int	main(int ac, char *av[])

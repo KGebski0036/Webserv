@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 18:13:29 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:13:27 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,16 @@ void Webserv::run()
 				switch (_clientsMap[i].response.cgiState)
 				{
 					case 0:
-					case 2:
+						/* doesnt need CGI processing */
+						
 						sendHttpResponse(i);
-						break;
 					case 1:
-						/* code */
+						/* needs CGI processing and is currently processing it */
+						_clientsMap[i].response.cgiState = 2;
+						break;
+					case 2:
+						/* CGI has been processed */
+						sendHttpResponse(i);
 						break;
 					default:
 						break;
