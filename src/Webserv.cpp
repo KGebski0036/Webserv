@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:13:27 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:18:17 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ void Webserv::readRequest(int fd)
 		return;
 	}
 
-	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
 	_clientsMap[fd].request = Request(buffer);
-	_clientsMap[fd].server = (_serversMap.begin()->second); //TODO change to be correct server
+	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
+	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
 
 	FD_SET(fd, &_writeFdPool);
 }
@@ -173,6 +173,17 @@ void Webserv::sendHttpResponse(int clientSockfd)
 		throw MyException("Send failed", __func__, __FILE__, __LINE__);
 	}
 	FD_CLR(clientSockfd, &_writeFdPool);
+}
+
+ServerInstanceConfig& Webserv::getServerByIP(Request request)
+{
+	for (std::map<int, ServerInstanceConfig>::iterator it = _serversMap.begin(); it != _serversMap.end(); ++it)
+	{
+		if (it->second.listenAddress == request.getHost() && it->second.port == request.getPort())
+			return it->second;
+	}
+	std::cout << RED << "Defautlt server" << E;
+	return (_serversMap.begin()->second);
 }
 
 void Webserv::closeConnection(int fd)

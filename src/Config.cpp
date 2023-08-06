@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:55:34 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:21:49 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 			break;
 		}
 	}
+	
+	std::cout <<bracketsCounter <<E;
 
 	if (bracketsCounter != 0)
 		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__); //!
@@ -159,12 +161,7 @@ void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& 
 			readAllowedMethodsArg(location.allowedMethods, ++j);
 			j--;
 		}
-		// else if (_fileVector[j] == "location")
-		// {
-		// 	location.nestedLocation = nestedLocation(j);
-		// }
 	}
-	j++;
 	locations.push_back(location);
 }
 
@@ -173,46 +170,6 @@ void Config::readErrorPageArg(std::map<int, std::string>& map, size_t& j)
 	j++;
 	map[atoi(_fileVector[j].c_str())] = _fileVector[j + 1];
 	j++;
-}
-
-ServerInstanceConfig::LocationConfig* Config::nestedLocation(size_t& j)
-{
-	std::cout << MAGENTA << _fileVector[j] << E;
-	ServerInstanceConfig::LocationConfig* location = new ServerInstanceConfig::LocationConfig(); //TODO This has to be freed
-	int bracketsCounter = 1;
-	
-	location->path = _fileVector[++j];
-	
-	// if (_fileVector[++j] != "{")
-	// 	throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__);
-	
-	while (j < _fileVector.size() && bracketsCounter != 0)
-	{
-		j++;
-		if (_fileVector[j] == "{")
-			bracketsCounter++;
-		else if (_fileVector[j] == "}")
-			bracketsCounter--;
-	// 	else if (_fileVector[j] == "root")
-	// 		location->root = _fileVector[++j];
-	// 	else if (_fileVector[j] == "index")
-	// 		location->index = _fileVector[++j];
-	// 	else if (_fileVector[j] == "client_body_buffer_size")
-	// 		location->clientBodyBufferSize = atoi(_fileVector[++j].c_str());
-	// 	else if (_fileVector[j] == "cgi_pass")
-	// 		location->cgi_pass = _fileVector[++j];
-	// 	else if (_fileVector[j] == "allow_methods")
-	// 	{
-	// 		readAllowedMethodsArg(location->allowedMethods, ++j);
-	// 		j--;
-	// 	}
-	// 	else if (_fileVector[j] == "location")
-	// 	{
-	// 		location->nestedLocation = nestedLocation(j);
-	// 	}
-	}
-	j++;
-	return location;
 }
 
 std::vector<ServerInstanceConfig> Config::getServersConfigs() const { return _serversConfigs; }
@@ -249,10 +206,10 @@ std::ostream& operator<<(std::ostream& os, const ServerInstanceConfig& dt)
 	os << "\n\n";
 	os << std::setw(30) << BLUE << "ErrorPages: " << std::endl;
 	
-	// for (std::map<int, std::string>::const_iterator it = dt.errorPages.begin(); it != dt.errorPages.end(); it++)
-	// {
-	// 	std::cout << std::setw(35) << RED << it->first << " - " << DARKBLUE << it->second << std::endl;
-	// }
+	for (std::map<int, std::string>::const_iterator it = dt.errorPages.begin(); it != dt.errorPages.end(); it++)
+	{
+		os << std::setw(35) << RED << it->first << " - " << DARKBLUE << it->second << std::endl;
+	}
 	
 	os << std::setw(30) << BLUE << "locations are: " << std::endl;
 	

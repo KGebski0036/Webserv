@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 18:13:17 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:28:30 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,28 @@ Response Responder::getResponse(Request& request, ServerInstanceConfig serverCon
 {
 	Response response;
 	std::ifstream file;
+	std::string path;
 	
 	if (request.getPath() == "/")
-		file.open((serverConf.rootDirectory + "/" + serverConf.indexFile).c_str());
+		path = serverConf.rootDirectory + "/" + serverConf.indexFile;
 	else
-		file.open((serverConf.rootDirectory + request.getPath()).c_str());
+		path = serverConf.rootDirectory + request.getPath();
 
+	file.open(path.c_str());
+	
 	if (file.is_open())
 	{
 		std::stringstream ss;
 		ss << file.rdbuf();
 		response.body = ss.str();
-		_logger->print(INFO, GREEN, "We returned the " + serverConf.rootDirectory + request.getPath() + " file", 0);
+		_logger->print(INFO, GREEN, "We returned the " + path + " file", 0);
 		file.close();
 	}
 	else
 	{
 		response.code = 404;
 		file.open(serverConf.rootDirectory + "/default_error_pages/404.html");
-		_logger->print(INFO, RED, "We returned the 404 page file", 0);
+		_logger->print(INFO, RED, "We returned the 404 page file insted of " + path, 0);
 		if (file.is_open())
 		{
 			getline(file, response.body, '\0');

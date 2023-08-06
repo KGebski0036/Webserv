@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 17:06:08 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 16:54:27 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <iomanip>
 
+#include "Colors.hpp"
 
 enum HttpMethod{
 	DEFAULT,
@@ -37,6 +39,9 @@ class Request {
 	std::map<std::string, std::string> getRequestParameters() const;
 	std::string getBody() const;
 	std::string getProtocol() const;
+	std::string getHost() const;
+	int getPort() const;
+	std::string toString();
 	
   private:
 	void setMethod(std::string line);
@@ -44,6 +49,8 @@ class Request {
 	HttpMethod _method;
 	std::string _path;
 	std::map<std::string, std::string>  _requestParameters;
+	std::string _host;
+	int _port;
 	std::string _body;
 	std::string _protocol;
 };
