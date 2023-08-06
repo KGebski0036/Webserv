@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 19:02:28 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 19:33:20 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ Request::Request(const Request& src)
 	_body = src._body;
 	_host = src._host;
 	_port = src._port;
+	_contentLength = src._contentLength;
+	_contentType = src._contentType;
 }
 Request& Request::operator=(const Request& src)
 {
@@ -34,6 +36,8 @@ Request& Request::operator=(const Request& src)
 		_body = src._body;
 		_host = src._host;
 		_port = src._port;
+		_contentLength = src._contentLength;
+		_contentType = src._contentType;
 	}
 	return *this; 
 }
@@ -46,6 +50,7 @@ std::string Request::getProtocol() const { return _protocol; }
 std::string Request::getHost() const { return _host; }
 int Request::getPort() const { return _port; }
 size_t Request::getContentLength() const { return _contentLength; }
+std::string Request::getContentType() const { return _contentType; }
 
 Request::Request(std::string rawRequest)
 {
@@ -53,7 +58,7 @@ Request::Request(std::string rawRequest)
 	std::string method;
 	std::string tmp;
 	
-	std::cout << ss.str() << std::endl;
+	std::cout << BLUE << ss.str() << std::endl;
 	ss >> method >> tmp >> _protocol;
 	setMethod(method);
 	if (tmp.find('?') != std::string::npos)
@@ -83,6 +88,11 @@ Request::Request(std::string rawRequest)
 	}
 	else
 		_path = tmp;
+	ss >> tmp;
+	if (tmp == "Content-Type:")
+		ss >> _contentType;
+	else
+		_contentType = "text/plain";
 	while (tmp != "Host:")
 		ss >> tmp;
 	ss >> tmp;
@@ -156,8 +166,12 @@ std::string Request::toString()
 	
 	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
 	
-	if(_body.size() > 0)
+	if (_body.size() > 0)
 		result << std::setw(25) << YELLOW << "Body: " << BLUE << _body << E;
+	
+	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << E;
+
+	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << E;
 	
 	return result.str();
 }
