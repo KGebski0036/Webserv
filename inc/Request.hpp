@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:54:27 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 19:33:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <sstream>
 #include <map>
 #include <iomanip>
+#include <iostream>
 
 #include "Colors.hpp"
 
@@ -41,6 +42,9 @@ class Request {
 	std::string getProtocol() const;
 	std::string getHost() const;
 	int getPort() const;
+	size_t getContentLength() const;
+	std::string getContentType() const;
+	
 	std::string toString();
 	
   private:
@@ -53,5 +57,7 @@ class Request {
 	int _port;
 	std::string _body;
 	std::string _protocol;
+	size_t _contentLength;
+	std::string _contentType;
 };
 
