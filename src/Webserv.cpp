@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:18:17 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:38:46 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,11 @@ void Webserv::run()
 				{
 					case 0:
 						/* doesnt need CGI processing */
-						
+						//? Based on location
 						sendHttpResponse(i);
 					case 1:
 						/* needs CGI processing and is currently processing it */
+						
 						_clientsMap[i].response.cgiState = 2;
 						break;
 					case 2:
@@ -156,7 +157,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
 	
-	client.response = _responder->getResponse(client.request, client.server);
+	client.response = _responder->getResponse(client.request, client.server); //todo move to readRequest()
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
