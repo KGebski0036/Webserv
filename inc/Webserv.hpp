@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 15:38:37 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:06:59 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ class Webserv {
 	void readRequest(int);
 	void sendHttpResponse(int clientSockfd);
 	void closeConnection(int fd);
+	ServerInstanceConfig& getServerByIP(Request request);
 
 	Webserv();
 	Webserv(const Webserv&);
