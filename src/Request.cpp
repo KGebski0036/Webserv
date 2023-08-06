@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:24:13 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 17:09:49 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ Request::Request(std::string rawRequest)
 		tmp = tmp.substr(tmp.find('?') + 1);
 		std::string key;
 		std::string value;
-		while (!tmp.empty())
+		while (!tmp.empty() && tmp.find('=') != std::string::npos)
 		{
 			key = tmp.substr(0, tmp.find('='));
 			tmp = tmp.substr(tmp.find('=') + 1);
@@ -126,4 +126,35 @@ void Request::setMethod(std::string line)
 		_method = DELETE;
 	else
 		_method = DEFAULT;
+}
+
+std::string Request::toString()
+{
+	std::stringstream result;
+	std::string method = "UNKNOWN";
+	
+	if (_method == GET)
+		method = "GET";
+	if (_method == POST)
+		method = "POST";
+	if (_method == DELETE)
+		method = "POST";
+	
+	result << std::setw(25) << YELLOW << "Method: " << GREEN << method << std::setw(20) << YELLOW << "file: "
+		MAGENTA << _path << E;
+	
+	if (_requestParameters.size() > 0)
+		result << std::setw(25) << YELLOW << "Parameters: " << E;
+	
+	for (std::map<std::string, std::string>::iterator it = _requestParameters.begin(); it != _requestParameters.end(); it++)
+	{
+		result << std::setw(30) << BLUE << it->first << " --> " << it->second << E;
+	}
+	
+	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
+	
+	if(_body.size() > 0)
+		result << std::setw(25) << YELLOW << "Body: " << BLUE << _body << E;
+	
+	return result.str();
 }

@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:03:16 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:54:27 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <iomanip>
+
 #include "Colors.hpp"
 
 enum HttpMethod{
@@ -39,6 +41,7 @@ class Request {
 	std::string getProtocol() const;
 	std::string getHost() const;
 	int getPort() const;
+	std::string toString();
 	
   private:
 	void setMethod(std::string line);

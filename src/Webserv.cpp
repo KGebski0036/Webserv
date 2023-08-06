@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:11:59 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:48:08 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ void Webserv::readRequest(int fd)
 		return;
 	}
 
-	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + std::string(buffer), 0);
 	_clientsMap[fd].request = Request(buffer);
+	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
 	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
 
 	FD_SET(fd, &_writeFdPool);
