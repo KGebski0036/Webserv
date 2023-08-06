@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:09:49 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 19:02:28 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ std::string Request::getBody() const { return _body; }
 std::string Request::getProtocol() const { return _protocol; }
 std::string Request::getHost() const { return _host; }
 int Request::getPort() const { return _port; }
+size_t Request::getContentLength() const { return _contentLength; }
 
 Request::Request(std::string rawRequest)
 {
@@ -52,6 +53,7 @@ Request::Request(std::string rawRequest)
 	std::string method;
 	std::string tmp;
 	
+	std::cout << ss.str() << std::endl;
 	ss >> method >> tmp >> _protocol;
 	setMethod(method);
 	if (tmp.find('?') != std::string::npos)
@@ -81,8 +83,9 @@ Request::Request(std::string rawRequest)
 	}
 	else
 		_path = tmp;
-		
-	ss >> tmp >> tmp;
+	while (tmp != "Host:")
+		ss >> tmp;
+	ss >> tmp;
 	if (tmp.find(':') != std::string::npos)
 	{
 		_host = tmp.substr(0, tmp.find(':'));
@@ -96,20 +99,20 @@ Request::Request(std::string rawRequest)
 
 	if (_method == POST)
 	{
-		size_t contentLength = 0;
+		_contentLength = 0;
 		bool readingBody = false;
 		std::getline(ss, tmp);
 
 		while (std::getline(ss, tmp))
 		{
 			if (tmp.find("content-length:") == 0)
-				contentLength = std::atoi(tmp.substr(16).c_str());
+				_contentLength = std::atoi(tmp.substr(16).c_str());
 			if (!readingBody && (tmp.empty() || tmp == "\r"))
 				readingBody = true;
 			else if (readingBody && !tmp.empty())
 			{
 				_body += tmp + "\n";
-				if (_body.length() >= contentLength)
+				if (_body.length() >= _contentLength)
 					break;
 			}
 		}
