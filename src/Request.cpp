@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:55:36 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 15:22:58 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,25 @@
 
 Request::Request() {}
 Request::~Request() {}
-Request::Request(const Request& src) { (void)src; }
-Request& Request::operator=(Request const& src) { (void)src; return *this; }
+Request::Request(const Request& src)
+{
+	_method = src._method;
+	_path = src._path;
+	_requestParameters = src._requestParameters;
+	_body = src._body;
+
+}
+Request& Request::operator=(const Request& src)
+{
+	if(&src != this)
+	{
+		_method = src._method;
+		_path = src._path;
+		_requestParameters = src._requestParameters;
+		_body = src._body;
+	}
+	return *this; 
+}
 
 HttpMethod Request::getMethod() const { return _method; }
 std::string Request::getPath() const { return _path; }
@@ -32,36 +49,53 @@ Request::Request(std::string rawRequest)
 	
 	ss >> method >> tmp >> _protocol;
 	setMethod(method);
-	_path = tmp.substr(0, tmp.find('?'));
-	tmp = tmp.substr(tmp.find('?') + 1);
-
-	std::string key;
-	std::string value;
-	while (!tmp.empty())
+	if (tmp.find('?') != std::string::npos)
 	{
-		key = tmp.substr(0, tmp.find('='));
-		tmp = tmp.substr(tmp.find('=') + 1);
-		size_t ampersandPos = tmp.find('&');
-		size_t spacePos = tmp.find(' ');
-		if (ampersandPos < spacePos)
+		_path = tmp.substr(0, tmp.find('?'));
+		tmp = tmp.substr(tmp.find('?') + 1);
+		std::string key;
+		std::string value;
+		while (!tmp.empty())
 		{
-			value = tmp.substr(0, ampersandPos);
-			tmp = tmp.substr(ampersandPos + 1);
+			key = tmp.substr(0, tmp.find('='));
+			tmp = tmp.substr(tmp.find('=') + 1);
+			size_t ampersandPos = tmp.find('&');
+			size_t spacePos = tmp.find(' ');
+			if (ampersandPos < spacePos)
+			{
+				value = tmp.substr(0, ampersandPos);
+				tmp = tmp.substr(ampersandPos + 1);
+			}
+			else
+			{
+				value = tmp.substr(0, spacePos);
+				tmp = tmp.substr(spacePos + 1);
+			}
+			_requestParameters[key] = value;
 		}
-		else
-		{
-			value = tmp.substr(0, spacePos);
-			tmp = tmp.substr(spacePos + 1);
-		}
-		_requestParameters[key] = value;
-		// std::cout << "Key: " << key << " Value: " << value << std::endl;
 	}
-	// while (std::getline(ss, tmp))
-	// {
-	// 	if (tmp.empty())
-	// 		break;
-	// 	// std::cout << tmp << std::endl;
-	// }
+	else
+		_path = tmp;
+	if (_method == POST)
+	{
+		size_t contentLength = 0;
+		bool readingBody = false;
+		std::getline(ss, tmp);
+
+		while (std::getline(ss, tmp))
+		{
+			if (tmp.find("content-length:") == 0)
+				contentLength = std::atoi(tmp.substr(16).c_str());
+			if (!readingBody && (tmp.empty() || tmp == "\r"))
+				readingBody = true;
+			else if (readingBody && !tmp.empty())
+			{
+				_body += tmp + "\n";
+				if (_body.length() >= contentLength)
+					break;
+			}
+		}
+	}
 }
 
 void Request::setMethod(std::string line)
