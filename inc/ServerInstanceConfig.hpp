@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:15:23 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:27:49 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ struct ServerInstanceConfig
 		port = 80;
 		serverName = "default";
 		listenAddress = "0.0.0.0";
-		rootDirectory = "/";
+		rootDirectory = "";
 		indexFile = "index.html";
 		allowedMethods.push_back("GET");
 		allowedMethods.push_back("POST");

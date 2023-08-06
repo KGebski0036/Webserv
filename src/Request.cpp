@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 15:24:50 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 17:09:49 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ Request::Request(const Request& src)
 	_path = src._path;
 	_requestParameters = src._requestParameters;
 	_body = src._body;
-
+	_host = src._host;
+	_port = src._port;
 }
 Request& Request::operator=(const Request& src)
 {
@@ -31,6 +32,8 @@ Request& Request::operator=(const Request& src)
 		_path = src._path;
 		_requestParameters = src._requestParameters;
 		_body = src._body;
+		_host = src._host;
+		_port = src._port;
 	}
 	return *this; 
 }
@@ -40,6 +43,8 @@ std::string Request::getPath() const { return _path; }
 std::map<std::string, std::string> Request::getRequestParameters() const { return _requestParameters; }
 std::string Request::getBody() const { return _body; }
 std::string Request::getProtocol() const { return _protocol; }
+std::string Request::getHost() const { return _host; }
+int Request::getPort() const { return _port; }
 
 Request::Request(std::string rawRequest)
 {
@@ -55,7 +60,7 @@ Request::Request(std::string rawRequest)
 		tmp = tmp.substr(tmp.find('?') + 1);
 		std::string key;
 		std::string value;
-		while (!tmp.empty())
+		while (!tmp.empty() && tmp.find('=') != std::string::npos)
 		{
 			key = tmp.substr(0, tmp.find('='));
 			tmp = tmp.substr(tmp.find('=') + 1);
@@ -76,6 +81,19 @@ Request::Request(std::string rawRequest)
 	}
 	else
 		_path = tmp;
+		
+	ss >> tmp >> tmp;
+	if (tmp.find(':') != std::string::npos)
+	{
+		_host = tmp.substr(0, tmp.find(':'));
+		_port = std::atoi(tmp.substr(tmp.find(':') + 1).c_str());
+	}
+	else
+	{
+		_host = tmp;
+		_port = 80;
+	}
+
 	if (_method == POST)
 	{
 		size_t contentLength = 0;
@@ -108,4 +126,35 @@ void Request::setMethod(std::string line)
 		_method = DELETE;
 	else
 		_method = DEFAULT;
+}
+
+std::string Request::toString()
+{
+	std::stringstream result;
+	std::string method = "UNKNOWN";
+	
+	if (_method == GET)
+		method = "GET";
+	if (_method == POST)
+		method = "POST";
+	if (_method == DELETE)
+		method = "POST";
+	
+	result << std::setw(25) << YELLOW << "Method: " << GREEN << method << std::setw(20) << YELLOW << "file: "
+		MAGENTA << _path << E;
+	
+	if (_requestParameters.size() > 0)
+		result << std::setw(25) << YELLOW << "Parameters: " << E;
+	
+	for (std::map<std::string, std::string>::iterator it = _requestParameters.begin(); it != _requestParameters.end(); it++)
+	{
+		result << std::setw(30) << BLUE << it->first << " --> " << it->second << E;
+	}
+	
+	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
+	
+	if(_body.size() > 0)
+		result << std::setw(25) << YELLOW << "Body: " << BLUE << _body << E;
+	
+	return result.str();
 }
