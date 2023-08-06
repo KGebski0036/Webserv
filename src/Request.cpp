@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 18:09:02 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 15:24:50 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ Request::Request(std::string rawRequest)
 		std::string value;
 		while (!tmp.empty())
 		{
-			std::cout<<tmp;
 			key = tmp.substr(0, tmp.find('='));
 			tmp = tmp.substr(tmp.find('=') + 1);
 			size_t ampersandPos = tmp.find('&');
@@ -73,19 +72,30 @@ Request::Request(std::string rawRequest)
 				tmp = tmp.substr(spacePos + 1);
 			}
 			_requestParameters[key] = value;
-			std::cout << "Key: " << key << " Value: " << value << std::endl;	
-	}
+		}
 	}
 	else
-	{
 		_path = tmp;
+	if (_method == POST)
+	{
+		size_t contentLength = 0;
+		bool readingBody = false;
+		std::getline(ss, tmp);
+
+		while (std::getline(ss, tmp))
+		{
+			if (tmp.find("content-length:") == 0)
+				contentLength = std::atoi(tmp.substr(16).c_str());
+			if (!readingBody && (tmp.empty() || tmp == "\r"))
+				readingBody = true;
+			else if (readingBody && !tmp.empty())
+			{
+				_body += tmp + "\n";
+				if (_body.length() >= contentLength)
+					break;
+			}
+		}
 	}
-	// while (std::getline(ss, tmp))
-	// {
-	// 	if (tmp.empty())
-	// 		break;
-	// 	std::cout << tmp << std::endl;
-	// }
 }
 
 void Request::setMethod(std::string line)
