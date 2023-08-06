@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:11:39 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 16:24:13 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,16 @@ Request::Request(std::string rawRequest)
 		_path = tmp;
 		
 	ss >> tmp >> tmp;
-	_host = tmp.substr(0, tmp.find(':'));
-	_port = std::atoi(tmp.substr(tmp.find(':') + 1).c_str());
+	if (tmp.find(':') != std::string::npos)
+	{
+		_host = tmp.substr(0, tmp.find(':'));
+		_port = std::atoi(tmp.substr(tmp.find(':') + 1).c_str());
+	}
+	else
+	{
+		_host = tmp;
+		_port = 80;
+	}
 
 	if (_method == POST)
 	{
