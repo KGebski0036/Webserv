@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ErrorPages.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:17:56 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/08/01 16:18:53 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 19:59:50 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ std::string ErrorPages::getHttpStatusMessage(int errorCode) {
 
     // httpStatusMessages[400] = "400 Bad Request";
     // httpStatusMessages[402] = "402 Payment Required";
-    // httpStatusMessages[403] = "403 Forbidden";
+    httpStatusMessages[403] = "403 Forbidden";
     httpStatusMessages[404] = "404 Not Found";
     // httpStatusMessages[405] = "405 Method Not Allowed";
     // httpStatusMessages[406] = "406 Not Acceptable";

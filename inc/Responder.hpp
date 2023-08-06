@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 18:12:13 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 20:29:20 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #include "Request.hpp"
 #include "Logger.hpp"
@@ -34,4 +36,7 @@ class Responder
 	
   private:
 	Logger* _logger;
+	
+	void indexDirectory(std::string path, ServerInstanceConfig serverConf, Response& response);
+	void return404Page(Response& response, ServerInstanceConfig serverConf, std::string path);
 };

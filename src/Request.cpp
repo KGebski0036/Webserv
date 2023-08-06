@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 19:02:28 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/06 19:24:28 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ Request::Request(std::string rawRequest)
 	std::stringstream ss(rawRequest);
 	std::string method;
 	std::string tmp;
-	
-	std::cout << ss.str() << std::endl;
+
 	ss >> method >> tmp >> _protocol;
 	setMethod(method);
 	if (tmp.find('?') != std::string::npos)

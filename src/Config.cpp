@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:21:49 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 19:33:06 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,6 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 			break;
 		}
 	}
-	
-	std::cout <<bracketsCounter <<E;
 
 	if (bracketsCounter != 0)
 		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__); //!
