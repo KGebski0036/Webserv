@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 19:24:28 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 20:31:55 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ Request::Request(const Request& src)
 	_body = src._body;
 	_host = src._host;
 	_port = src._port;
+	_contentLength = src._contentLength;
+	_contentType = src._contentType;
 }
 Request& Request::operator=(const Request& src)
 {
@@ -34,6 +36,8 @@ Request& Request::operator=(const Request& src)
 		_body = src._body;
 		_host = src._host;
 		_port = src._port;
+		_contentLength = src._contentLength;
+		_contentType = src._contentType;
 	}
 	return *this; 
 }
@@ -46,6 +50,7 @@ std::string Request::getProtocol() const { return _protocol; }
 std::string Request::getHost() const { return _host; }
 int Request::getPort() const { return _port; }
 size_t Request::getContentLength() const { return _contentLength; }
+std::string Request::getContentType() const { return _contentType; }
 
 Request::Request(std::string rawRequest)
 {
@@ -82,6 +87,11 @@ Request::Request(std::string rawRequest)
 	}
 	else
 		_path = tmp;
+	ss >> tmp;
+	if (tmp == "Content-Type:")
+		ss >> _contentType;
+	else
+		_contentType = "text/plain";
 	while (tmp != "Host:")
 		ss >> tmp;
 	ss >> tmp;
@@ -155,8 +165,12 @@ std::string Request::toString()
 	
 	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
 	
-	if(_body.size() > 0)
+	if (_body.size() > 0)
 		result << std::setw(25) << YELLOW << "Body: " << BLUE << _body << E;
+	
+	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << E;
+
+	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << E;
 	
 	return result.str();
 }
