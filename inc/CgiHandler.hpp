@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CGIHandler.hpp                                     :+:      :+:    :+:   */
+/*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 16:42:52 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 21:38:52 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include "Logger.hpp"
+#include "Response.hpp"
+#include "ServerInstanceConfig.hpp"
+#include "Request.hpp"
+
+typedef ServerInstanceConfig::LocationConfig Location;
 
 class CgiHandler {
   public:
@@ -27,14 +32,18 @@ class CgiHandler {
 
     std::string execute(const std::string& scriptPath, const std::string& requestData);
 
-	void setEnvVar(const std::string& key, const std::string& value);
+	void createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config);
 
   private:
-	char** _envp;
-	std::map<std::string, std::string> _envVars;
+	// char** _envp;
 	Logger* _logger;
 
 	void setupEnvVars();
+
+	// Response _response;
+	// Request& _request;
+	// Location& _location;
+	// ServerInstanceConfig& _config;
 
 	CgiHandler();
 	CgiHandler(const CgiHandler&);

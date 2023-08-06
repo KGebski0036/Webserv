@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/06 20:29:20 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 21:24:43 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 #include "ServerInstanceConfig.hpp"
 #include "ErrorPages.hpp"
 #include "Response.hpp"
+#include "CgiHandler.hpp"
+
+typedef ServerInstanceConfig::LocationConfig Location;
 
 class Responder
 {
@@ -33,10 +36,10 @@ class Responder
 	Responder& operator=(const Responder &);
 	
 	Response getResponse(Request& request, ServerInstanceConfig serverConf);
-	
   private:
 	Logger* _logger;
-	
+
+	Location* isCgiRequest(Request& request, ServerInstanceConfig serverConf);
 	void indexDirectory(std::string path, ServerInstanceConfig serverConf, Response& response);
 	void return404Page(Response& response, ServerInstanceConfig serverConf, std::string path);
 };

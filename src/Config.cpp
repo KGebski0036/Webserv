@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 19:33:06 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/06 21:12:02 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void Config::readAllowedMethodsArg(std::vector<std::string>& vec, size_t& j)
 		vec.push_back(_fileVector[j++]);
 }
 
-bool Config::isHttpMethod(std::string str) { return  (str == "GET" || str == "POST" || str == "PUT"); }
+bool Config::isHttpMethod(std::string str) { return  (str == "GET" || str == "POST" || str == "DELETE"); }
 
 void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& locations, size_t& j)
 {

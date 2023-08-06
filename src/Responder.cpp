@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/06 20:57:08 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 21:42:24 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,32 @@ Responder::~Responder() {}
 Responder::Responder(const Responder &origin) { (void)origin; }
 Responder& Responder::operator=(const Responder &origin) { (void)origin; return *this; }
 
+Location* Responder::isCgiRequest(Request& request, ServerInstanceConfig serverConf)
+{
+	for (size_t i = 0; i < serverConf.locations.size(); i++)
+	{
+		if (serverConf.locations[i].path == request.getPath())
+			return &serverConf.locations[i];
+	}
+	return NULL;
+}
+
 Response Responder::getResponse(Request& request, ServerInstanceConfig serverConf)
 {
 	Response response;
 	std::ifstream file;
 	std::string path;
-	
+
+	Location* location;
+	location = isCgiRequest(request, serverConf);
+	if (location != NULL)
+	{
+		CgiHandler cgi(_logger);
+		cgi.createResponse(response, request, *location, serverConf);
+		return response;
+	} 
+		
+
 	if (request.getPath() == "/")
 		path = serverConf.rootDirectory + "/" + serverConf.indexFile;
 	else

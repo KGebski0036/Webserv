@@ -6,80 +6,79 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:41:15 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/06 22:11:50 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/CgiHandler.hpp"
 
+void CgiHandler::createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config)
+{
+	(void)request;
+	(void)location;
+	(void)config;
+	
+	response.body = execute(location.cgi_pass, "");
+	std::cout << response.body << E;
+	std::cout << "Aaaa" << E;
+}
+
 std::string CgiHandler::execute(const  std::string& scriptPath, const std::string& requestData)
 {
 	(void)_logger;
-	(void)requestData;
 	(void)scriptPath;
+	(void)requestData;
 
-	int pipefd[2];
+    int pipefd[2];
 
-	if (pipe(pipefd) == -1)
-		return "";
+    if (pipe(pipefd) == -1) {
+        return "";
+    }
 
-	pid_t pid = fork();
+    pid_t pid = fork();
 
-	if (pid == -1)
-		return "";
-	else if (pid == 0)
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
+    if (pid == -1) {
+        return "";
+    } else if (pid == 0) {
+        // Child process
+        close(pipefd[0]); // Close read end of the pipe
 
-		setupEnvVars();
-		
-		// execl(scriptPath.c_str(), scriptPath.c_str(), NULL, _envp);
-		// _exit(EXIT_FAILURE);
-	}
-	else
-	{
-		close(pipefd[1]);
+        // Redirect stdout to the write end of the pipe
+        dup2(pipefd[1], STDOUT_FILENO);
 
-		std::string output;
-		char buffer[4096];
-		int bytesRead;
-		while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer))) > 0)
-			output.append(buffer, bytesRead);
+        // Close the original write end of the pipe (no longer needed)
+        close(pipefd[1]);
 
-		close(pipefd[0]);
-		waitpid(pid, NULL, 0);
-		return output;
-	}
-	return "";
+        // Execute the CGI script
+        execl(, NULL);
+
+        // execl should not return if successful
+        std::cerr << "execl failed." << std::endl;
+        _exit(EXIT_FAILURE);
+    } else {
+        // Parent process
+        close(pipefd[1]); // Close write end of the pipe
+
+        std::string output;
+        char buffer[4096];
+        int bytesRead;
+        while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer))) > 0) {
+            output.append(buffer, bytesRead);
+        }
+
+        close(pipefd[0]); // Close read end of the pipe
+        waitpid(pid, NULL, 0); // Wait for the child process to finish
+        return output;
+    }
+	return 0;
 }
 
 void CgiHandler::setupEnvVars()
 {
-	size_t numEnvVars = _envVars.size();
-	_envp = new char*[numEnvVars + 1];
-
-	size_t i = 0;
-	for (std::map<std::string, std::string>::const_iterator it = _envVars.begin(); it != _envVars.end(); ++it) {
-		std::string envVar = it->first + "=" + it->second;
-		_envp[i] = new char[envVar.size() + 1];
-		std::strcpy(_envp[i], envVar.c_str());
-		++i;
-	}
-	_envp[numEnvVars] = NULL;
+//todo add env vars support
 }
 
-void CgiHandler::setEnvVar(const std::string& key, const std::string& value) { _envVars[key] = value; }
-
-CgiHandler::~CgiHandler()
-{
-	if (_envp)
-	{
-		for (size_t i = 0; i < _envVars.size(); ++i)
-			delete[] _envp[i];
-		delete[] _envp;
-	}
-}
+CgiHandler::~CgiHandler() {}
 
 CgiHandler::CgiHandler(Logger* logger) : _logger(logger) {}
 CgiHandler::CgiHandler() : _logger(NULL) {}
