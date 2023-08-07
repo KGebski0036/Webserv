@@ -9,7 +9,7 @@ cgitb.enable()
 
 # Function to read and modify the template HTML file
 def get_modified_html(username):
-    with open('/home/sztorm/webserv/www/html/uploadFile.html', 'r') as file:
+    with open('/home/sztorm/webserv/www/html/userPanel.html', 'r') as file:
         html_content = file.read()
 
     # Replace the placeholder %USERNAME% with the actual username

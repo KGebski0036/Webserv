@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/07 05:48:01 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 06:19:25 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ Response Responder::getResponse(Request& request, ServerInstanceConfig serverCon
 	{
 		CgiHandler cgi(_logger);
 		//TODO We are losing data here, I don't yet know why
-		_logger->print(DEBUG, DIM, "after assigning pointer " + location->cgi_pass , 0);
+		_logger->print(DEBUG, DIM, "after assigning pointer " + location->cgi_pass, 0);
 		cgi.createResponse(response, request, *location, serverConf);
 		return response;
 	} 

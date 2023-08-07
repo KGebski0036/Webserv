@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/07 05:43:48 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 06:02:46 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#include "MyException.hpp"
 #include "Request.hpp"
 #include "Logger.hpp"
 #include "ServerInstanceConfig.hpp"

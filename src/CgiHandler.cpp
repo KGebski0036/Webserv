@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 05:36:22 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 06:24:38 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@ void CgiHandler::createResponse(Response& response, Request& request, Location& 
 {
 	(void)request;
 	(void)config;
+	(void)location;
 	_logger->print(INFO, GREEN, "Building response...", 0);
-	_logger->print(DEBUG, DIM, location.cgi_pass , 0);
+	// _logger->print(DEBUG, DIM, location.path, 0); //! Data is lost, can't process the cgi location
 	response.body = execute("", "");
-	// std::cout << response.body << E;
+	// std::cout << location.path << E; //! This does SV
 }
 
 std::string CgiHandler::execute(const  std::string& scriptPath, const std::string& requestData)
@@ -42,7 +43,7 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 
-		if (execl("/home/sztorm/webserv/www/cgi-bin/test.py", "simple_cgi", NULL) == -1) {
+		if (execl("/home/sztorm/webserv/www/cgi-bin/userPanel.py", "simple_cgi", NULL) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
 			_exit(EXIT_FAILURE);
 		}
