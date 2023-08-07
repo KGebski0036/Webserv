@@ -15,12 +15,30 @@ def get_modified_html(username):
 
 form = cgi.FieldStorage()
 
-if 'CONTENT_LENGTH' in os.environ:
-    content_length = int(os.environ['CONTENT_LENGTH'])
+# for key, value in form:
+#     print("{}: {}<br>".format(key, value))
+
+s = os.environ["BODY"]:
+s = sub
+
+    
+request_method = os.environ.get('REQUEST_METHOD', '')
+
+if request_method == 'POST':
+    # Get the length of the request body
+    content_length = int(os.environ.get('CONTENT_LENGTH', 0))
+
+    # Read the request body
     request_body = sys.stdin.read(content_length)
-    form = cgi.FieldStorage(fp=sys.stdin, environ=os.environ, keep_blank_values=True)
+    parsed_body = cgi.parse_qs(request_body)
 
+    # Get the username from the parsed body
+    username = s.get('username', ['Guest'])[0]
 
-username = form.getvalue('username', 'Guest')
+else:
+    # For other request methods (GET, etc.), get the username from the query string
+    form = cgi.FieldStorage()
+    username = form.getvalue('username', 'Guest')
+
 modified_html = get_modified_html(username)
 print(modified_html)

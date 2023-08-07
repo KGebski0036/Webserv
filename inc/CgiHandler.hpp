@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:40:39 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/07 19:54:13 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ class CgiHandler {
 	void createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config);
 
   private:
-	char* _envp[3];
+	char* _envp[30];
 	Logger* _logger;
 
 	void setupEnvVars(Request &request);

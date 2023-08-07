@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 19:49:32 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 20:29:59 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
-
-		if (execl("/usr/bin/python", "python", "www/cgi-bin/userPanel.py", NULL, _envp) == -1) {
+		char *argv[2];
+		argv[0] = "www/cgi-bin/userPanel.py";
+		argv[1] = NULL;
+		
+		if (execve(argv[0], argv, _envp) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
 			_exit(EXIT_FAILURE);
 		}
@@ -71,11 +74,14 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 
 void CgiHandler::setupEnvVars(Request &request)
 {
+	std::cout << YELLOW << request.getContentLength() << E;
 	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
 	std::string bodyVar = "BODY=" + request.getBody();
+	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
 	_envp[0] = const_cast<char*>(contentLengthVar.c_str());
     _envp[1] = const_cast<char*>(bodyVar.c_str());
-    _envp[2] = NULL;
+	_envp[2] = const_cast<char*>(requestMethod.c_str());
+    _envp[3] = NULL;
 }
 
 CgiHandler::~CgiHandler() {}
