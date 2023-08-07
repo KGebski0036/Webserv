@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 12:48:59 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:14:25 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void CgiHandler::createResponse(Response& response, Request& request, Location& 
 	(void)config;
 	(void)location;
 	_logger->print(INFO, GREEN, "Building response...", 0);
-	// _logger->print(DEBUG, DIM, location.path, 0); //! Data is lost, can't process the cgi location
 	response.body = execute("", "");
-	// std::cout << location.path << E; //! This does SV
 }
 
 std::string CgiHandler::execute(const  std::string& scriptPath, const std::string& requestData)

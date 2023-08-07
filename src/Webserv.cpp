@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 03:37:19 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 15:48:33 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void Webserv::acceptNewConnection(ServerInstanceConfig& serv)
 
 void Webserv::readRequest(int fd)
 {
-	char    buffer[MESSAGE_BUFFER];
+	char    buffer[MESSAGE_BUFFER + 1];
 	int ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
 	buffer[ret] = 0;
 	if (ret < 0)

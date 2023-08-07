@@ -33,10 +33,42 @@
 		<main>
 			<br></br>
 			<h3>Welcome %USERNAME% 👋</h3>
-			<form class="form-signin forms mb-5 py-3" method="post" action="/uploadHandler.py" enctype="multipart/form-data">
+			<form class="form-signin forms mb-5 py-3" action="#" enctype="text/plain">
 				<input type="file" name="file" id="file">
 				<br></br>
-				<button class="btn btn-lg btn-primary btn-block mb-5 py-3" type="submit"> Upload </button>
+				<button class="btn btn-lg btn-primary btn-block mb-5 py-3" type="button" onclick="uploadFile();"> Upload </button>
+				<div id="status"></div>
+				<script>
+					function uploadFile() {
+						const fileInput = document.getElementById('file');
+						const file = fileInput.files[0];
+						
+						if (file)
+						{
+							const reader = new FileReader();
+
+							reader.onload = function(event) {
+								const fileData = event.target.result;
+								const base64Data = fileData.split(',')[1];
+
+								fetch('http://0.0.0.0:8042/upload_handler', {
+									method: 'POST',
+									body: base64Data
+								})
+								.then(response => response.text())
+								.catch(error => {
+									console.error('Error:', error);
+								});
+							};
+
+							reader.readAsDataURL(file);
+						}
+						else
+						{
+							document.getElementById('status').textContent = 'Please select a file.';
+						}
+					}
+				</script>
 			</form>
 		</main>
 
