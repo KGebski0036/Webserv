@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 12:42:32 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/07 12:48:59 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 
-		if (execl("/usr/bin/python", "python", "www/cgi-bin/simple.py", NULL) == -1) {
+		if (execl("/usr/bin/python", "python", "www/cgi-bin/userPanel.py", NULL) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
 			_exit(EXIT_FAILURE);
 		}
