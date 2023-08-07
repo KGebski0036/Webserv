@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 03:59:38 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:40:39 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <sys/wait.h>
 #include <sys/wait.h>
 #include <cstring>
+#include <stdlib.h>
 #include "Logger.hpp"
 #include "Response.hpp"
 #include "ServerInstanceConfig.hpp"
@@ -37,10 +38,10 @@ class CgiHandler {
 	void createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config);
 
   private:
-	// char** _envp;
+	char* _envp[3];
 	Logger* _logger;
 
-	void setupEnvVars();
+	void setupEnvVars(Request &request);
 
 	// Response _response;
 	// Request& _request;
