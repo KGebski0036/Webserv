@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 06:24:38 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 12:42:32 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 
-		if (execl("/home/sztorm/webserv/www/cgi-bin/userPanel.py", "simple_cgi", NULL) == -1) {
+		if (execl("/usr/bin/python", "python", "www/cgi-bin/simple.py", NULL) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
 			_exit(EXIT_FAILURE);
 		}
