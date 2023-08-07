@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Logger.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 05:04:30 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:23:23 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,10 @@ void Logger::print(LogLevel level, std::string color, std::string str, bool erro
 		else
 			oss << color << str << E;
 
-		std::cout << oss.str();
-		_logFile << trimColors(oss.str());
+		std::string tmp;
+		tmp = oss.str();
+		std::cout << tmp;
+		_logFile << trimColors(tmp);
 		_logFile.flush();
 	}
 }

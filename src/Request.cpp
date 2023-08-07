@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 05:26:37 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 17:33:13 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/Request.hpp"
 #include <iostream>
 
-Request::Request() {}
+Request::Request() {
+	_contentLength = 0;
+}
 Request::~Request() {}
 Request::Request(const Request& src)
 {
@@ -126,6 +128,7 @@ Request::Request(std::string rawRequest)
 			}
 		}
 	}
+	_contentLength = _body.size();
 }
 
 void Request::setMethod(std::string line)
@@ -166,7 +169,7 @@ std::string Request::toString()
 	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
 	
 	if (_body.size() > 0)
-		result << std::setw(25) << YELLOW << "Body: " << BLUE << _body << E;
+		result << std::setw(25) << YELLOW << "Body:\n" << BLUE << _body << E;
 	
 	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << E;
 

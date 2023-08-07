@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 15:35:38 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:53:27 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 #include "Responder.hpp"
 
 #define MAX_CLIENTS 512
-#define MESSAGE_BUFFER 2024
+#define MESSAGE_BUFFER 10000
 
 class Webserv {
   public:

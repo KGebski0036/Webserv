@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:14:25 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 17:35:44 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 		close(pipefd[1]);
 		wait(NULL);
 
-        int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
+		int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
 
-        if (bytesRead == -1) {
+		if (bytesRead == -1) {
 			_logger->print(DEBUG, "Failed to read from the pipe.", 1);
-            return "";
-        }
+			return "";
+		}
 
-        buffer[bytesRead] = '\0';
-        dup2(1, pipefd[0]);
+		buffer[bytesRead] = '\0';
+		dup2(1, pipefd[0]);
 
 		return buffer;
 	}
