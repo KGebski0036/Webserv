@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/07 17:41:16 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 18:59:06 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,10 @@ Response Responder::getResponse(Request& request, ServerInstanceConfig serverCon
 	if (path.back() == '/')
 	{
 		if (serverConf.autoindex)
-			indexDirectory(path, serverConf, response);
+			indexDirectory(path, response);
 		else
 		{
 			response.code = 403;
-			response.body = ErrorPages::generateErrorPage(403);
 		}
 
 		return response;
@@ -76,11 +75,11 @@ Response Responder::getResponse(Request& request, ServerInstanceConfig serverCon
 		file.close();
 	}
 	else
-		return404Page(response, serverConf, path);
+		response.code = 404;
 	return response;
 }
 
-void Responder::indexDirectory(std::string path, ServerInstanceConfig serverConf, Response& response)
+void Responder::indexDirectory(std::string path, Response& response)
 {
 	DIR *directory = opendir(path.c_str());
 	
@@ -125,22 +124,6 @@ void Responder::indexDirectory(std::string path, ServerInstanceConfig serverConf
         response.body += "</table>";
     }
 	else
-		return404Page(response, serverConf, path);
+		response.code = 404;
 		
-}
-
-void Responder::return404Page(Response& response, ServerInstanceConfig serverConf, std::string path)
-{
-	std::ifstream file;
-	
-	response.code = 404;
-	file.open(serverConf.rootDirectory + "/default_error_pages/404.html");
-	_logger->print(INFO, RED, "We returned the 404 page file insted of " + path, 0);
-	if (file.is_open())
-	{
-		getline(file, response.body, '\0');
-		file.close();
-	}
-	else
-		response.body = ErrorPages::generateErrorPage(404);
 }

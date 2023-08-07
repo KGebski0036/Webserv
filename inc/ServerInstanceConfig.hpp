@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:21:32 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 19:38:30 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ struct ServerInstanceConfig
 
 		autoindex = false;
 		clientBodyBufferSize = 1000000000;
-		errorPages[404] = "www/default_error_pages/404.html";
+		errorPages[404] = "default_error_pages/404.html";
 	}
 
 	struct LocationConfig {

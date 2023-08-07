@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/07 06:02:46 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 18:58:52 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,5 @@ class Responder
 	Logger* _logger;
 
 	Location* isCgiRequest(Request& request, ServerInstanceConfig serverConf);
-	void indexDirectory(std::string path, ServerInstanceConfig serverConf, Response& response);
-	void return404Page(Response& response, ServerInstanceConfig serverConf, std::string path);
+	void indexDirectory(std::string path, Response& response);
 };

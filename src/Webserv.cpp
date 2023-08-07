@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 18:32:36 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 19:35:56 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,27 +132,20 @@ void Webserv::acceptNewConnection(ServerInstanceConfig& serv)
 void Webserv::readRequest(int fd)
 {
 	char    buffer[MESSAGE_BUFFER + 1];
+	std::string tmp = "";
 	
 	int ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
-	
-	
-	if (ret == 0)
-	{
-		closeConnection(fd);
-		ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
-		std::cout << RED << ret << E;
-		_logger->print(INFO, "Connection closed", 0);
-		return;
-	}
-	if (ret < 0)
-	{
-		closeConnection(fd);
-		throw MyException("Fcntl failed, connection closed", __func__, __FILE__, __LINE__);
-	}
 	buffer[ret] = 0;
+	tmp = buffer;
 	
-
-	_clientsMap[fd].request = Request(buffer);
+	while (ret != -1)
+	{
+		buffer[ret] = 0;
+		tmp += buffer;
+		ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
+	}
+	
+	_clientsMap[fd].request = Request(tmp);
 	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
 	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
 
@@ -166,15 +159,22 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	client.response = _responder->getResponse(client.request, client.server);
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
-	httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
 	
 	if (client.response.code == 200)
+	{
+		httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
 		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.getPath()) + "\r\n";
+		httpResponse += "\r\n";
+		httpResponse += client.response.body;
+	}
 	else
+	{
+		std::string tmp = ErrorPages::generateErrorPage(client.response.code, client.server);
+		httpResponse += "Content-Length: " + std::to_string(tmp.length()) + "\r\n";
 		httpResponse += "Content-Type: text/html\r\n";
-
-	httpResponse += "\r\n";
-	httpResponse += client.response.body;
+		httpResponse += "\r\n";
+		httpResponse += tmp;
+	}
 
 	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
 		throw MyException("Send failed", __func__, __FILE__, __LINE__);
