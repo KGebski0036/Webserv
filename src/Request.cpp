@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 20:31:55 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/07 05:26:37 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,4 +173,23 @@ std::string Request::toString()
 	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << E;
 	
 	return result.str();
+}
+
+std::string Request::displayRequestContent() {
+	std::stringstream ss;
+	const int width = 25;
+
+	ss << "\n" <<WHITE << std::setw(width) << "HttpMethod: " << BLUE << _method << "\n";
+	ss << WHITE << std::setw(width) << "Path: " << BLUE << _path << "\n";
+	ss << WHITE << std::setw(width) << "Request Parameters: " << "\n";
+	for (std::map<std::string, std::string>::const_iterator it = _requestParameters.begin(); it != _requestParameters.end(); ++it) {
+		ss << WHITE << std::setw(width + 2) << BLUE << it->first << ": " << it->second << "\n";
+	}
+	ss << WHITE << std::setw(width) << "Host: " << BLUE << _host << "\n";
+	ss << WHITE << std::setw(width) << "Port: " << BLUE << _port << "\n";
+	ss << WHITE << std::setw(width) << "Body: " << BLUE << _body << "\n";
+	ss << WHITE << std::setw(width) << "Protocol: " << BLUE << _protocol << "\n";
+	ss << WHITE << std::setw(width) << "Content Length: " << BLUE << _contentLength << "\n";
+	ss << WHITE << std::setw(width) << "Content Type: " << BLUE << _contentType << "\n";
+	return ss.str();
 }

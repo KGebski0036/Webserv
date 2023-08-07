@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 21:38:52 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 03:59:38 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <sys/wait.h>
+#include <cstring>
 #include "Logger.hpp"
 #include "Response.hpp"
 #include "ServerInstanceConfig.hpp"

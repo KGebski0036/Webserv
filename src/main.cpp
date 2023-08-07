@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:32:00 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:06:29 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 03:12:35 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int ac, char *av[])
 
 void signalHandler(int signal) {
 	std::cout << E;
-	
+
 	if (signal == SIGINT)
 		logger.print(INFO, RED, "Received SIGINT signal. Exiting now...", 0);
 	else if (signal == SIGTERM)

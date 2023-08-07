@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:41:10 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 05:04:30 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ void Logger::print(LogLevel level, std::string color, std::string str, bool erro
 
 		std::ostringstream oss;
 
+		oss << G << "[" << buf << "] ";
+		if (level == DEBUG)
+			oss << ORANGE << "[DEBUGGING] ";
+
 		if (error)
-			oss << G << "[" << buf << "] " << C_ERROR << BOLD << str << E;
+			oss << C_ERROR << BOLD << str << E;
 		else
-			oss << G << "[" << buf << "] " << color << str << E;
+			oss << color << str << E;
 
 		std::cout << oss.str();
 		_logFile << trimColors(oss.str());

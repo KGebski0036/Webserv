@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:46:02 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:40:58 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 05:04:29 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+#include <ctime>
+#include <cstdarg>
+#include <iostream>
 #include <string>
+#include <ctime>
+#include <cstdarg>
 #include "Colors.hpp"
 
 enum LogLevel {
@@ -33,6 +38,7 @@ class Logger {
 
 	void print(LogLevel level, std::string str, bool error);
 	void print(LogLevel level, std::string color, std::string str, bool error);
+	// void print(LogLevel level, bool error, char* color, ...)
 	std::string trimColors(const std::string& input);
 
   private:

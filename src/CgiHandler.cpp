@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   CGIHandler.cpp                                     :+:      :+:    :+:   */
+/*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 22:11:50 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 05:36:22 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,63 +15,58 @@
 void CgiHandler::createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config)
 {
 	(void)request;
-	(void)location;
 	(void)config;
-	
-	response.body = execute(location.cgi_pass, "");
-	std::cout << response.body << E;
-	std::cout << "Aaaa" << E;
+	_logger->print(INFO, GREEN, "Building response...", 0);
+	_logger->print(DEBUG, DIM, location.cgi_pass , 0);
+	response.body = execute("", "");
+	// std::cout << response.body << E;
 }
 
 std::string CgiHandler::execute(const  std::string& scriptPath, const std::string& requestData)
 {
-	(void)_logger;
 	(void)scriptPath;
 	(void)requestData;
+	int pipefd[2];
+	char buffer[4096];
 
-    int pipefd[2];
+	if (pipe(pipefd) == -1)
+		_logger->print(DEBUG, "Failed to create pipe. ", 1);
 
-    if (pipe(pipefd) == -1) {
-        return "";
-    }
+	pid_t pid = fork();
 
-    pid_t pid = fork();
+	if (pid == -1) {
+		_logger->print(DEBUG, "Failed to create child process. ", 1);
+	}
+	else if (pid == 0)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
 
-    if (pid == -1) {
-        return "";
-    } else if (pid == 0) {
-        // Child process
-        close(pipefd[0]); // Close read end of the pipe
+		if (execl("/home/sztorm/webserv/www/cgi-bin/test.py", "simple_cgi", NULL) == -1) {
+			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
+			_exit(EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		close(pipefd[1]);
+		wait(NULL);
 
-        // Redirect stdout to the write end of the pipe
-        dup2(pipefd[1], STDOUT_FILENO);
+        int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
 
-        // Close the original write end of the pipe (no longer needed)
-        close(pipefd[1]);
-
-        // Execute the CGI script
-        execl(, NULL);
-
-        // execl should not return if successful
-        std::cerr << "execl failed." << std::endl;
-        _exit(EXIT_FAILURE);
-    } else {
-        // Parent process
-        close(pipefd[1]); // Close write end of the pipe
-
-        std::string output;
-        char buffer[4096];
-        int bytesRead;
-        while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer))) > 0) {
-            output.append(buffer, bytesRead);
+        if (bytesRead == -1) {
+			_logger->print(DEBUG, "Failed to read from the pipe.", 1);
+            return "";
         }
 
-        close(pipefd[0]); // Close read end of the pipe
-        waitpid(pid, NULL, 0); // Wait for the child process to finish
-        return output;
-    }
-	return 0;
+        buffer[bytesRead] = '\0';
+        dup2(1, pipefd[0]);
+
+		return buffer;
+	}
+	return "";
 }
+
 
 void CgiHandler::setupEnvVars()
 {

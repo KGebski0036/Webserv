@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 17:38:46 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/07 03:37:19 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,14 @@ void Webserv::run()
 						/* doesnt need CGI processing */
 						//? Based on location
 						sendHttpResponse(i);
+						break;
 					case 1:
 						/* needs CGI processing and is currently processing it */
-						
-						_clientsMap[i].response.cgiState = 2;
+						// _clientsMap[i].response.cgiState = 2;
 						break;
 					case 2:
 						/* CGI has been processed */
-						sendHttpResponse(i);
+						// sendHttpResponse(i);
 						break;
 					default:
 						break;
