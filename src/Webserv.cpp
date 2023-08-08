@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 19:35:56 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 15:04:50 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,24 +131,20 @@ void Webserv::acceptNewConnection(ServerInstanceConfig& serv)
 
 void Webserv::readRequest(int fd)
 {
-	char    buffer[MESSAGE_BUFFER + 1];
+	char buffer[MESSAGE_BUFFER + 1];
 	std::string tmp = "";
 	
-	int ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
-	buffer[ret] = 0;
-	tmp = buffer;
-	
-	while (ret != -1)
+	int ret;
+	while ((ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT)) > 0)
 	{
 		buffer[ret] = 0;
 		tmp += buffer;
-		ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT);
 	}
 	
 	_clientsMap[fd].request = Request(tmp);
 	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
 	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
-
+	std::cout << MAGENTA << tmp << std::endl;
 	FD_SET(fd, &_writeFdPool);
 }
 
