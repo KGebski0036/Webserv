@@ -15,12 +15,9 @@ def get_modified_html(username):
 
 form = cgi.FieldStorage()
 
-# for key, value in form:
-#     print("{}: {}<br>".format(key, value))
+for key, value in form:
+    print("{}: {}<br>".format(key, value))
 
-s = os.environ.get("BODY", '')
-
-    
 request_method = os.environ.get('REQUEST_METHOD', '')
 
 if request_method == 'POST':

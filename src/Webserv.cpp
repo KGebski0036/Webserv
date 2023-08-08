@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:29:33 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:31:42 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,6 @@ void Webserv::readRequest(int fd)
 	_clientsMap[fd].request = Request(tmp);
 	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
 	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
-	std::cout << MAGENTA << tmp << std::endl;
 	FD_SET(fd, &_writeFdPool);
 }
 

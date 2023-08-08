@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:26:21 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:39:49 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void CgiHandler::createResponse(Response& response, Request& request, LocationConfig& location, ServerInstanceConfig& config)
 {
 	(void)config;
-	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Building response...", 0);
+	_logger->print(DEBUG, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Building response...", 0);
 	setupEnvVars(request);
 	response.body = execute(location.root + "/" + location.cgi_pass);
 }
@@ -69,8 +69,7 @@ std::string CgiHandler::execute(const std::string scriptPath)
 
 void CgiHandler::setupEnvVars(Request &request)
 {
-	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Setting up env vars...", 0);
-	std::cout << YELLOW << request.getContentLength() << E;
+	_logger->print(DEBUG, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Setting up env vars...", 0);
 	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
 	std::string bodyVar = "BODY=" + request.getBody();
 	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
