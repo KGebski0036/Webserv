@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:39:49 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 16:51:40 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ void CgiHandler::createResponse(Response& response, Request& request, LocationCo
 {
 	(void)config;
 	_logger->print(DEBUG, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Building response...", 0);
-	setupEnvVars(request);
-	response.body = execute(location.root + "/" + location.cgi_pass);
+	response.body = execute(location.root + "/" + location.cgi_pass, response, request);
 }
 
-std::string CgiHandler::execute(const std::string scriptPath)
+std::string CgiHandler::execute(const std::string scriptPath, Response& response, Request& request)
 {
 	int pipefd[2];
 	char buffer[4096];
@@ -40,6 +39,7 @@ std::string CgiHandler::execute(const std::string scriptPath)
 		char *argv[2];
 		argv[0] = const_cast<char*>(scriptPath.c_str());
 		argv[1] = NULL;
+		char** _envp = setupEnvVars(request);
 		
 		if (execve(argv[0], argv, _envp) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
@@ -49,7 +49,15 @@ std::string CgiHandler::execute(const std::string scriptPath)
 	else
 	{
 		close(pipefd[1]);
-		wait(NULL);
+		int r;
+		wait(&r);
+		(void)r;
+		(void)response;
+		// if (WEXITSTATUS(r) == EXIT_FAILURE)
+		// {
+		// 	response.code = 500;
+		// 	return "";
+		// }
 
 		int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
 
@@ -67,16 +75,24 @@ std::string CgiHandler::execute(const std::string scriptPath)
 }
 
 
-void CgiHandler::setupEnvVars(Request &request)
+char** CgiHandler::setupEnvVars(Request &request)
 {
-	_logger->print(DEBUG, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Setting up env vars...", 0);
+	char** result = new char*[4];
+
 	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
 	std::string bodyVar = "BODY=" + request.getBody();
 	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
-	_envp[0] = const_cast<char*>(contentLengthVar.c_str());
-    _envp[1] = const_cast<char*>(bodyVar.c_str());
-	_envp[2] = const_cast<char*>(requestMethod.c_str());
-    _envp[3] = NULL;
+	
+	result[0] = new char[contentLengthVar.size() + 1];
+	result[1] = new char[bodyVar.size() + 1];
+	result[2] = new char[requestMethod.size() + 1];
+	result[3] = NULL;
+
+	strcpy(result[0], contentLengthVar.c_str());
+	strcpy(result[1], bodyVar.c_str());
+	strcpy(result[2], requestMethod.c_str());
+	
+	return result;
 }
 
 CgiHandler::~CgiHandler() {}
