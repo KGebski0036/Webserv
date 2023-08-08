@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 20:29:59 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:12:10 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 
 void CgiHandler::createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config)
 {
-	(void)request;
 	(void)config;
-	(void)location;
 	_logger->print(INFO, GREEN, "Building response...", 0);
 	// _logger->print(DEBUG, DIM, location.path, 0); //! Data is lost, can't process the cgi location
-	setupEnvVars(request);
-	response.body = execute("", "");
+	// setupEnvVars(request);
+	// response.body = execute(location.cgi_pass);
 }
 
-std::string CgiHandler::execute(const  std::string& scriptPath, const std::string& requestData)
+std::string CgiHandler::execute(std::string& scriptPath)
 {
-	(void)scriptPath;
-	(void)requestData;
 	int pipefd[2];
 	char buffer[4096];
 
@@ -43,7 +39,7 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		char *argv[2];
-		argv[0] = "www/cgi-bin/userPanel.py";
+		argv[0] = const_cast<char*>(scriptPath.c_str());
 		argv[1] = NULL;
 		
 		if (execve(argv[0], argv, _envp) == -1) {
@@ -74,14 +70,14 @@ std::string CgiHandler::execute(const  std::string& scriptPath, const std::strin
 
 void CgiHandler::setupEnvVars(Request &request)
 {
-	std::cout << YELLOW << request.getContentLength() << E;
-	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
-	std::string bodyVar = "BODY=" + request.getBody();
-	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
-	_envp[0] = const_cast<char*>(contentLengthVar.c_str());
-    _envp[1] = const_cast<char*>(bodyVar.c_str());
-	_envp[2] = const_cast<char*>(requestMethod.c_str());
-    _envp[3] = NULL;
+	// std::cout << YELLOW << request.getContentLength() << E;
+	// std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
+	// std::string bodyVar = "BODY=" + request.getBody();
+	// std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
+	// _envp[0] = const_cast<char*>(contentLengthVar.c_str());
+    // _envp[1] = const_cast<char*>(bodyVar.c_str());
+	// _envp[2] = const_cast<char*>(requestMethod.c_str());
+    // _envp[3] = NULL;
 }
 
 CgiHandler::~CgiHandler() {}

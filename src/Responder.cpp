@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/07 18:59:06 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:14:21 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ Response Responder::getResponse(Request& request, ServerInstanceConfig serverCon
 	std::string path;
 
 	Location* location;
+	_logger->print(DEBUG, DIM, "AAAAAAAAAAAA", 0); //! Data is lost, can't process the cgi location
 	location = isCgiRequest(request, serverConf);
 	if (location != NULL)
 	{

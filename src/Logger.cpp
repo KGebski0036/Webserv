@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Logger.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:23:23 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:13:55 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void Logger::print(LogLevel level, std::string str, bool error) {
 }
 
 void Logger::print(LogLevel level, std::string color, std::string str, bool error) {
+	if (str == "")
+		return;
 	if (level <= _level) {
 		time_t rawtime;
 		struct tm* tm;

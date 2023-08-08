@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 19:54:13 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 13:04:47 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class CgiHandler {
 	CgiHandler(Logger *);
 	~CgiHandler();
 
-    std::string execute(const std::string& scriptPath, const std::string& requestData);
+    std::string execute(std::string& scriptPath);
 
 	void createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config);
 
