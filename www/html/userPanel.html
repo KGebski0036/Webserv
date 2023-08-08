@@ -36,7 +36,7 @@
 			<form class="form-signin forms mb-5 py-3" action="#" enctype="text/plain">
 				<input type="file" name="file" id="file">
 				<br></br>
-				<button class="btn btn-lg btn-primary btn-block mb-5 py-3" type="button" onclick="uploadFile();"> Upload </button>
+				<button class="btn btn-lg btn-primary btn-block mb-2 py-3" type="button" onclick="uploadFile();"> Upload </button>
 				<div id="status"></div>
 				<script>
 					function uploadFile() {
@@ -46,12 +46,12 @@
 						if (file)
 						{
 							const reader = new FileReader();
-
+							
 							reader.onload = function(event) {
 								const fileData = event.target.result;
 								const base64Data = fileData.split(',')[1];
-
-								fetch('http://0.0.0.0:8042/upload_handler?login=%USERNAME%', {
+								
+								fetch('/fileHandler?login=%USERNAME%', {
 									method: 'POST',
 									body: base64Data
 								})
@@ -74,10 +74,26 @@
 					}
 					function standby() {
 						document.getElementById('photo').src = 'https://cdn-icons-png.flaticon.com/512/21/21104.png'
+						document.getElementById('delete').innerHTML = "";
 					}
-				</script>
-			<img id="photo" src="/userFiles/%USERNAME%.png" class="rounded-circle" width="50%" alt="%USERNAME%" onerror="standby()">
-			</form>
+					function deleteFile() {
+						fetch('/fileHandler?login=%USERNAME%', {
+							method: 'DELETE',
+						})
+						.then(response => {
+							response.text();
+							location.reload();
+						})
+						.catch(error => {
+							console.error('Error:', error);
+						});
+					}
+						</script>
+			<img id="photo" src="/userFiles/%USERNAME%.png" class="rounded" width="50%" alt="%USERNAME%" onerror="standby()"><br>
+			<div id="delete">
+				<button id="deletebtn" class="btn btn-lg btn-danger mt-2" type="button" onclick="deleteFile();"> Delete </button>
+			</div>
+		</form>
 		</main>
 
 <!-- <main class="mt-5">

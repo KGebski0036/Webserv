@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 20:03:17 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 20:59:27 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		argv[0] = const_cast<char*>(scriptPath.c_str());
 		argv[1] = NULL;
 		char** _envp = setupEnvVars(request);
+		
 		
 		if (execve(argv[0], argv, _envp) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
