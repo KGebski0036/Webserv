@@ -18,6 +18,8 @@ form = cgi.FieldStorage()
 for key, value in form:
     print("{}: {}<br>".format(key, value))
 
+print("aaaaaaaaaaa")
+
 request_method = os.environ.get('REQUEST_METHOD', '')
 
 if request_method == 'POST':
