@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:33:13 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 14:07:03 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ Request::Request(std::string rawRequest)
 
 		while (std::getline(ss, tmp))
 		{
-			if (tmp.find("content-length:") == 0)
+			if (tmp.find("Content-Length:") == 0)
 				_contentLength = std::atoi(tmp.substr(16).c_str());
 			if (!readingBody && (tmp.empty() || tmp == "\r"))
 				readingBody = true;
