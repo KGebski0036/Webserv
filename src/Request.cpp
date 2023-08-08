@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 14:07:03 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:19:15 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ Request& Request::operator=(const Request& src)
 	return *this; 
 }
 
-HttpMethod Request::getMethod() const { return _method; }
+std::string Request::getMethod() const { return _method; }
 std::string Request::getPath() const { return _path; }
 std::map<std::string, std::string> Request::getRequestParameters() const { return _requestParameters; }
 std::string Request::getBody() const { return _body; }
@@ -61,7 +61,10 @@ Request::Request(std::string rawRequest)
 	std::string tmp;
 
 	ss >> method >> tmp >> _protocol;
-	setMethod(method);
+	if (method == "GET" || method == "POST" || method == "DELETE")
+		_method = method;
+	else
+		_method = "UNKNOWN";
 	if (tmp.find('?') != std::string::npos)
 	{
 		_path = tmp.substr(0, tmp.find('?'));
@@ -108,7 +111,7 @@ Request::Request(std::string rawRequest)
 		_port = 80;
 	}
 
-	if (_method == POST)
+	if (_method == "POST")
 	{
 		_contentLength = 0;
 		bool readingBody = false;
@@ -131,31 +134,11 @@ Request::Request(std::string rawRequest)
 	_contentLength = _body.size();
 }
 
-void Request::setMethod(std::string line)
-{
-	if (line == "GET")
-		_method = GET;
-	else if (line == "POST")
-		_method = POST;
-	else if (line == "DELETE")
-		_method = DELETE;
-	else
-		_method = DEFAULT;
-}
-
 std::string Request::toString()
 {
 	std::stringstream result;
-	std::string method = "UNKNOWN";
-	
-	if (_method == GET)
-		method = "GET";
-	if (_method == POST)
-		method = "POST";
-	if (_method == DELETE)
-		method = "POST";
-	
-	result << std::setw(25) << YELLOW << "Method: " << GREEN << method << std::setw(20) << YELLOW << "file: "
+
+	result << std::setw(25) << YELLOW << "Method: " << GREEN << _method << std::setw(20) << YELLOW << "file: "
 		MAGENTA << _path << E;
 	
 	if (_requestParameters.size() > 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:32:18 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 05:19:39 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 17:18:20 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,6 @@
 
 #include "Colors.hpp"
 
-enum HttpMethod{
-	DEFAULT,
-	GET,
-	POST,
-	DELETE
-};
-
 class Request {
   public:
 	Request();
@@ -35,7 +28,7 @@ class Request {
 	Request(const Request&);
 	Request& operator=(Request const &);
 	
-	HttpMethod getMethod() const;
+	std::string getMethod() const;
 	std::string getPath() const;
 	std::map<std::string, std::string> getRequestParameters() const;
 	std::string getBody() const;
@@ -49,9 +42,7 @@ class Request {
 	std::string displayRequestContent();
 
   private:
-	void setMethod(std::string line);
-
-	HttpMethod _method;
+	std::string _method;
 	std::string _path;
 	std::map<std::string, std::string>  _requestParameters;
 	std::string _host;
