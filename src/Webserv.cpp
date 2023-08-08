@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 19:35:56 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 15:17:12 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ ServerInstanceConfig& Webserv::getServerByIP(Request request)
 		if (it->second.listenAddress == request.getHost() && it->second.port == request.getPort())
 			return it->second;
 	}
-	std::cout << RED << "Default server" << E;
+	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM) + "Default server used", 0);
 	return (_serversMap.begin()->second);
 }
 

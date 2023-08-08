@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:30:01 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 18:55:00 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:08:26 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ class Config : public MyException {
 	void readListenArg(ServerInstanceConfig& config, std::string str);
 	void readAllowedMethodsArg(std::vector<std::string>& vec, size_t& j);
 	void readErrorPageArg(std::map<int, std::string>& map, size_t& j);
-	void readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& locations, size_t& j);
-	ServerInstanceConfig::LocationConfig* nestedLocation(size_t& j);
+	void readLocationArg(std::vector<LocationConfig>& locations, size_t& j);
+	LocationConfig* nestedLocation(size_t& j);
 
 	Config();
 	Config(const Config&);

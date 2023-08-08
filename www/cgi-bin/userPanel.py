@@ -18,8 +18,7 @@ form = cgi.FieldStorage()
 # for key, value in form:
 #     print("{}: {}<br>".format(key, value))
 
-s = os.environ["BODY"]:
-s = sub
+s = os.environ.get("BODY", '')
 
     
 request_method = os.environ.get('REQUEST_METHOD', '')

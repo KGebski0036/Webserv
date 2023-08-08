@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/08 13:14:21 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:20:24 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@ Responder::~Responder() {}
 Responder::Responder(const Responder &origin) { (void)origin; }
 Responder& Responder::operator=(const Responder &origin) { (void)origin; return *this; }
 
-Location* Responder::isCgiRequest(Request& request, ServerInstanceConfig serverConf)
+LocationConfig* Responder::isCgiRequest(Request& request, ServerInstanceConfig& serverConf)
 {
 	for (size_t i = 0; i < serverConf.locations.size(); i++)
 	{
 		if (serverConf.locations[i].path == request.getPath())
 		{
 			_logger->print(DEBUG,  std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM),"CGI location is matching the requested one... executing the cgi script", 0);
+			_logger->print(DEBUG,  std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), serverConf.locations[i].cgi_pass, 0);
 			return &(serverConf.locations[i]);
 		}
 	}
 	return NULL;
 }
 
-Response Responder::getResponse(Request& request, ServerInstanceConfig serverConf)
+Response Responder::getResponse(Request& request, ServerInstanceConfig& serverConf)
 {
 	Response response;
 	std::ifstream file;
 	std::string path;
 
-	Location* location;
-	_logger->print(DEBUG, DIM, "AAAAAAAAAAAA", 0); //! Data is lost, can't process the cgi location
+	LocationConfig* location;
 	location = isCgiRequest(request, serverConf);
 	if (location != NULL)
 	{

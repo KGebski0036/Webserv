@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ServerInstanceConfig.hpp                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 19:38:30 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 15:25:23 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 #include <vector>
 #include <map>
 #include <netinet/in.h>
+
+struct LocationConfig {
+	std::string path; //? location path
+	std::vector<std::string> allowedMethods;
+	std::string root; //? CGI Folder? ~/cgi-bin
+	std::string cgi_pass; //!
+	std::string index;
+	size_t clientBodyBufferSize;
+	struct LocationConfig* nestedLocation;
+};
 
 struct ServerInstanceConfig
 {
@@ -33,16 +43,6 @@ struct ServerInstanceConfig
 		clientBodyBufferSize = 1000000000;
 		errorPages[404] = "default_error_pages/404.html";
 	}
-
-	struct LocationConfig {
-		std::string path; //? location path
-		std::vector<std::string> allowedMethods;
-		std::string root; //? CGI Folder? ~/cgi-bin
-		std::string cgi_pass; //!
-		std::string index;
-		size_t clientBodyBufferSize;
-		struct LocationConfig* nestedLocation;
-	};
 
 	int port;
 	int listen_fd;
