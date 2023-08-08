@@ -6,6 +6,8 @@ import sys
 
 cgitb.enable()
 
+
+
 def get_modified_html(username):
 	with open('www/html/userPanel.html', 'r') as file:
 		html_content = file.read()

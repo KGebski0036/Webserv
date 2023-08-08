@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 17:05:28 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 20:03:17 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,20 +77,28 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 
 char** CgiHandler::setupEnvVars(Request &request)
 {
-	char** result = new char*[4];
+	char** result = new char*[5];
 
 	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
 	std::string bodyVar = "BODY=" + request.getBody();
-	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
+	std::string requestMethod = "REQUEST_METHOD=" + request.getMethod();
+	std::string params = "PARAMS=";
+	
+	for (std::map<std::string, std::string>::iterator it = request.getRequestParameters().begin(); it != request.getRequestParameters().end(); it++)
+	{
+		params += it->first + "=" + it->second + "&";
+	}
 	
 	result[0] = new char[contentLengthVar.size() + 1];
 	result[1] = new char[bodyVar.size() + 1];
 	result[2] = new char[requestMethod.size() + 1];
-	result[3] = NULL;
+	result[3] = new char[params.size() + 1];
+	result[4] = NULL;
 
 	strcpy(result[0], contentLengthVar.c_str());
 	strcpy(result[1], bodyVar.c_str());
 	strcpy(result[2], requestMethod.c_str());
+	strcpy(result[3], params.c_str());
 	
 	return result;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:31:42 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:01:12 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	{
 		httpResponse += "Content-Length: " + std::to_string(client.response.length()) + "\r\n";
 		httpResponse += "Content-Type: " + MIMEtypes::getMIMEtype(client.request.getPath()) + "\r\n";
+		httpResponse += "Set-Cookie: interesting=https://youtu.be/dQw4w9WgXcQ\r\n";
 		httpResponse += "\r\n";
 		httpResponse += client.response.body;
 	}

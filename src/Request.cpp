@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 17:19:15 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/08 20:05:26 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ Request& Request::operator=(const Request& src)
 
 std::string Request::getMethod() const { return _method; }
 std::string Request::getPath() const { return _path; }
-std::map<std::string, std::string> Request::getRequestParameters() const { return _requestParameters; }
+std::map<std::string, std::string>& Request::getRequestParameters() { return _requestParameters; }
 std::string Request::getBody() const { return _body; }
 std::string Request::getProtocol() const { return _protocol; }
 std::string Request::getHost() const { return _host; }
