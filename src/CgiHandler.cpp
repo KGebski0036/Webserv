@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 16:51:40 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/08 17:05:28 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		int r;
 		wait(&r);
 		(void)r;
-		(void)response;
 		// if (WEXITSTATUS(r) == EXIT_FAILURE)
 		// {
 		// 	response.code = 500;
@@ -71,6 +70,7 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 
 		return buffer;
 	}
+	response.code = 500;
 	return "";
 }
 
