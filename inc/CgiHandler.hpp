@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 13:04:47 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:23:44 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,14 @@
 #include "ServerInstanceConfig.hpp"
 #include "Request.hpp"
 
-typedef ServerInstanceConfig::LocationConfig Location;
-
 class CgiHandler {
   public:
 	CgiHandler(Logger *);
 	~CgiHandler();
 
-    std::string execute(std::string& scriptPath);
+    std::string execute(const std::string scriptPath);
 
-	void createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config);
+	void createResponse(Response& response, Request& request, LocationConfig& location, ServerInstanceConfig& config);
 
   private:
 	char* _envp[30];

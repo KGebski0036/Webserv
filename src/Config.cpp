@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/06 21:12:02 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:08:47 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,9 +129,9 @@ void Config::readAllowedMethodsArg(std::vector<std::string>& vec, size_t& j)
 
 bool Config::isHttpMethod(std::string str) { return  (str == "GET" || str == "POST" || str == "DELETE"); }
 
-void Config::readLocationArg(std::vector<ServerInstanceConfig::LocationConfig>& locations, size_t& j)
+void Config::readLocationArg(std::vector<LocationConfig>& locations, size_t& j)
 {
-	ServerInstanceConfig::LocationConfig location;
+	LocationConfig location;
 	int bracketsCounter = 1;
 	
 	location.path = _fileVector[++j];

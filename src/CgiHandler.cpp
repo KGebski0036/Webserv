@@ -6,22 +6,21 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 13:12:10 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/08 15:26:21 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/CgiHandler.hpp"
 
-void CgiHandler::createResponse(Response& response, Request& request, Location& location, ServerInstanceConfig& config)
+void CgiHandler::createResponse(Response& response, Request& request, LocationConfig& location, ServerInstanceConfig& config)
 {
 	(void)config;
-	_logger->print(INFO, GREEN, "Building response...", 0);
-	// _logger->print(DEBUG, DIM, location.path, 0); //! Data is lost, can't process the cgi location
-	// setupEnvVars(request);
-	// response.body = execute(location.cgi_pass);
+	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Building response...", 0);
+	setupEnvVars(request);
+	response.body = execute(location.root + "/" + location.cgi_pass);
 }
 
-std::string CgiHandler::execute(std::string& scriptPath)
+std::string CgiHandler::execute(const std::string scriptPath)
 {
 	int pipefd[2];
 	char buffer[4096];
@@ -70,14 +69,15 @@ std::string CgiHandler::execute(std::string& scriptPath)
 
 void CgiHandler::setupEnvVars(Request &request)
 {
-	// std::cout << YELLOW << request.getContentLength() << E;
-	// std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
-	// std::string bodyVar = "BODY=" + request.getBody();
-	// std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
-	// _envp[0] = const_cast<char*>(contentLengthVar.c_str());
-    // _envp[1] = const_cast<char*>(bodyVar.c_str());
-	// _envp[2] = const_cast<char*>(requestMethod.c_str());
-    // _envp[3] = NULL;
+	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM), "Setting up env vars...", 0);
+	std::cout << YELLOW << request.getContentLength() << E;
+	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
+	std::string bodyVar = "BODY=" + request.getBody();
+	std::string requestMethod = "REQUEST_METHOD=POST"; //! Change it!!!!!!!!
+	_envp[0] = const_cast<char*>(contentLengthVar.c_str());
+    _envp[1] = const_cast<char*>(bodyVar.c_str());
+	_envp[2] = const_cast<char*>(requestMethod.c_str());
+    _envp[3] = NULL;
 }
 
 CgiHandler::~CgiHandler() {}
