@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 19:51:05 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:45:28 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,25 @@ void Webserv::readRequest(int fd)
 	FD_SET(fd, &_writeFdPool);
 }
 
+bool Webserv::isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods)
+{
+	for (std::vector<std::string>::const_iterator it = allowedMethods.begin(); it != allowedMethods.end(); ++it)
+	{
+		if (method == *it)
+			return true;
+	}
+	return false;
+}
+
+
 void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
 
 	client.response = _responder->getResponse(client.request, client.server);
+
+	if (!isMethodAllowed(client.request.getMethod(), client.server.allowedMethods))
+		client.response.code = 405;
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	
