@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 12:49:32 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:25:23 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:12 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 #include <netinet/in.h>
 
 struct LocationConfig {
-	std::string path; //? location path
+	std::string path;
 	std::vector<std::string> allowedMethods;
-	std::string root; //? CGI Folder? ~/cgi-bin
-	std::string cgi_pass; //!
+	std::string root;
+	std::string cgi_pass;
 	std::string index;
 	size_t clientBodyBufferSize;
 	struct LocationConfig* nestedLocation;
@@ -28,7 +28,7 @@ struct LocationConfig {
 
 struct ServerInstanceConfig
 {
-	ServerInstanceConfig()	//! TO BE DELETED
+	ServerInstanceConfig()
 	{
 		port = 80;
 		serverName = "default";
@@ -40,7 +40,7 @@ struct ServerInstanceConfig
 		allowedMethods.push_back("DELETE");
 
 		autoindex = false;
-		clientBodyBufferSize = 1000000000;
+		clientBodyBufferSize = 100000;
 		errorPages[404] = "default_error_pages/404.html";
 	}
 
@@ -59,27 +59,3 @@ struct ServerInstanceConfig
 	size_t	clientBodyBufferSize;
 	std::map<int, std::string> errorPages;
 };
-
-// void displayServerConfig() const {
-// 	std::cout << "Port: " << port << std::endl;
-// 	std::cout << "Listen FD: " << listen_fd << std::endl;
-// 	std::cout << "Server Address: " << listenAddress << std::endl;
-// 	std::cout << "Server Name: " << serverName << std::endl;
-// 	std::cout << "Root Directory: " << rootDirectory << std::endl;
-// 	std::cout << "Index File: " << indexFile << std::endl;
-// 	std::cout << "Allowed Methods: ";
-// 	for (std::vector<std::string>::const_iterator it = allowedMethods.begin(); it != allowedMethods.end(); ++it) {
-// 		std::cout << *it << " ";
-// 	}
-// 	std::cout << std::endl;
-// 	std::cout << "Autoindex: " << (autoindex ? "true" : "false") << std::endl;
-// 	std::cout << "Client Body Buffer Size: " << clientBodyBufferSize << std::endl;
-// 	std::cout << "Error Pages: " << std::endl;
-// 	for (std::map<int, std::string>::const_iterator it = errorPages.begin(); it != errorPages.end(); ++it) {
-// 		std::cout << "  " << it->first << ": " << it->second << std::endl;
-// 	}
-// 	std::cout << "Locations: " << std::endl;
-// 	for (std::vector<LocationConfig>::const_iterator it = locations.begin(); it != locations.end(); ++it) {
-// 		displayLocationConfig(*it);
-// 	}
-// }

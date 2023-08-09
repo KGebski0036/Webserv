@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 14:26:36 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:33 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ class CgiHandler {
 	Logger* _logger;
 
 	char** setupEnvVars(Request &request);
-
-	// Response _response;
-	// Request& _request;
-	// Location& _location;
-	// ServerInstanceConfig& _config;
 
 	CgiHandler();
 	CgiHandler(const CgiHandler&);

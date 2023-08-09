@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 01:01:37 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:51:05 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,7 @@ void Webserv::run()
 					readRequest(i);
 			}
 			if (FD_ISSET(i, &writeSetCpy))
-			{
-				switch (_clientsMap[i].response.cgiState)
-				{
-					case 0:
-						/* doesnt need CGI processing */
-						//? Based on location
-						sendHttpResponse(i);
-						break;
-					case 1:
-						/* needs CGI processing and is currently processing it */
-						// _clientsMap[i].response.cgiState = 2;
-						break;
-					case 2:
-						/* CGI has been processed */
-						// sendHttpResponse(i);
-						break;
-					default:
-						break;
-				}
-			}
+				sendHttpResponse(i);
 		}
 	}
 }

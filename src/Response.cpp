@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Response.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/05 15:27:15 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/05 16:21:36 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 19:51:41 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Response.hpp"
 
-Response::Response() { cgiState = 0; code = 200; }
+Response::Response() { code = 200; }
 Response::~Response() {}
 Response::Response(const Response& rhs)
 { 
@@ -23,7 +23,6 @@ Response& Response::operator=(const Response& rhs)
 	if (&rhs != this)
 	{
 		body = rhs.body;
-		cgiState = rhs.cgiState;
 		code = rhs.code;
 	}
 	return *this;

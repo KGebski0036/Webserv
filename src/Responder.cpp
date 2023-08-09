@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/09 00:51:23 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:52:27 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,13 +105,9 @@ void Responder::indexDirectory(std::string path, Response &response)
 			response.body += "<tr>";
 
 			if (entry->d_type == DT_REG)
-			{
 				response.body += "<td><i class=\"fa fa-file\" style=\"color:lightblue\"></i> <a href=\"" + std::string(entry->d_name) + "\">";
-			}
 			else
-			{
 				response.body += "<td><i class=\"fa fa-folder\" style=\"color:blue\"></i> <a href=\"" + std::string(entry->d_name) + "/\">";
-			}
 
 			response.body += entry->d_name;
 			response.body += "</a></td>";
@@ -120,13 +116,9 @@ void Responder::indexDirectory(std::string path, Response &response)
 			std::string fullPath = path + "/" + std::string(entry->d_name);
 
 			if (stat(fullPath.c_str(), &fileInfo) == 0 && S_ISREG(fileInfo.st_mode))
-			{
 				response.body += "<td>" + std::to_string(fileInfo.st_size) + " bytes</td>";
-			}
 			else
-			{
-				response.body += "<td></td>"; // Empty cell for non-regular files
-			}
+				response.body += "<td></td>";
 
 			response.body += "</tr>";
 		}

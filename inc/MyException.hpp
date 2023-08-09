@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/22 08:45:36 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/03 16:40:11 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:20 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,3 @@ class MyException {
   private :
 	std::string msg;
 };
-
-//! Use cases
-// throw MyException("invalid grade: grade is too high", __func__, __FILE__, __LINE__)
-// catch(const std::exception& e) { std::cerr << e.what(); }
-
-// try {
-// 	form.execute(*this);
-// 	std::cout << INFO << GREEN << _name << " executed " << form.getName() << E;
-// } catch (AForm::GradeTooLowException e) {
-	
-// 	std::cerr << ERROR << _name << " couldn't execute " << form.getName() << " because: \n" << e.what() << E; }

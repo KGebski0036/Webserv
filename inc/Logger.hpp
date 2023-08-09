@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:46:02 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 05:04:29 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:47 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ class Logger {
 
 	void print(LogLevel level, std::string str, bool error);
 	void print(LogLevel level, std::string color, std::string str, bool error);
-	// void print(LogLevel level, bool error, char* color, ...)
 	std::string trimColors(const std::string& input);
 
   private:

@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 16:49:26 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 01:02:18 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:38 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,5 @@ class Client {
 
   private:
 	int _clientSocket;
-	//time
 	Client(const Client&);
 };

@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 15:08:47 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 19:47:57 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 	}
 
 	if (bracketsCounter != 0)
-		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__); //!
+		throw MyException("Corupted configuration file (unclosed brackets)", __func__, __FILE__, __LINE__);
 	
 	return config;
 }
