@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:00:06 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 16:13:29 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 01:13:31 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include "Response.hpp"
 #include "ServerInstanceConfig.hpp"
 #include "Request.hpp"
+#include "MyException.hpp"
 
 class CgiHandler {
   public:

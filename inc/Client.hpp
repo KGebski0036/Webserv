@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 16:49:26 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/05 16:15:09 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 01:02:18 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ class Client {
 
   private:
 	int _clientSocket;
+	//time
 	Client(const Client&);
 };

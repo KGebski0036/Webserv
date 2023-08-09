@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/07 17:53:27 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 00:54:00 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "ServerInstanceConfig.hpp"
 #include "Responder.hpp"
 
+#define TIMEOUT 10
 #define MAX_CLIENTS 512
 #define MESSAGE_BUFFER 10000
 

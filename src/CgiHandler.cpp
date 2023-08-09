@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 20:59:27 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 01:24:33 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,37 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 	}
 	else
 	{
+		fd_set readSet;
+		FD_ZERO(&readSet);
+		FD_SET(pipefd[0], &readSet);
+
+		struct timeval timeout;
+        timeout.tv_sec = 1; // Timeout in seconds
+        timeout.tv_usec = 0;
+
 		close(pipefd[1]);
-		int r;
-		wait(&r);
-		(void)r;
-		// if (WEXITSTATUS(r) == EXIT_FAILURE)
-		// {
-		// 	response.code = 500;
-		// 	return "";
-		// }
+
+        int result = select(pipefd[0] + 1, &readSet, NULL, NULL, &timeout);
+
+        if (result == -1)
+			throw MyException("Select failed", __func__, __FILE__, __LINE__);
+		else if (result == 0)
+		{
+			_logger->print(INFO, RED, "Child process timed out.", 0);
+            kill(pid, SIGKILL);
+			response.code = 408;
+			return "";
+        }
+		else if (FD_ISSET(pipefd[0], &readSet))
+		{
+			int r;
+			wait(&r);
+			if (WEXITSTATUS(r) == EXIT_FAILURE)
+			{
+				response.code = 500;
+				return "";
+			}
+        }
 
 		int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
 
@@ -67,7 +89,6 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		}
 
 		buffer[bytesRead] = '\0';
-		dup2(1, pipefd[0]);
 
 		return buffer;
 	}

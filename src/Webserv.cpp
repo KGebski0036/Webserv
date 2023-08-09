@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 20:01:12 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 01:01:37 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void Webserv::run()
 		fd_set recvSetCpy = _recvFdPool;
 		fd_set writeSetCpy = _writeFdPool;
 
-		if ((select(_biggestFd + 1, &recvSetCpy, &writeSetCpy, NULL, &timer)) < 0 )
+		int result = select(_biggestFd + 1, &recvSetCpy, &writeSetCpy, NULL, &timer);
+
+		if (result < 0 )
 			throw MyException("Select failed", __func__, __FILE__, __LINE__);
 
 		for (int i = 0; i <= _biggestFd ; ++i)
@@ -150,7 +152,7 @@ void Webserv::readRequest(int fd)
 void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
-	
+
 	client.response = _responder->getResponse(client.request, client.server);
 	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";

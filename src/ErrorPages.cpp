@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ErrorPages.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:17:56 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/08/07 19:39:44 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 01:42:20 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ std::string ErrorPages::getHttpStatusMessage(int errorCode) {
 	httpStatusMessages[404] = "404 Not Found";
 	// httpStatusMessages[405] = "405 Method Not Allowed";
 	// httpStatusMessages[406] = "406 Not Acceptable";
-	// httpStatusMessages[408] = "408 Request Timeout";
+	httpStatusMessages[408] = "408 Request Timeout";
 	// httpStatusMessages[409] = "409 Conflict";
 	// httpStatusMessages[410] = "410 Gone";
 	// httpStatusMessages[411] = "411 Length Required";
@@ -52,7 +52,7 @@ std::string ErrorPages::getHttpStatusMessage(int errorCode) {
 	// httpStatusMessages[417] = "417 Expectation Failed";
 	// httpStatusMessages[426] = "426 Upgrade Required";
 	
-	// httpStatusMessages[500] = "500 Internal Server Error";
+	httpStatusMessages[500] = "500 Internal Server Error";
 	// httpStatusMessages[501] = "501 Not Implemented";
 	// httpStatusMessages[502] = "502 Bad Gateway";
 	// httpStatusMessages[503] = "503 Service Unavailable";
@@ -90,15 +90,19 @@ std::string ErrorPages::generateErrorPage(int errorCode, ServerInstanceConfig se
 	"<head>\n"
 	"    <title>Error " + errorStr + "</title>\n"
 	"    <style>\n"
-	"        body { font-family: Arial, sans-serif; background-color: #f6f6f6; }\n"
+	"        body {   min-height: 100%; font-family: Arial, sans-serif; background-image: url('https://i.giphy.com/media/TqiwHbFBaZ4ti/giphy.webp');"
+	"             background-repeat: no-repeat;"
+    "             background-attachment: fixed;"
+	"             background-size: 100% 100%;}\n"
 	"        .container { text-align: center; padding: 100px; }\n"
 	"        .error-code { font-size: 80px; color: #444; }\n"
 	"        .error-message { font-size: 24px; color: #777; }\n"
+	"         html{ height: 100%; }"
 	"    </style>\n"
 	"</head>\n"
 	"<body>\n"
 	"    <div class=\"container\">\n"
-	"        <span class=\"error-code\">" + errorStr + "</span>\n"
+	"        <span class=\"error-code\">" + getHttpStatusMessage(errorCode) + "</span>\n"
 	"        <p class=\"error-message\">Sorry, an error occurred. Please try again later.</p>\n"
 	"    </div>\n"
 	"</body>\n"
