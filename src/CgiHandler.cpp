@@ -6,7 +6,7 @@
 /*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 16:38:14 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/09 20:38:17 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 	}
 	else
 	{
-		write(bodyfd[1], request.getBody().c_str(), request.getContentLength());
+		if (write(bodyfd[1], request.getBody().c_str(), request.getContentLength()) <= 0)
+		{
+			response.code = 500;
+			return "";
+		}
 		close(bodyfd[1]);
 		
 		fd_set readSet;

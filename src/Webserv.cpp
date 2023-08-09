@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 19:51:05 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:44:45 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,12 +121,18 @@ void Webserv::readRequest(int fd)
 	while ((ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT)) > 0)
 	{
 		buffer[ret] = 0;
+		// if (tmp.size() == 0)
+		// {
+		// 	tmp.find
+		// }
 		tmp += buffer;
 	}
-	
+	FD_CLR(fd, &_recvFdPool);
 	_clientsMap[fd].request = Request(tmp);
 	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
 	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
+	
+	std::cout << YELLOW << _clientsMap[fd].server.clientBodyBufferSize << E;
 	FD_SET(fd, &_writeFdPool);
 }
 
@@ -155,8 +161,8 @@ void Webserv::sendHttpResponse(int clientSockfd)
 		httpResponse += tmp;
 	}
 
-	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) == -1) {
-		throw MyException("Send failed", __func__, __FILE__, __LINE__);
+	if (send(clientSockfd, httpResponse.c_str(), httpResponse.length(), 0) <= 0) {
+		closeConnection(clientSockfd);
 	}
 	closeConnection(clientSockfd);
 }
@@ -165,7 +171,7 @@ ServerInstanceConfig& Webserv::getServerByIP(Request request)
 {
 	for (std::map<int, ServerInstanceConfig>::iterator it = _serversMap.begin(); it != _serversMap.end(); ++it)
 	{
-		if (it->second.listenAddress == request.getHost() && it->second.port == request.getPort())
+		if ((it->second.listenAddress == request.getHost() || it->second.listenAddress == "0.0.0.0" || it->second.serverName == request.getHost())&& it->second.port == request.getPort())
 			return it->second;
 	}
 	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM) + "Default server used", 0);
