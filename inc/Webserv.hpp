@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 00:54:00 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 20:02:27 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class Webserv {
 	void sendHttpResponse(int clientSockfd);
 	void closeConnection(int fd);
 	ServerInstanceConfig& getServerByIP(Request request);
+	bool isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods);
 
 	Webserv();
 	Webserv(const Webserv&);
