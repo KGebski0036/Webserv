@@ -23,7 +23,9 @@ for el in params:
 user = paramDict.get('login')
 if request_method == 'POST':
 	f = open("www/html/userFiles/" + user + ".png", "wb+")
-	base64_data = os.environ.get('BODY', '')
+	content_length = int(os.environ.get("CONTENT_LENGTH", 0))
+
+	base64_data = sys.stdin.read(content_length)
 	binary_data = base64.b64decode(base64_data)
 	f.write(binary_data)
 	f.close()

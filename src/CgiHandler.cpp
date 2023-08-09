@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 01:24:33 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/09 16:38:14 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,28 @@ void CgiHandler::createResponse(Response& response, Request& request, LocationCo
 std::string CgiHandler::execute(const std::string scriptPath, Response& response, Request& request)
 {
 	int pipefd[2];
+	int bodyfd[2];
+	std::string tmp = "";
 	char buffer[4096];
 
-	if (pipe(pipefd) == -1)
+	if (pipe(pipefd) == -1 || pipe(bodyfd) == -1)
+	{
+		response.code = 500;
 		_logger->print(DEBUG, "Failed to create pipe. ", 1);
+	}
 
 	pid_t pid = fork();
 
 	if (pid == -1) {
+		response.code = 500;
 		_logger->print(DEBUG, "Failed to create child process. ", 1);
 	}
 	else if (pid == 0)
 	{
 		close(pipefd[0]);
+		close(bodyfd[1]);
 		dup2(pipefd[1], STDOUT_FILENO);
+		dup2(bodyfd[0], STDIN_FILENO);
 		char *argv[2];
 		argv[0] = const_cast<char*>(scriptPath.c_str());
 		argv[1] = NULL;
@@ -49,27 +57,30 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 	}
 	else
 	{
+		write(bodyfd[1], request.getBody().c_str(), request.getContentLength());
+		close(bodyfd[1]);
+		
 		fd_set readSet;
 		FD_ZERO(&readSet);
 		FD_SET(pipefd[0], &readSet);
 
 		struct timeval timeout;
-        timeout.tv_sec = 1; // Timeout in seconds
-        timeout.tv_usec = 0;
+		timeout.tv_sec = 10;
+		timeout.tv_usec = 0;
 
 		close(pipefd[1]);
 
-        int result = select(pipefd[0] + 1, &readSet, NULL, NULL, &timeout);
+		int result = select(pipefd[0] + 1, &readSet, NULL, NULL, &timeout);
 
-        if (result == -1)
+		if (result == -1)
 			throw MyException("Select failed", __func__, __FILE__, __LINE__);
 		else if (result == 0)
 		{
 			_logger->print(INFO, RED, "Child process timed out.", 0);
-            kill(pid, SIGKILL);
+			kill(pid, SIGKILL);
 			response.code = 408;
 			return "";
-        }
+		}
 		else if (FD_ISSET(pipefd[0], &readSet))
 		{
 			int r;
@@ -79,18 +90,22 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 				response.code = 500;
 				return "";
 			}
-        }
+		}
+		int bytesRead;
 
-		int bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1);
+		while ((bytesRead = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0)
+		{
+			buffer[bytesRead] = '\0';
+			tmp += buffer;
+		}
+		close(pipefd[0]);
 
 		if (bytesRead == -1) {
 			_logger->print(DEBUG, "Failed to read from the pipe.", 1);
 			return "";
 		}
 
-		buffer[bytesRead] = '\0';
-
-		return buffer;
+		return tmp;
 	}
 	response.code = 500;
 	return "";
@@ -99,10 +114,9 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 
 char** CgiHandler::setupEnvVars(Request &request)
 {
-	char** result = new char*[5];
+	char** result = new char*[4];
 
 	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
-	std::string bodyVar = "BODY=" + request.getBody();
 	std::string requestMethod = "REQUEST_METHOD=" + request.getMethod();
 	std::string params = "PARAMS=";
 	
@@ -112,15 +126,13 @@ char** CgiHandler::setupEnvVars(Request &request)
 	}
 	
 	result[0] = new char[contentLengthVar.size() + 1];
-	result[1] = new char[bodyVar.size() + 1];
-	result[2] = new char[requestMethod.size() + 1];
-	result[3] = new char[params.size() + 1];
-	result[4] = NULL;
+	result[1] = new char[requestMethod.size() + 1];
+	result[2] = new char[params.size() + 1];
+	result[3] = NULL;
 
 	strcpy(result[0], contentLengthVar.c_str());
-	strcpy(result[1], bodyVar.c_str());
-	strcpy(result[2], requestMethod.c_str());
-	strcpy(result[3], params.c_str());
+	strcpy(result[1], requestMethod.c_str());
+	strcpy(result[2], params.c_str());
 	
 	return result;
 }

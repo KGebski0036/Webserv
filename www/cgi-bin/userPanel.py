@@ -29,7 +29,9 @@ if request_method == 'POST':
 
 	bodyDict = dict()
 
-	rawbody = os.environ.get('BODY', "login=Guest")
+	content_length = int(os.environ.get("CONTENT_LENGTH", 0))
+
+	rawbody = sys.stdin.read(content_length)
 	body = rawbody.split("&")
 
 	for el in body:
