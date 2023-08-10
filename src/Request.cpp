@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 20:05:26 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/10 14:17:00 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,24 +139,26 @@ std::string Request::toString()
 	std::stringstream result;
 
 	result << std::setw(25) << YELLOW << "Method: " << GREEN << _method << std::setw(20) << YELLOW << "file: "
-		MAGENTA << _path << E;
+		MAGENTA << _path << std::endl;
 	
 	if (_requestParameters.size() > 0)
-		result << std::setw(25) << YELLOW << "Parameters: " << E;
+		result << std::setw(25) << YELLOW << "Parameters: " << std::endl;
 	
 	for (std::map<std::string, std::string>::iterator it = _requestParameters.begin(); it != _requestParameters.end(); it++)
 	{
-		result << std::setw(30) << BLUE << it->first << " --> " << it->second << E;
+		result << std::setw(30) << BLUE << it->first << " --> " << it->second << std::endl;
 	}
 	
-	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << E;
+	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << std::endl;
 	
-	if (_body.size() > 0)
-		result << std::setw(25) << YELLOW << "Body:\n" << BLUE << _body << E;
-	
-	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << E;
+	if (_body.size() > 0 && _body.size() < 1000)
+		result << std::setw(25) << YELLOW << "Body:\n" << BLUE << _body << std::endl;
+	else if (_body.size() > 0)
+		result << std::setw(25) << YELLOW << "Body: " << BLUE << "[...]" << std::endl;
 
-	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << E;
+	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << std::endl;
+
+	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << std::endl;
 	
 	return result.str();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kgebski <kgebski@student.42wolfsburg.de    +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 20:38:17 by kgebski          ###   ########.fr       */
+/*   Updated: 2023/08/10 14:43:54 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 	}
 	else
 	{
-		if (write(bodyfd[1], request.getBody().c_str(), request.getContentLength()) <= 0)
+		if (write(bodyfd[1], request.getBody().c_str(), request.getContentLength()) < 0)
 		{
+			// _logger->print(DEBUG, std::string(SYS_MSG) +  std::string(RED) +  std::string(DIM), std::to_string(getContentLength())), 0);
 			response.code = 500;
 			return "";
 		}
@@ -69,7 +70,7 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		FD_SET(pipefd[0], &readSet);
 
 		struct timeval timeout;
-		timeout.tv_sec = 10;
+		timeout.tv_sec = 5;
 		timeout.tv_usec = 0;
 
 		close(pipefd[1]);
@@ -88,7 +89,7 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		else if (FD_ISSET(pipefd[0], &readSet))
 		{
 			int r;
-			wait(&r);
+			waitpid(pid, &r, 0);
 			if (WEXITSTATUS(r) == EXIT_FAILURE)
 			{
 				response.code = 500;

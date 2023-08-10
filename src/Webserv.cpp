@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 13:57:26 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 15:13:06 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,11 @@ void Webserv::readRequest(int fd)
 			return;
 		}
 	}
+
 	FD_CLR(fd, &_recvFdPool);
 	_clientsMap[fd].request = Request(tmp);
-	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
+	_logger->print(INFO, "New request picked up: \n" + std::string(DIM) + _clientsMap[fd].request.toString(), 0);
 
-	std::cout << YELLOW << _clientsMap[fd].server.clientBodyBufferSize << E;
 	FD_SET(fd, &_writeFdPool);
 }
 
