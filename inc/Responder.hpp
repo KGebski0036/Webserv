@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/10 12:47:11 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:53:57 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class Responder;
 #include "ErrorPages.hpp"
 #include "Response.hpp"
 #include "CgiHandler.hpp"
-#include "Webserv.hpp"
 
 class Responder
 {
@@ -42,4 +41,5 @@ class Responder
 
 	LocationConfig* isCgiRequest(Request& request, ServerInstanceConfig& serverConf);
 	void indexDirectory(std::string path, Response& response);
+	bool isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods);
 };

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 12:48:06 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:53:13 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,6 @@ void Webserv::sendHttpResponse(int clientSockfd)
 
 	client.response = _responder->getResponse(client.request, client.server);
 
-	// if (!isMethodAllowed(client.request.getMethod(), client.server.allowedMethods))
-	// 	client.response.code = 405;
-	
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	
 	if (client.response.code == 200)
@@ -202,13 +199,3 @@ Webserv::~Webserv() {
 
 Webserv::Webserv(const Webserv& src) { (void)src; }
 Webserv& Webserv::operator=(Webserv const& src) { (void)src; return *this; }
-
-bool isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods)
-{
-	for (std::vector<std::string>::const_iterator it = allowedMethods.begin(); it != allowedMethods.end(); ++it)
-	{
-		if (method == *it)
-			return true;
-	}
-	return false;
-}
