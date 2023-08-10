@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/09 19:52:27 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:53:34 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,19 @@ Response Responder::getResponse(Request &request, ServerInstanceConfig &serverCo
 	location = isCgiRequest(request, serverConf);
 	if (location != NULL)
 	{
+		if (!isMethodAllowed(request.getMethod(), location->allowedMethods))
+		{
+			response.code = 405;
+			return response;
+		}
 		CgiHandler cgi(_logger);
 		cgi.createResponse(response, request, *location, serverConf);
+		return response;
+	}
+
+	if (!isMethodAllowed(request.getMethod(), serverConf.allowedMethods))
+	{
+		response.code = 405;
 		return response;
 	}
 
@@ -61,9 +72,7 @@ Response Responder::getResponse(Request &request, ServerInstanceConfig &serverCo
 		if (serverConf.autoindex)
 			indexDirectory(path, response);
 		else
-		{
 			response.code = 403;
-		}
 
 		return response;
 	}
@@ -128,4 +137,14 @@ void Responder::indexDirectory(std::string path, Response &response)
 	}
 	else
 		response.code = 404;
+}
+
+bool Responder::isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods)
+{
+	for (std::vector<std::string>::const_iterator it = allowedMethods.begin(); it != allowedMethods.end(); ++it)
+	{
+		if (method == *it)
+			return true;
+	}
+	return false;
 }

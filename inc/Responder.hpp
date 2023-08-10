@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:28:47 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/08 15:14:27 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:53:57 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+class Responder;
 #include "MyException.hpp"
 #include "Request.hpp"
 #include "Logger.hpp"
@@ -40,4 +41,5 @@ class Responder
 
 	LocationConfig* isCgiRequest(Request& request, ServerInstanceConfig& serverConf);
 	void indexDirectory(std::string path, Response& response);
+	bool isMethodAllowed(const std::string& method, const std::vector<std::string>& allowedMethods);
 };
