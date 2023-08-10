@@ -94,4 +94,4 @@ ascii-art:
 	@echo "$(BASE)159m ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[$(ITALIC)Made with ♥  by @cjackows @kgebski @gskrasti$(RESET)$(BASE)159m]━━━━━━━━━━━━━━━━┛$(RESET)"; echo; echo; echo;
                         
 
-.PHONY: all clean fclean re webserv
+.PHONY: all clean fclean re
