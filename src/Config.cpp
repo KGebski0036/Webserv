@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Config.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 14:31:33 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/09 19:47:57 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:19:12 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,11 @@ ServerInstanceConfig Config::readSingleServer(size_t& i)
 			else if (_fileVector[j] == "listen")
 				readListenArg(config, _fileVector[++j]);
 			else if (_fileVector[j] == "allow_methods")
-				readAllowedMethodsArg(config.allowedMethods, j);
+			{
+				config.allowedMethods.clear();
+				readAllowedMethodsArg(config.allowedMethods, ++j);
+				--j;
+			}
 			else if (_fileVector[j] == "location")
 				readLocationArg(config.locations, j);
 			else if (_fileVector[j] == "error_page")
