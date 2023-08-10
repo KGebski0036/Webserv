@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Responder.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/04 18:31:56 by kgebski           #+#    #+#             */
-/*   Updated: 2023/08/09 19:52:27 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 12:46:06 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ Response Responder::getResponse(Request &request, ServerInstanceConfig &serverCo
 	location = isCgiRequest(request, serverConf);
 	if (location != NULL)
 	{
+		if (!isMethodAllowed(request.getMethod(), location->allowedMethods))
+		{
+			response.code = 405;
+			return response;
+		}
 		CgiHandler cgi(_logger);
 		cgi.createResponse(response, request, *location, serverConf);
 		return response;
