@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 12:34:21 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 12:53:22 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:35:47 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ class Webserv {
 	void readRequest(int);
 	void sendHttpResponse(int clientSockfd);
 	void closeConnection(int fd);
-	ServerInstanceConfig& getServerByIP(Request request);
+	ServerInstanceConfig& getServerByIP(std::string host);
 
 	Webserv();
 	Webserv(const Webserv&);

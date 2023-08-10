@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Webserv.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gskrasti <gskrasti@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:07:57 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 12:56:54 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:57:26 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,17 +121,28 @@ void Webserv::readRequest(int fd)
 	while ((ret = recv(fd, buffer, MESSAGE_BUFFER, MSG_DONTWAIT)) > 0)
 	{
 		buffer[ret] = 0;
-		// if (tmp.size() == 0)
-		// {
-		// 	tmp.find
-		// }
+		if (tmp.size() == 0)
+		{
+			std::string host;
+			std::string bufferTmp = buffer;
+			int pos = bufferTmp.find("Host:");
+			host = bufferTmp.substr(pos + 6, bufferTmp.find("\n", pos) - pos);
+			_clientsMap[fd].server = getServerByIP(host);
+		}
 		tmp += buffer;
+		if ((tmp.size() - tmp.find("\r\n\r\n") - 3) > _clientsMap[fd].server.clientBodyBufferSize)
+		{
+			_logger->print(INFO, "Client has exceeded the maximum clientBodyBufferSize, max allowed: " + std::to_string(_clientsMap[fd].server.clientBodyBufferSize) + " client request body size was: " + std::to_string(tmp.size() - tmp.find("\r\n\r\n") - 3), 1);
+			_clientsMap[fd].response.code = 400;
+			FD_CLR(fd, &_recvFdPool);
+			FD_SET(fd, &_writeFdPool);
+			return;
+		}
 	}
 	FD_CLR(fd, &_recvFdPool);
 	_clientsMap[fd].request = Request(tmp);
 	_logger->print(INFO, "New request picked up: \n" + _clientsMap[fd].request.toString(), 0);
-	_clientsMap[fd].server = getServerByIP(_clientsMap[fd].request);
-	
+
 	std::cout << YELLOW << _clientsMap[fd].server.clientBodyBufferSize << E;
 	FD_SET(fd, &_writeFdPool);
 }
@@ -140,7 +151,8 @@ void Webserv::sendHttpResponse(int clientSockfd)
 {
 	Client& client = _clientsMap[clientSockfd];
 
-	client.response = _responder->getResponse(client.request, client.server);
+	if (client.response.code == 200)
+		client.response = _responder->getResponse(client.request, client.server);
 
 	std::string httpResponse = "HTTP/1.1 " + ErrorPages::getHttpStatusMessage(client.response.code)  + "\r\n";
 	
@@ -167,11 +179,14 @@ void Webserv::sendHttpResponse(int clientSockfd)
 	closeConnection(clientSockfd);
 }
 
-ServerInstanceConfig& Webserv::getServerByIP(Request request)
+ServerInstanceConfig& Webserv::getServerByIP(std::string host)
 {
+	std::string ip = host.substr(0, host.find(":"));
+	int port = std::atoi(host.substr(host.find(":") + 1).c_str());
+
 	for (std::map<int, ServerInstanceConfig>::iterator it = _serversMap.begin(); it != _serversMap.end(); ++it)
 	{
-		if ((it->second.listenAddress == request.getHost() || it->second.listenAddress == "0.0.0.0" || it->second.serverName == request.getHost())&& it->second.port == request.getPort())
+		if ((it->second.listenAddress == ip || it->second.listenAddress == "0.0.0.0" || it->second.serverName == ip) && it->second.port == port)
 			return it->second;
 	}
 	_logger->print(INFO, std::string(SYS_MSG) +  std::string(GREEN) +  std::string(DIM) + "Default server used", 0);

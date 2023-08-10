@@ -6,7 +6,7 @@
 /*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 15:17:56 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/08/09 19:49:57 by cjackows         ###   ########.fr       */
+/*   Updated: 2023/08/10 13:43:26 by cjackows         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ std::string ErrorPages::getHttpStatusMessage(int errorCode) {
 	std::map<int, std::string> httpStatusMessages;
 
 	httpStatusMessages[200] = "200 OK";
-	httpStatusMessages[400] = "400 Bad Request"; //todo
+	httpStatusMessages[400] = "400 Bad Request";
 	httpStatusMessages[403] = "403 Forbidden";
 	httpStatusMessages[404] = "404 Not Found";
-	httpStatusMessages[405] = "405 Method Not Allowed"; //todo
+	httpStatusMessages[405] = "405 Method Not Allowed";
 	httpStatusMessages[408] = "408 Request Timeout";
 	httpStatusMessages[500] = "500 Internal Server Error";
 
