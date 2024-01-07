@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Request.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 18:33:04 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 14:17:00 by cjackows         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:57:39 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/Request.hpp"
 #include <iostream>
+#include <cstdlib>
 
 Request::Request() {
 	_contentLength = 0;
@@ -41,7 +42,7 @@ Request& Request::operator=(const Request& src)
 		_contentLength = src._contentLength;
 		_contentType = src._contentType;
 	}
-	return *this; 
+	return *this;
 }
 
 std::string Request::getMethod() const { return _method; }
@@ -103,7 +104,7 @@ Request::Request(std::string rawRequest)
 	if (tmp.find(':') != std::string::npos)
 	{
 		_host = tmp.substr(0, tmp.find(':'));
-		_port = std::atoi(tmp.substr(tmp.find(':') + 1).c_str());
+		_port = atoi(tmp.substr(tmp.find(':') + 1).c_str());
 	}
 	else
 	{
@@ -120,7 +121,7 @@ Request::Request(std::string rawRequest)
 		while (std::getline(ss, tmp))
 		{
 			if (tmp.find("Content-Length:") == 0)
-				_contentLength = std::atoi(tmp.substr(16).c_str());
+				_contentLength = atoi(tmp.substr(16).c_str());
 			if (!readingBody && (tmp.empty() || tmp == "\r"))
 				readingBody = true;
 			else if (readingBody && !tmp.empty())
@@ -140,17 +141,17 @@ std::string Request::toString()
 
 	result << std::setw(25) << YELLOW << "Method: " << GREEN << _method << std::setw(20) << YELLOW << "file: "
 		MAGENTA << _path << std::endl;
-	
+
 	if (_requestParameters.size() > 0)
 		result << std::setw(25) << YELLOW << "Parameters: " << std::endl;
-	
+
 	for (std::map<std::string, std::string>::iterator it = _requestParameters.begin(); it != _requestParameters.end(); it++)
 	{
 		result << std::setw(30) << BLUE << it->first << " --> " << it->second << std::endl;
 	}
-	
+
 	result << std::setw(25) << YELLOW << "Server: " << GREEN << _host << ":" << _port << std::endl;
-	
+
 	if (_body.size() > 0 && _body.size() < 1000)
 		result << std::setw(25) << YELLOW << "Body:\n" << BLUE << _body << std::endl;
 	else if (_body.size() > 0)
@@ -159,7 +160,7 @@ std::string Request::toString()
 	result << std::setw(25) << YELLOW << "Content-length: " <<  GREEN << _contentLength << std::endl;
 
 	result << std::setw(25) << YELLOW << "Content Type: " << BLUE << _contentType << std::endl;
-	
+
 	return result.str();
 }
 

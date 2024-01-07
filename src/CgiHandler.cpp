@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   CgiHandler.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/06 16:01:27 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/10 14:43:54 by cjackows         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:56:23 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 		argv[0] = const_cast<char*>(scriptPath.c_str());
 		argv[1] = NULL;
 		char** _envp = setupEnvVars(request);
-		
-		
+
+
 		if (execve(argv[0], argv, _envp) == -1) {
 			_logger->print(DEBUG, "Failed to execute cgi script.", 1);
 			_exit(EXIT_FAILURE);
@@ -64,7 +64,7 @@ std::string CgiHandler::execute(const std::string scriptPath, Response& response
 			return "";
 		}
 		close(bodyfd[1]);
-		
+
 		fd_set readSet;
 		FD_ZERO(&readSet);
 		FD_SET(pipefd[0], &readSet);
@@ -121,15 +121,18 @@ char** CgiHandler::setupEnvVars(Request &request)
 {
 	char** result = new char*[4];
 
-	std::string contentLengthVar = "CONTENT_LENGTH=" + std::to_string(request.getContentLength());
+	std::stringstream ss;
+    ss << request.getContentLength();
+
+	std::string contentLengthVar = "CONTENT_LENGTH=" + ss.str();
 	std::string requestMethod = "REQUEST_METHOD=" + request.getMethod();
 	std::string params = "PARAMS=";
-	
+
 	for (std::map<std::string, std::string>::iterator it = request.getRequestParameters().begin(); it != request.getRequestParameters().end(); it++)
 	{
 		params += it->first + "=" + it->second + "&";
 	}
-	
+
 	result[0] = new char[contentLengthVar.size() + 1];
 	result[1] = new char[requestMethod.size() + 1];
 	result[2] = new char[params.size() + 1];
@@ -138,7 +141,7 @@ char** CgiHandler::setupEnvVars(Request &request)
 	strcpy(result[0], contentLengthVar.c_str());
 	strcpy(result[1], requestMethod.c_str());
 	strcpy(result[2], params.c_str());
-	
+
 	return result;
 }
 

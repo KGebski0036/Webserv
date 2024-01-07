@@ -31,7 +31,7 @@ endif
 
 NAME		=	webserv
 CC			=	c++
-CPP_FLAGS	=	-Wall -Wextra -Werror -std=c++98 --pedantic-errors -g -O3 #-fsanitize=address
+CPP_FLAGS	=	-Wall -Wextra -Werror --pedantic-errors -g -O3 #-fsanitize=address
 #-g
 
 HDRS_DIR	=	./inc/
@@ -46,9 +46,9 @@ OBJ			=$(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRC))
 all: ascii-art $(NAME)
 
 $(NAME): $(OBJ)
-	@echo "$(COMPILATION)ᯤ  $(NAME) compilation:"
+	@echo -e "$(COMPILATION)ᯤ  $(NAME) compilation:"
 	$(CC) $(CPP_FLAGS) $(HDRS) $(OBJ) -o $(NAME)
-	@echo "$(RESET)$(INFO)ᯤ  $@ executable has been created$(RESET)"
+	@echo -e "$(RESET)$(INFO)ᯤ  $@ executable has been created$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
@@ -77,21 +77,21 @@ re: fclean all
 
 ascii-art:
 	@clear
-	@echo "$(BASE)231m .                                                                                                   -=━━━┓"
-	@echo "$(BASE)231m | ⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣿⠷⠾⠛⠛⠛⠛⠷⠶⢶⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀                                                                       ◹ ┃"   
-	@echo "$(BASE)195m ┃ ⠀⠀⠀⠀⣀⣴⡾⠛⠉⠁⠀          ⠀⠉⠛⠿⣷⣄⡀⠀⠀⠀                                                                        |"
-	@echo "$(BASE)195m ┃ ⠀⠀⣠⣾⠟⠁⠀⠀⠀⠀⠀          ⠀⠀⠀⠀⠈⠛⢿⣦⡀⠀                                                                        '"   
-	@echo "$(BASE)195m ┃ ⢠⣼⠟⠁⠀⠀⠀⠀⣠⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⠀⠀⠀  ⠀⠙⣧⡀    "
-	@echo "$(BASE)195m ┃ ⣿⡇⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀ ▁▁▁▁▁ ▁▁▁▁▁▁▁▁            ▁▁      ▁▁      ▁▁▁."
-	@echo "$(BASE)195m ┃ ⣿⣿⣦⡀⣠⣾⣿⣿⣿⡿⠟⠛⠁⠁⠁⠁⠁⠁⠛⠻⢿⣿⣿⣿⣿╱  │  │╲▁▁▁▁▁  ╲          ╱  ╲    ╱  ╲ ▁▁▁▁╲▁ │▁▁   ▁▁▁▁▁▁ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁"
-	@echo "$(BASE)195m ┃ ⠉⠻⣿⣿⣿⣿⣿⡿⠋⠀⠀          ⠀⢿⣿╱   │  │▁╱  ▁▁▁▁╱   ▁▁▁▁▁▁ ╲   ╲╱╲╱   ╱╱ ▁▁ ╲│ ▁▁ ╲ ╱  ▁▁▁╱╱ ▁▁ ╲▁  ▁▁ ╲  ╲╱ ╱"
-	@echo "$(BASE)195m ┃ ⠀⠀⠈⠙⠛⣿⣿⠀⠀⠀⠀            ╱    ^   ╱       ╲  ╱▁▁▁▁▁╱  ╲        ╱╲  ▁▁▁╱│ ╲▁╲ ╲╲▁▁▁ ╲╲  ▁▁▁╱│  │ ╲╱╲   ╱"
-	@echo "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⢿⣿⣷⣄⣀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣷⣀⣀⣾╲▁▁▁▁   │╲▁▁▁▁▁▁▁ ╲           ╲▁▁╱╲  ╱  ╲▁▁▁  >▁▁▁  ╱▁▁▁▁  >╲▁▁▁  >▁▁│    ╲▁╱"
-	@echo "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⠟⠛⠛⠻⣿⣿⣿⣿⣿⡿     │▁▁│        ╲╱                ╲╱       ╲╱    ╲╱     ╲╱     ╲╱"
-	@echo "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⣿⡇⠀⠀⠀⠀⢸⣿⡏⠙⠋⠁⠀⠀⠀⠀⠀⠀⠀                                                                        "
-	@echo "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⠀⣀⣾⣿⡇⠀⠀⠀⠀⠀                                                                            ▵ "
-	@echo "$(BASE)159m ┃ ◺⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                                       ▿┃"
-	@echo "$(BASE)159m ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[$(ITALIC)Made with ♥  by @cjackows @kgebski @gskrasti$(RESET)$(BASE)159m]━━━━━━━━━━━━━━━━┛$(RESET)"; echo; echo; echo;
-                        
+	@echo -e "$(BASE)231m .                                                                                                   -=━━━┓"
+	@echo -e "$(BASE)231m | ⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣿⠷⠾⠛⠛⠛⠛⠷⠶⢶⣶⣤⣄⡀⠀⠀⠀⠀⠀⠀                                                                       ◹ ┃"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠀⠀⣀⣴⡾⠛⠉⠁⠀          ⠀⠉⠛⠿⣷⣄⡀⠀⠀⠀                                                                        |"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⣠⣾⠟⠁⠀⠀⠀⠀⠀          ⠀⠀⠀⠀⠈⠛⢿⣦⡀⠀                                                                        '"
+	@echo -e "$(BASE)195m ┃ ⢠⣼⠟⠁⠀⠀⠀⠀⣠⣴⣶⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣄⠀⠀⠀  ⠀⠙⣧⡀    "
+	@echo -e "$(BASE)195m ┃ ⣿⡇⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀ ▁▁▁▁▁ ▁▁▁▁▁▁▁▁            ▁▁      ▁▁      ▁▁▁."
+	@echo -e "$(BASE)195m ┃ ⣿⣿⣦⡀⣠⣾⣿⣿⣿⡿⠟⠛⠁⠁⠁⠁⠁⠁⠛⠻⢿⣿⣿⣿⣿╱  │  │╲▁▁▁▁▁  ╲          ╱  ╲    ╱  ╲ ▁▁▁▁╲▁ │▁▁   ▁▁▁▁▁▁ ▁▁▁▁▁▁▁▁▁▁▁▁▁▁"
+	@echo -e "$(BASE)195m ┃ ⠉⠻⣿⣿⣿⣿⣿⡿⠋⠀⠀          ⠀⢿⣿╱   │  │▁╱  ▁▁▁▁╱   ▁▁▁▁▁▁ ╲   ╲╱╲╱   ╱╱ ▁▁ ╲│ ▁▁ ╲ ╱  ▁▁▁╱╱ ▁▁ ╲▁  ▁▁ ╲  ╲╱ ╱"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠈⠙⠛⣿⣿⠀⠀⠀⠀            ╱    ^   ╱       ╲  ╱▁▁▁▁▁╱  ╲        ╱╲  ▁▁▁╱│ ╲▁╲ ╲╲▁▁▁ ╲╲  ▁▁▁╱│  │ ╲╱╲   ╱"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⢿⣿⣷⣄⣀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣷⣀⣀⣾╲▁▁▁▁   │╲▁▁▁▁▁▁▁ ╲           ╲▁▁╱╲  ╱  ╲▁▁▁  >▁▁▁  ╱▁▁▁▁  >╲▁▁▁  >▁▁│    ╲▁╱"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠈⠻⢿⣿⣿⣿⣿⣿⠟⠛⠛⠻⣿⣿⣿⣿⣿⡿     │▁▁│        ╲╱                ╲╱       ╲╱    ╲╱     ╲╱     ╲╱"
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠁⣿⡇⠀⠀⠀⠀⢸⣿⡏⠙⠋⠁⠀⠀⠀⠀⠀⠀⠀                                                                        "
+	@echo -e "$(BASE)195m ┃ ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣄⠀⠀⣀⣾⣿⡇⠀⠀⠀⠀⠀                                                                            ▵ "
+	@echo -e "$(BASE)159m ┃ ◺⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                                                                       ▿┃"
+	@echo -e "$(BASE)159m ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[$(ITALIC)Made with ♥  by @cjackows @kgebski @gskrasti$(RESET)$(BASE)159m]━━━━━━━━━━━━━━━━┛$(RESET)"; echo; echo; echo;
+
 
 .PHONY: all clean fclean re

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Logger.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjackows <cjackows@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: kgebski <kgebski@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 14:53:29 by cjackows          #+#    #+#             */
-/*   Updated: 2023/08/08 13:13:55 by cjackows         ###   ########.fr       */
+/*   Updated: 2024/01/07 20:58:46 by kgebski          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void Logger::print(LogLevel level, std::string color, std::string str, bool erro
 
 		time(&rawtime);
 		tm = localtime (&rawtime);
-		int ret = strftime(buf, 32, "%T", tm);
+		int ret = strftime(buf, 32, "%H:%M:%S", tm);
 		buf[ret] = '\0';
 
 		std::ostringstream oss;
