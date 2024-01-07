@@ -30,9 +30,13 @@ Start of webserv:
 Start of webserv with diffrent config:
 ![Screenshot](screenshots/01.png)
 Example of hosted htmls files:
+
 ![Screenshot](screenshots/02.gif)
+
 Logger logging actions on page:
+
 ![Screenshot](screenshots/03.png)
+
 Login form:
 ![Screenshot](screenshots/04.png)
 Fresh user page:
@@ -40,4 +44,5 @@ Fresh user page:
 User can update avatar:
 ![Screenshot](screenshots/06.png)
 Indexing:
+
 ![Screenshot](screenshots/07.png)
